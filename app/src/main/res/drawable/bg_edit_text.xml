@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/color_edit_text_border" />
+            <corners android:radius="@dimen/edit_text_radius_size" />
+        </shape>
+    </item>
+    <item
+        android:bottom="@dimen/edit_text_border_size"
+        android:left="@dimen/edit_text_border_size"
+        android:right="@dimen/edit_text_border_size"
+        android:top="@dimen/edit_text_border_size">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/color_edit_text_background" />
+            <corners android:radius="@dimen/edit_text_radius_size" />
+        </shape>
+    </item>
+</layer-list>

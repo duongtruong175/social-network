@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Social Network</string>
+
+    <string name="authentication_title">HUST</string>
+    <string name="authentication_login">Đăng nhập</string>
+    <string name="authentication_register">Đăng ký</string>
+    <string name="authentication_email_hint">Email</string>
+    <string name="authentication_password_hint">Mật khẩu</string>
+    <string name="authentication_confirm_password_hint">Xác nhận mật khẩu</string>
+    <string name="authentication_name_label">Tên hiển thị (*)</string>
+    <string name="authentication_name_hint">Tên hiển thị</string>
+    <string name="authentication_birthday_label">Ngày sinh (*)</string>
+    <string name="authentication_birthday_hint">dd/MM/yyyy</string>
+    <string name="authentication_gender_label">Giới tính (*)</string>
+    <string name="authentication_gender_male">Nam</string>
+    <string name="authentication_gender_female">Nữ</string>
+    <string name="authentication_gender_other">Khác</string>
+    <string name="authentication_forgot_password">Quên mật khẩu?</string>
+    <string name="authentication_new_account">Chưa có tài khoản?</string>
+    <string name="authentication_already_account">Đã có tài khoản?</string>
+    <string name="authentication_term_service_label">Bằng việc nhấn vào Đăng ký, bạn đồng ý với</string>
+    <string name="authentication_term_service">Chính sách bảo mật và Điều khoản sử dụng</string>
+
+</resources>
