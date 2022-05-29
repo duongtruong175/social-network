@@ -73,4 +73,9 @@
         <item>Đang tìm hiểu</item>
         <item>Có mối quan hệ phức tạp</item>
     </array>
+    <array name="gender">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
+    </array>
 </resources>

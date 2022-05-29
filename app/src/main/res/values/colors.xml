@@ -2,7 +2,6 @@
 <resources>
     <!-- App icon background color -->
     <color name="ic_launcher_background">#00A6FF</color>
-
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -10,13 +9,36 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">@android:color/black</color>
     <color name="white">@android:color/white</color>
-
-    <!-- Customize colors -->
+    <!-- Primary App colors -->
     <color name="colorAccent">#00A6FF</color>
     <color name="colorPrimary">@android:color/white</color>
     <color name="colorPrimaryDark">@android:color/white</color>
-
+    <!-- Customize colors -->
     <color name="color_edit_text_border">#E7E7E7</color>
     <color name="color_edit_text_background">#F5F5F5</color>
     <color name="color_drawable_edit_text">#808080</color>
+    <color name="color_drawable_edit_profile">#606060</color>
+    <color name="color_divider_line">#F1F1F1</color>
+    <color name="color_divider_all">#EAEAEA</color>
+    <color name="color_bottom_nav_icon_selected">#00A6FF</color>
+    <color name="color_bottom_nav_icon_unselected">#4D4D4D</color>
+    <color name="color_background_icon_default">#2A969FAA</color>
+    <color name="color_background_text_with_icon_default">#40969FAA</color>
+    <color name="color_background_input_view_base">#F2F2F2</color>
+    <color name="color_divider_secondary">#F1F1F1</color>
+    <color name="color_text_highlight">#00A6FF</color>
+    <color name="color_icon_photo_library">#00A6FF</color>
+    <color name="color_drawable_post">#4D4D4D</color>
+    <color name="color_drawable_user_profile">#90969FAA</color>
+    <color name="color_text_post">#1A1A1A</color>
+    <color name="color_text_bold">#1A1A1A</color>
+    <color name="color_text_secondary">#808080</color>
+    <color name="color_text_action_post">#4D4D4D</color>
+    <color name="color_count_profile_info">#191919</color>
+    <color name="color_text_like">#00A6FF</color>
+    <color name="color_text_heart">#FFE61739</color>
+    <color name="color_text_haha">#FFF69B30</color>
+    <color name="color_text_wow">#FFF69B30</color>
+    <color name="color_text_sad">#FFF69B30</color>
+    <color name="color_text_angry">#FFE04300</color>
 </resources>

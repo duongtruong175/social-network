@@ -24,9 +24,9 @@
                 android:layout_marginTop="@dimen/activity_content_top_margin"
                 android:fontFamily="@font/f_roboto_bold"
                 android:gravity="center"
-                android:text="@string/authentication_title"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/authentication_text_title_size"
+                android:text="@string/text_logo"
+                android:textColor="@color/color_text_highlight"
+                android:textSize="@dimen/authentication_text_logo_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
                 android:fontFamily="@font/f_roboto_medium"
                 android:gravity="center"
                 android:text="@string/authentication_login"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/color_text_highlight"
                 android:textSize="@dimen/authentication_text_description_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,27 +46,26 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/l_email"
-                style="@style/BackgroundEditTextWithBorder"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/authentication_edit_text_height"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_content_top_margin"
-                android:paddingHorizontal="@dimen/authentication_drawable_edit_text_horizontal"
-                android:paddingVertical="@dimen/authentication_drawable_edit_text_vertical"
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_authentication_description">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
+                    style="@style/BackgroundEditTextWithBorder"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
+                    android:layout_height="@dimen/edit_text_height"
                     android:drawableStart="@drawable/ic_baseline_mail_outline_24"
-                    android:drawablePadding="@dimen/authentication_drawable_edit_text_horizontal"
+                    android:drawablePadding="@dimen/drawable_edit_text_horizontal"
                     android:hint="@string/authentication_email_hint"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
+                    android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
+                    android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
 
@@ -74,12 +73,9 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/l_password"
-                style="@style/BackgroundEditTextWithBorder"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/authentication_edit_text_height"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/authentication_edit_text_top_margin"
-                android:paddingHorizontal="@dimen/authentication_drawable_edit_text_horizontal"
-                android:paddingVertical="@dimen/authentication_drawable_edit_text_vertical"
                 app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,16 +83,18 @@
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/color_drawable_edit_text">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password"
+                    style="@style/BackgroundEditTextWithBorder"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
+                    android:layout_height="@dimen/edit_text_height"
                     android:drawableStart="@drawable/ic_lock_24"
-                    android:drawablePadding="@dimen/authentication_drawable_edit_text_horizontal"
+                    android:drawablePadding="@dimen/drawable_edit_text_horizontal"
                     android:hint="@string/authentication_password_hint"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
+                    android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
 
@@ -143,7 +141,7 @@
                 android:id="@+id/tv_new_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/authentication_drawable_edit_text_vertical"
+                android:layout_marginEnd="@dimen/drawable_edit_text_vertical"
                 android:fontFamily="@font/f_roboto_regular"
                 android:text="@string/authentication_new_account"
                 android:textColor="@color/black"

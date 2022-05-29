@@ -26,6 +26,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.main.userprofile.edit.EditUserProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.authentication.AuthenticationActivity"
             android:screenOrientation="portrait" />
         <activity

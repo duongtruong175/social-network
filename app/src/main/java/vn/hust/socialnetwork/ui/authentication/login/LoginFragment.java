@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -69,7 +70,8 @@ public class LoginFragment extends Fragment {
         view.findViewById(R.id.tv_register).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_loginFragment_to_registerFragment);
             }
         });
 

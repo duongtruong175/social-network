@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M12,6m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M5,9m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M19,9m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M6.1481,13.1672C5.7845,13.0584 5.3991,13 5,13C2.7908,13 1,14.7909 1,17V20C1,21.6569 2.3431,23 4,23H4.5C5.0523,23 5.5,22.5523 5.5,22V16C5.5,14.9845 5.7329,14.0234 6.1481,13.1672Z" />
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M18,13.1672C18.3636,13.0584 18.7491,13 19.1481,13C21.3573,13 23.1481,14.7909 23.1481,17V20C23.1481,21.6569 21.805,23 20.1481,23H19.6481C19.0958,23 18.6481,22.5523 18.6481,22V16C18.6481,14.9845 18.4152,14.0234 18,13.1672Z" />
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:fillType="evenOdd"
+        android:pathData="M17,16C17,13.2386 14.7614,11 12,11C9.2386,11 7,13.2386 7,16V22C7,22.5523 7.4477,23 8,23H16C16.5523,23 17,22.5523 17,22V16Z" />
+</vector>

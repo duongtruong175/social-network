@@ -3,6 +3,7 @@ package vn.hust.socialnetwork.ui.authentication.register;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -67,7 +68,8 @@ public class RegisterFragment extends Fragment {
         view.findViewById(R.id.tv_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_registerFragment_to_loginFragment);
             }
         });
 

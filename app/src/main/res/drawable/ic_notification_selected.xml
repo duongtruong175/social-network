@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M10.0001,21.5341C10.1271,21.9571 10.3908,22.3286 10.7518,22.5929C11.1128,22.8571 11.5516,23 12.0026,23C12.4535,23 12.8923,22.8571 13.2533,22.5929C13.6143,22.3286 13.878,21.9571 14.0051,21.5341" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M10.0001,21.5341C10.1271,21.9571 10.3908,22.3286 10.7518,22.5929C11.1128,22.8571 11.5516,23 12.0026,23C12.4535,23 12.8923,22.8571 13.2533,22.5929C13.6143,22.3286 13.878,21.9571 14.0051,21.5341H10.0001Z"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/color_bottom_nav_icon_selected"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M12,3.2001V1"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/color_bottom_nav_icon_selected"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="@color/color_bottom_nav_icon_selected"
+        android:pathData="M12,3.2002C13.9891,3.2002 15.8968,3.9728 17.3033,5.3482C18.7098,6.7235 19.5,8.5888 19.5,10.5338C19.5,17.4235 21,18.6008 21,18.6008H3C3,18.6008 4.5,16.7273 4.5,10.5338C4.5,8.5888 5.2902,6.7235 6.6967,5.3482C8.1032,3.9728 10.0109,3.2002 12,3.2002Z"
+        android:strokeWidth="1.5"
+        android:strokeColor="@color/color_bottom_nav_icon_selected"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

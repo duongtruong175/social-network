@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_user_profile_nav_graph"
+    app:startDestination="@id/mainEditProfileFragment">
+
+    <fragment
+        android:id="@+id/mainEditProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.main.MainEditProfileFragment"
+        android:label="fragment_main_edit_profile"
+        tools:layout="@layout/fragment_main_edit_profile">
+
+        <action
+            android:id="@+id/action_edit_name_profile"
+            app:destination="@+id/nameProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_phone_profile"
+            app:destination="@+id/phoneProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_birthday_profile"
+            app:destination="@+id/birthdayProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_gender_profile"
+            app:destination="@+id/genderProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_relationship_profile"
+            app:destination="@+id/relationshipProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_website_profile"
+            app:destination="@+id/websiteProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_description_profile"
+            app:destination="@+id/descriptionProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_address_profile"
+            app:destination="@+id/addressProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_job_profile"
+            app:destination="@+id/jobProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_edit_education_profile"
+            app:destination="@+id/educationProfileFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nameProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.name.NameProfileFragment"
+        android:label="fragment_name_profile"
+        tools:layout="@layout/fragment_name_profile" />
+
+    <fragment
+        android:id="@+id/phoneProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.phone.PhoneProfileFragment"
+        android:label="fragment_phone_profile"
+        tools:layout="@layout/fragment_phone_profile" />
+
+    <fragment
+        android:id="@+id/birthdayProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.birthday.BirthdayProfileFragment"
+        android:label="fragment_birthday_profile"
+        tools:layout="@layout/fragment_birthday_profile" />
+
+    <fragment
+        android:id="@+id/genderProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.gender.GenderProfileFragment"
+        android:label="fragment_gender_profile"
+        tools:layout="@layout/fragment_gender_profile" />
+
+    <fragment
+        android:id="@+id/relationshipProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.relationship.RelationshipProfileFragment"
+        android:label="fragment_relationship_profile"
+        tools:layout="@layout/fragment_relationship_profile" />
+
+    <fragment
+        android:id="@+id/websiteProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.website.WebsiteProfileFragment"
+        android:label="fragment_website_profile"
+        tools:layout="@layout/fragment_website_profile" />
+
+    <fragment
+        android:id="@+id/descriptionProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.description.DescriptionProfileFragment"
+        android:label="fragment_description_profile"
+        tools:layout="@layout/fragment_description_profile" />
+
+    <fragment
+        android:id="@+id/addressProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.address.AddressProfileFragment"
+        android:label="fragment_address_profile"
+        tools:layout="@layout/fragment_address_profile" />
+
+    <fragment
+        android:id="@+id/jobProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.job.JobProfileFragment"
+        android:label="fragment_job_profile"
+        tools:layout="@layout/fragment_job_profile" />
+
+    <fragment
+        android:id="@+id/educationProfileFragment"
+        android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.education.EducationProfileFragment"
+        android:label="fragment_education_profile"
+        tools:layout="@layout/fragment_education_profile" />
+</navigation>

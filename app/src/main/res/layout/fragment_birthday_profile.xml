@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/activity_content_start_margin"
+    android:paddingEnd="@dimen/activity_content_end_margin"
+    tools:context=".ui.main.userprofile.edit.birthday.BirthdayProfileFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/edit_profile_text_view_top_margin"
+        android:fontFamily="@font/f_roboto_medium"
+        android:paddingVertical="@dimen/edit_text_padding_vertical"
+        android:text="@string/edit_profile_birthday_label"
+        android:textColor="@color/black"
+        android:textSize="@dimen/edit_text_label_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/l_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:endIconDrawable="@drawable/ic_calendar_month_24"
+        app:endIconMode="custom"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_label">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_birthday"
+            style="@style/BackgroundEditTextWithBorder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:hint="@string/authentication_birthday_hint"
+            android:inputType="date"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
+            android:paddingVertical="@dimen/edit_text_padding_vertical"
+            android:singleLine="true"
+            android:textSize="@dimen/edit_text_text_size" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

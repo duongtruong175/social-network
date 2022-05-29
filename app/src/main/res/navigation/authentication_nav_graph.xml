@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="vn.hust.socialnetwork.ui.authentication.login.LoginFragment"
-        android:label="LoginFragment"
+        android:label="fragment_login"
         tools:layout="@layout/fragment_login">
 
         <action
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="vn.hust.socialnetwork.ui.authentication.register.RegisterFragment"
-        android:label="RegisterFragment"
+        android:label="fragment_register"
         tools:layout="@layout/fragment_register">
 
         <action
