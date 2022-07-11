@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_image_avatar_comment"
+        android:layout_width="@dimen/comment_avatar_size"
+        android:layout_height="@dimen/comment_avatar_size"
+        android:src="@drawable/default_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- comment content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/l_comment_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/civ_image_avatar_comment"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/l_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/l_comment_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_8"
+                android:backgroundTint="@color/color_background_input_view_base"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_user_name_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/f_roboto_medium"
+                    android:textColor="@color/color_text_post"
+                    android:textSize="@dimen/text_post_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <kr.co.prnd.readmore.ReadMoreTextView
+                    android:id="@+id/tv_content_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/f_roboto_regular"
+                    android:textColor="@color/color_text_post"
+                    android:textSize="@dimen/text_post_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_user_name_comment"
+                    app:readMoreColor="@color/color_text_secondary"
+                    app:readMoreMaxLine="3"
+                    app:readMoreText="@string/read_more" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/l_comment_media"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/l_comment_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_image_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="200dp"
+                    android:scaleType="fitCenter" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/l_react_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-12dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/l_comment"
+            app:layout_constraintTop_toBottomOf="@+id/l_comment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/l_react_user_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="3dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="3dp"
+                android:paddingBottom="2dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_second_react_comment"
+                    android:layout_width="@dimen/comment_react_image_size"
+                    android:layout_height="@dimen/comment_react_image_size"
+                    android:layout_marginStart="-3dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_first_react_comment"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_first_react_comment"
+                    android:layout_width="@dimen/comment_react_image_size"
+                    android:layout_height="@dimen/comment_react_image_size"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_react_comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:fontFamily="@font/f_roboto_medium"
+                    android:textColor="@color/color_text_action_post"
+                    android:textSize="@dimen/text_time_post_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_second_react_comment"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/l_edited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tv_time_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_time_comment">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_edited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/f_roboto_regular"
+                android:text="@string/edited"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="@dimen/text_time_post_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_edited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:tint="@color/color_text_secondary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_edited"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_dot" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/f_roboto_regular"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="@dimen/text_time_post_size"
+            app:layout_constraintStart_toEndOf="@+id/l_edited"
+            app:layout_constraintTop_toBottomOf="@+id/l_comment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_react_action_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/f_roboto_bold"
+            android:text="@string/like"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="@dimen/text_time_post_size"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_time_comment"
+            app:layout_constraintStart_toEndOf="@+id/tv_time_comment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_reply_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/f_roboto_bold"
+            android:text="@string/reply"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="@dimen/text_time_post_size"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_time_comment"
+            app:layout_constraintStart_toEndOf="@+id/tv_react_action_comment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,65 +2,342 @@ package vn.hust.socialnetwork.ui.main.notification;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import vn.hust.socialnetwork.R;
+import vn.hust.socialnetwork.models.BaseResponse;
+import vn.hust.socialnetwork.models.notification.Notification;
+import vn.hust.socialnetwork.network.ApiClient;
+import vn.hust.socialnetwork.network.NotificationService;
+import vn.hust.socialnetwork.ui.main.notification.adapters.NotificationAdapter;
+import vn.hust.socialnetwork.ui.main.notification.adapters.OnNotificationListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NotificationFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private NotificationService notificationService;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private LinearProgressIndicator pbLoading;
+    private AppCompatImageView ivReadAll;
+    private SwipeRefreshLayout lSwipeRefresh;
+    private RecyclerView rvNotification;
+
+    private NotificationAdapter notificationAdapter;
+    private List<Notification> notifications;
 
     public NotificationFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotificationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NotificationFragment newInstance(String param1, String param2) {
-        NotificationFragment fragment = new NotificationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification, container, false);
+        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+
+        // api
+        notificationService = ApiClient.getClient().create(NotificationService.class);
+
+        // binding
+        pbLoading = view.findViewById(R.id.pb_loading);
+        ivReadAll = view.findViewById(R.id.iv_read_all);
+        lSwipeRefresh = view.findViewById(R.id.l_swipe_refresh);
+        rvNotification = view.findViewById(R.id.rv_notification);
+
+        // init
+        notifications = new ArrayList<>();
+        notificationAdapter = new NotificationAdapter(getContext(), notifications, new OnNotificationListener() {
+            @Override
+            public void onMenuItemClick(int position) {
+                onMenuItemNotificationClick(position);
+            }
+
+            @Override
+            public void onItemClick(int position) {
+                onItemNotificationClick(position);
+            }
+        });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvNotification.setLayoutManager(layoutManager);
+        rvNotification.setAdapter(notificationAdapter);
+
+        ivReadAll.setEnabled(false);
+        ivReadAll.setColorFilter(ContextCompat.getColor(getActivity(), R.color.color_text_secondary));
+
+        lSwipeRefresh.setColorSchemeResources(R.color.colorAccent);
+        lSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+                lSwipeRefresh.setRefreshing(false);
+            }
+        });
+
+        ivReadAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onReadAllClick();
+            }
+        });
+
+        getAllNotifications();
+
+        return view;
+    }
+
+    private void onItemNotificationClick(int position) {
+        Notification notification = notifications.get(position);
+        if (notification.getNotificationStatusCode() == 0) {
+            updateReadStatusNotification(position, 1);
+        }
+        String url = notification.getUrl();
+        // url: {name}/{id}
+        // type: new request friend 1 => request_friend
+        //       new accept friend  2 => user/{user_id}
+        //       new action post    3 => post/{post_id}
+        //       new action group   4 => group/{group_id}
+        String[] s = url.split("/");
+        if (s.length == 1) {
+            if (notification.getType() == 1 || s[0].equals("request_friend")) {
+                openActivityMyFriend();
+            }
+        } else if (s.length == 2) {
+            try {
+                int id = Integer.parseInt(s[1]);
+                if (notification.getType() == 2 || s[0].equals("user")) {
+                    openActivityUserDetail(id);
+                } else if (notification.getType() == 3 || s[0].equals("post")) {
+                    openActivityPost(id);
+                } else if (notification.getType() == 4 || s[0].equals("group")) {
+                    openActivityGroupDetail(id);
+                }
+            } catch (NumberFormatException ignored) {
+
+            }
+        }
+    }
+
+    private void openActivityGroupDetail(int group_id) {
+    }
+
+    private void openActivityPost(int post_id) {
+    }
+
+    private void openActivityUserDetail(int user_id) {
+    }
+
+    private void openActivityMyFriend() {
+    }
+
+    private void onMenuItemNotificationClick(int position) {
+        Notification notification = notifications.get(position);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_menu_notification);
+
+        CircleImageView civImageNotification = bottomSheetDialog.findViewById(R.id.civ_image_notification);
+        AppCompatTextView tvNotificationContent = bottomSheetDialog.findViewById(R.id.tv_notification_content);
+        ConstraintLayout lReadNotification = bottomSheetDialog.findViewById(R.id.l_read_notification);
+        ConstraintLayout lUnreadNotification = bottomSheetDialog.findViewById(R.id.l_unread_notification);
+        ConstraintLayout lDeleteNotification = bottomSheetDialog.findViewById(R.id.l_delete_notification);
+
+        if (notification.getType() == 4) {
+            Glide.with(getActivity())
+                    .asBitmap()
+                    .load(notification.getImageUrl())
+                    .error(R.drawable.default_group_cover)
+                    .into(civImageNotification);
+        } else {
+            Glide.with(getActivity())
+                    .asBitmap()
+                    .load(notification.getImageUrl())
+                    .error(R.drawable.default_avatar)
+                    .into(civImageNotification);
+        }
+        tvNotificationContent.setText(notification.getContent());
+
+        if (notification.getNotificationStatusCode() == 0) {
+            lUnreadNotification.setVisibility(View.GONE);
+            lReadNotification.setVisibility(View.VISIBLE);
+            lReadNotification.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.dismiss();
+                    updateReadStatusNotification(position, 1);
+                }
+            });
+        } else {
+            lReadNotification.setVisibility(View.GONE);
+            lUnreadNotification.setVisibility(View.VISIBLE);
+            lUnreadNotification.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.dismiss();
+                    updateReadStatusNotification(position, 0);
+                }
+            });
+        }
+
+        lDeleteNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                deleteNotification(position);
+            }
+        });
+
+        bottomSheetDialog.show();
+    }
+
+    // status: 0 => unread, 1 => read
+    private void updateReadStatusNotification(int position, int notificationStatusCode) {
+        Notification notification = notifications.get(position);
+        Call<BaseResponse<Notification>> call = notificationService.updateNotification(notification.getId(), notificationStatusCode);
+        call.enqueue(new Callback<BaseResponse<Notification>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<Notification>> call, Response<BaseResponse<Notification>> response) {
+                if (response.isSuccessful()) {
+                    notification.setNotificationStatusCode(notificationStatusCode);
+                    notificationAdapter.notifyItemChanged(position);
+                    handleUnreadNotifications();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void deleteNotification(int position) {
+        Notification notification = notifications.get(position);
+        Call<BaseResponse<String>> call = notificationService.deleteNotification(notification.getId());
+        call.enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), R.string.delete_notification_success, Toast.LENGTH_SHORT).show();
+                    notifications.remove(position);
+                    notificationAdapter.notifyItemRemoved(position);
+                    handleUnreadNotifications();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void handleUnreadNotifications() {
+        boolean isUnread = false;
+        for (int i = 0; i < notifications.size(); i++) {
+            if (notifications.get(i).getNotificationStatusCode() == 0) {
+                isUnread = true;
+                break;
+            }
+        }
+        ivReadAll.setEnabled(isUnread);
+        ivReadAll.setColorFilter(isUnread ? ContextCompat.getColor(getActivity(), R.color.color_text_primary) : ContextCompat.getColor(getActivity(), R.color.color_text_secondary));
+    }
+
+    private void onReadAllClick() {
+        ivReadAll.setEnabled(false);
+        ivReadAll.setColorFilter(ContextCompat.getColor(getActivity(), R.color.color_text_secondary));
+        // call api read more
+        pbLoading.setVisibility(View.VISIBLE);
+        Call<BaseResponse<String>> call = notificationService.readAllNotifications();
+        call.enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
+                if (response.isSuccessful()) {
+                    // update list notifications
+                    Toast.makeText(getContext(), R.string.read_all_notification, Toast.LENGTH_SHORT).show();
+
+                    for (int i = 0; i < notifications.size(); i++) {
+                        Notification notification = notifications.get(i);
+                        if (notification.getNotificationStatusCode() == 0) {
+                            notification.setNotificationStatusCode(1);
+                            notificationAdapter.notifyItemChanged(i);
+                        }
+                    }
+                }
+                pbLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                Toasty.error(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT, true).show();
+                ivReadAll.setEnabled(true);
+                ivReadAll.setColorFilter(ContextCompat.getColor(getActivity(), R.color.color_text_primary));
+                pbLoading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void refresh() {
+        getAllNotifications();
+    }
+
+    private void getAllNotifications() {
+        // call api get notifications
+        pbLoading.setVisibility(View.VISIBLE);
+        Call<BaseResponse<List<Notification>>> call = notificationService.getNotifications();
+        call.enqueue(new Callback<BaseResponse<List<Notification>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Notification>>> call, Response<BaseResponse<List<Notification>>> response) {
+                if (response.isSuccessful()) {
+                    notifications.clear();
+                    BaseResponse<List<Notification>> res = response.body();
+                    // update new notifications
+                    notifications.addAll(res.getData());
+                    notificationAdapter.notifyDataSetChanged();
+                    handleUnreadNotifications();
+                }
+                pbLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Notification>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                Toasty.error(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT, true).show();
+                pbLoading.setVisibility(View.GONE);
+            }
+        });
     }
 }

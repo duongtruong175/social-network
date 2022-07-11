@@ -32,9 +32,9 @@
             android:id="@+id/iv_search"
             android:layout_width="@dimen/icon_with_background_size_default"
             android:layout_height="@dimen/icon_with_background_size_default"
-            android:background="@drawable/bg_circle_icon"
-            android:backgroundTint="@color/color_background_icon_default"
+            android:background="@drawable/bg_button_circle_gray"
             android:padding="@dimen/icon_with_background_padding_default"
+            android:tint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,61 +58,70 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_divider">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <include
-                layout="@layout/what_on_your_mind_feed"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <include layout="@layout/divider_all" />
+                <include
+                    layout="@layout/what_on_your_mind_feed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/story_padding">
+                <include layout="@layout/divider_all" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_story_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_round_gray_24"
-                    android:fontFamily="@font/f_roboto_medium"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="6dp"
-                    android:text="@string/story"
-                    android:textColor="@color/color_text_highlight"
-                    android:textSize="13sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_story"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/story_padding"
-                    android:orientation="horizontal"
+                    android:padding="@dimen/story_padding">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_story_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_round_24"
+                        android:backgroundTint="@color/color_background_input_view_base"
+                        android:fontFamily="@font/f_roboto_medium"
+                        android:paddingStart="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="4dp"
+                        android:text="@string/story"
+                        android:textColor="@color/color_text_highlight"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_story"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/story_padding"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_story_label"
+                        tools:listitem="@layout/item_story" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <include layout="@layout/divider_all" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_story_label"
-                    tools:listitem="@layout/item_story" />
+                    tools:listitem="@layout/item_post" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <include layout="@layout/divider_all" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_post"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_post" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

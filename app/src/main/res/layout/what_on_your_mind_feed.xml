@@ -4,22 +4,22 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="20dp"
-        android:paddingHorizontal="@dimen/new_post_padding">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/l_new_post"
+            style="@style/ClickableLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/new_post_padding"
+            android:paddingHorizontal="@dimen/new_post_padding"
+            android:paddingVertical="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_new_post_with_photo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_my_avatar"
+                android:id="@+id/civ_my_avatar"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
                 android:src="@drawable/default_avatar" />
@@ -27,22 +27,24 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/new_post_padding"
+                android:layout_marginStart="@dimen/new_post_padding"
                 android:background="@drawable/bg_round_light_gray_12"
-                android:gravity="center|left"
-                android:textSize="16sp"
-                android:textColor="@color/color_text_bold"
                 android:fontFamily="@font/f_roboto_regular"
+                android:gravity="center|start"
                 android:padding="@dimen/new_post_padding"
-                android:text="@string/what_on_your_mind" />
+                android:text="@string/what_on_your_mind"
+                android:textColor="@color/color_text_primary"
+                android:textSize="16sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_new_post_with_photo"
-            android:layout_width="@dimen/image_icon_new_post_size"
-            android:layout_height="@dimen/image_icon_new_post_size"
+            style="@style/ClickableView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/new_post_padding"
+            android:padding="9dp"
             android:tint="@color/color_icon_photo_library"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

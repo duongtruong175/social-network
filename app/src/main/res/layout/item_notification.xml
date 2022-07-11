@@ -1,75 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/l_root"
+    style="@style/ClickableLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp">
+    android:paddingStart="8dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/l_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/iv_menu"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_menu">
+        app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
             android:id="@+id/l_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_image_notification"
-                android:layout_width="68dp"
-                android:layout_height="68dp"
-                android:src="@drawable/default_avatar"
-                android:layout_marginEnd="4dp" />
+                android:id="@+id/civ_image_notification"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_avatar" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_notification_type"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:srcCompat="@drawable/notification_type_add_friend"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="bottom|center|end"
-                android:layout_marginStart="4dp" />
+                app:srcCompat="@drawable/notification_type_add_friend" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_notification_content"
-            android:fontFamily="@font/f_roboto_regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="8dp"
-            android:maxLines="3"
+            android:layout_margin="6dp"
             android:ellipsize="end"
-            app:layout_constraintStart_toEndOf="@+id/l_avatar"
+            android:fontFamily="@font/f_roboto_regular"
+            android:maxLines="3"
+            android:textColor="@color/color_text_primary"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/color_text_bold"
-            android:textSize="15sp" />
+            app:layout_constraintStart_toEndOf="@+id/l_avatar"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_time_notification"
-            android:fontFamily="@font/f_roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@id/tv_notification_content"
-            app:layout_constraintTop_toBottomOf="@+id/tv_notification_content"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/f_roboto_regular"
             android:textColor="@color/color_text_secondary"
-            android:textSize="13sp" />
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/tv_notification_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_notification_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_menu"
+        style="@style/ClickableView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:tint="@color/color_drawable_post"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/ic_dots_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

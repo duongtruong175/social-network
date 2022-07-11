@@ -27,11 +27,14 @@
     <color name="color_background_input_view_base">#F2F2F2</color>
     <color name="color_divider_secondary">#F1F1F1</color>
     <color name="color_text_highlight">#00A6FF</color>
+    <color name="color_blue_dark">#0088FF</color>
+    <color name="color_primary_60">#991A1A1A</color>
+    <color name="color_primary_80">#CC1A1A1A</color>
     <color name="color_icon_photo_library">#00A6FF</color>
     <color name="color_drawable_post">#4D4D4D</color>
     <color name="color_drawable_user_profile">#90969FAA</color>
     <color name="color_text_post">#1A1A1A</color>
-    <color name="color_text_bold">#1A1A1A</color>
+    <color name="color_text_primary">#1A1A1A</color>
     <color name="color_text_secondary">#808080</color>
     <color name="color_text_action_post">#4D4D4D</color>
     <color name="color_count_profile_info">#191919</color>
@@ -41,4 +44,17 @@
     <color name="color_text_wow">#FFF69B30</color>
     <color name="color_text_sad">#FFF69B30</color>
     <color name="color_text_angry">#FFE04300</color>
+    <color name="black_opacity_75">#C4000000</color>
+    <color name="white_alpha_25">#40FFFFFF</color>
+    <color name="color_error_text">#FF0033</color>
+    <color name="color_otp_notice">#F30028</color>
+    <color name="color_notification_not_read">#4DAAC9FF</color>
+    <color name="color_shimmer">#F2F2F2</color>
+    <color name="color_background_no_data">#E5E5E5</color>
+    <color name="color_background_text_popup_react">#801A1A1A</color>
+    <color name="color_background_popup_react">#80ECEBEB</color>
+    <color name="grey_light">#999999</color>
+    <color name="color_tab_relation_primary">#E7E7E7</color>
+    <color name="color_tab_relation_selected">#4DAAC9FF</color>
+    <color name="gray_light">#F5F5F5</color>
 </resources>

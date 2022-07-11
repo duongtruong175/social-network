@@ -14,6 +14,14 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
     </fragment>
 
     <fragment
@@ -23,7 +31,48 @@
         tools:layout="@layout/fragment_register">
 
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_registerFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="vn.hust.socialnetwork.ui.authentication.forgotpassword.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password">
+
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_verifyOtpFragment"
+            app:destination="@id/verifyOtpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/verifyOtpFragment"
+        android:name="vn.hust.socialnetwork.ui.authentication.verifyotp.VerifyOtpFragment"
+        android:label="fragment_verify_otp"
+        tools:layout="@layout/fragment_verify_otp">
+
+        <action
+            android:id="@+id/action_verifyOtpFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+
+        <argument
+            android:name="type"
+            app:argType="integer" />
+
+        <argument
+            android:name="user"
+            app:argType="vn.hust.socialnetwork.models.user.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="vn.hust.socialnetwork.ui.authentication.changepassword.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password">
+
+        <argument
+            android:name="user"
+            app:argType="vn.hust.socialnetwork.models.user.User" />
     </fragment>
 </navigation>

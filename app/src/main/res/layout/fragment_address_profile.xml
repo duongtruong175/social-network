@@ -16,7 +16,7 @@
         android:fontFamily="@font/f_roboto_medium"
         android:paddingVertical="@dimen/edit_text_padding_vertical"
         android:text="@string/edit_profile_current_residence_label"
-        android:textColor="@color/black"
+        android:textColor="@color/color_text_primary"
         android:textSize="@dimen/edit_text_label_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
         android:fontFamily="@font/f_roboto_medium"
         android:paddingVertical="@dimen/edit_text_padding_vertical"
         android:text="@string/edit_profile_hometown_label"
-        android:textColor="@color/black"
+        android:textColor="@color/color_text_primary"
         android:textSize="@dimen/edit_text_label_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_current_residence" />

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1063883037378",
+    "project_id": "fcm-socialnetwork",
+    "storage_bucket": "fcm-socialnetwork.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063883037378:android:5ad8ece5141d1bc610f95b",
+        "android_client_info": {
+          "package_name": "vn.hust.socialnetwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063883037378-scj5u0gfvhs5gol2k2bujp3g4ce9e1ub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCB-7SPQsIggP1-ct92OpuFeUM0QiOc-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063883037378-scj5u0gfvhs5gol2k2bujp3g4ce9e1ub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

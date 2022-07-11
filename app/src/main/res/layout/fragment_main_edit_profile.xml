@@ -23,11 +23,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/edit_profile_text_view_margin"
-                android:fontFamily="@font/f_roboto_bold"
+                android:fontFamily="@font/f_roboto_medium"
                 android:text="@string/title_information"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/toolbar_title_text_size" />
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -49,7 +48,7 @@
                     android:layout_toEndOf="@+id/tv_label_2"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_name"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -63,11 +62,12 @@
                     android:fontFamily="@font/f_roboto_medium"
                     android:maxLines="1"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_edit_name"
+                    style="@style/ClickableView"
                     android:layout_width="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_height="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_alignParentEnd="true"
@@ -97,7 +97,7 @@
                     android:layout_toEndOf="@id/tv_label_4"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_phone"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -109,15 +109,17 @@
                     android:fontFamily="@font/f_roboto_medium"
                     android:hint="@string/edit_profile_phone_hint"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_edit_phone"
+                    style="@style/ClickableView"
                     android:layout_width="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_height="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="0dp"
                     app:srcCompat="@drawable/ic_edit_user_profile" />
 
             </RelativeLayout>
@@ -143,7 +145,7 @@
                     android:layout_toEndOf="@id/tv_label_6"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_birthday"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -154,11 +156,12 @@
                     android:layout_toEndOf="@+id/tv_label_7"
                     android:fontFamily="@font/f_roboto_medium"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_edit_birthday"
+                    style="@style/ClickableView"
                     android:layout_width="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_height="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_alignParentEnd="true"
@@ -188,7 +191,7 @@
                     android:layout_toEndOf="@id/tv_label_8"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_gender"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -199,11 +202,12 @@
                     android:layout_toEndOf="@+id/tv_label_8"
                     android:fontFamily="@font/f_roboto_medium"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_edit_gender"
+                    style="@style/ClickableView"
                     android:layout_width="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_height="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_alignParentEnd="true"
@@ -233,11 +237,12 @@
                     android:layout_marginStart="@dimen/edit_user_profile_text_view_margin_start"
                     android:layout_toEndOf="@id/tv_label_10"
                     android:fontFamily="@font/f_roboto_medium"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_edit_relationship"
+                    style="@style/ClickableView"
                     android:layout_width="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_height="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_alignParentEnd="true"
@@ -269,11 +274,12 @@
                     android:fontFamily="@font/f_roboto_medium"
                     android:hint="@string/edit_profile_website_hint"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_edit_website"
+                    style="@style/ClickableView"
                     android:layout_width="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_height="@dimen/edit_user_profile_edit_icon_size"
                     android:layout_alignParentEnd="true"
@@ -304,7 +310,7 @@
                     android:layout_toEndOf="@id/tv_label_12"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_join_in"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -315,7 +321,7 @@
                     android:layout_toEndOf="@+id/tv_label_13"
                     android:fontFamily="@font/f_roboto_medium"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -340,9 +346,9 @@
                     android:id="@id/tv_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/f_roboto_bold"
+                    android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_description"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/toolbar_title_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -353,7 +359,7 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_edit"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_text_highlight"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -365,7 +371,7 @@
                 android:layout_marginBottom="@dimen/edit_profile_text_view_top_margin"
                 android:fontFamily="@font/f_roboto_regular"
                 android:hint="@string/edit_profile_description_hint"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -388,9 +394,9 @@
                     android:id="@id/tv_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/f_roboto_bold"
+                    android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_address"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/toolbar_title_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -401,7 +407,7 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_edit"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_text_highlight"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -426,7 +432,7 @@
                     android:layout_toEndOf="@id/tv_label_14"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_current_residence"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -438,7 +444,7 @@
                     android:fontFamily="@font/f_roboto_medium"
                     android:hint="@string/title_current_residence_hint"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -465,7 +471,7 @@
                     android:layout_toEndOf="@id/tv_label_16"
                     android:fontFamily="@font/f_roboto_regular"
                     android:text="@string/title_hometown"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -477,7 +483,7 @@
                     android:fontFamily="@font/f_roboto_medium"
                     android:hint="@string/title_hometown_hint"
                     android:paddingStart="@dimen/edit_user_profile_text_view_padding_start"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -502,9 +508,9 @@
                     android:id="@id/tv_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/f_roboto_bold"
+                    android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_job"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/toolbar_title_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -515,7 +521,7 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_edit"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_text_highlight"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -542,7 +548,7 @@
                     android:layout_toEndOf="@+id/tv_label_18"
                     android:fontFamily="@font/f_roboto_medium"
                     android:hint="@string/title_job_hint"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -567,9 +573,9 @@
                     android:id="@id/tv_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/f_roboto_bold"
+                    android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_education"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/toolbar_title_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -580,7 +586,7 @@
                     android:layout_alignParentEnd="true"
                     android:fontFamily="@font/f_roboto_medium"
                     android:text="@string/title_edit"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_text_highlight"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>
@@ -607,7 +613,7 @@
                     android:layout_toEndOf="@+id/tv_label_19"
                     android:fontFamily="@font/f_roboto_medium"
                     android:hint="@string/title_education_hint"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_user_profile_text_view_text_size" />
 
             </RelativeLayout>

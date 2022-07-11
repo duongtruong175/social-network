@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_copy_content"
+        android:icon="@drawable/ic_copy_comment"
+        android:title="@string/menu_action_copy_content" />
+    <item
+        android:id="@+id/action_edit_comment"
+        android:icon="@drawable/ic_edit_comment"
+        android:title="@string/edit_comment" />
+    <item
+        android:id="@+id/action_delete_comment"
+        android:icon="@drawable/ic_delete_comment"
+        android:title="@string/delete_comment" />
+    <item
+        android:id="@+id/action_report_comment"
+        android:icon="@drawable/ic_report_comment"
+        android:title="@string/report_comment" />
+</menu>

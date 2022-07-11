@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/l_story_item"
+    style="@style/ClickableLayout"
     android:layout_width="@dimen/width_story"
     android:layout_height="@dimen/height_story"
     android:layout_marginHorizontal="@dimen/story_item_space"

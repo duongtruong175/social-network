@@ -12,10 +12,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/pb_loading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:theme="@style/CustomLinearProgressIndicator"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:trackThickness="3dp" />
+
         <!-- main layout -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/l_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_main_user_profile"
@@ -41,25 +55,28 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_image_cover"
+                            style="@style/ClickableView"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="0dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="fitXY"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintDimensionRatio="18:10"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/default_group_cover" />
+                            app:srcCompat="@drawable/default_cover" />
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_image_cover_camera"
+                            style="@style/ClickableView"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:layout_marginEnd="12dp"
                             android:layout_marginBottom="12dp"
-                            android:background="@drawable/bg_circle_icon"
-                            android:backgroundTint="@color/color_background_text_with_icon_default"
+                            android:background="@drawable/bg_circle"
+                            android:backgroundTint="@color/color_primary_60"
                             android:padding="6dp"
-                            android:tint="@color/color_drawable_post"
+                            android:tint="@color/white"
                             app:layout_constraintBottom_toBottomOf="@id/iv_image_cover"
                             app:layout_constraintEnd_toEndOf="@id/iv_image_cover"
                             app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
@@ -84,12 +101,13 @@
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/iv_image_avatar_camera"
+                                style="@style/ClickableView"
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
-                                android:background="@drawable/bg_circle_icon"
-                                android:backgroundTint="@color/color_background_text_with_icon_default"
+                                android:background="@drawable/bg_circle"
+                                android:backgroundTint="@color/color_primary_60"
                                 android:padding="6dp"
-                                android:tint="@color/color_drawable_post"
+                                android:tint="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
@@ -111,24 +129,53 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="24dp"
                                 android:layout_marginEnd="24dp"
-                                android:fontFamily="@font/f_roboto_bold"
+                                android:fontFamily="@font/f_roboto_medium"
                                 android:gravity="center"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="24sp" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/l_zodiac_container"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:gravity="center">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_zodiac"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/tv_zodiac"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:fontFamily="@font/f_roboto_medium"
+                                    android:textColor="@color/color_text_primary"
+                                    android:textSize="16sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/iv_zodiac"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_description"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="24dp"
-                                android:layout_marginTop="12dp"
+                                android:layout_marginTop="16dp"
                                 android:layout_marginEnd="24dp"
                                 android:fontFamily="@font/f_roboto_regular"
                                 android:gravity="center"
-                                android:lineHeight="20dp"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="14sp"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                app:lineHeight="20dp" />
 
                             <androidx.appcompat.widget.LinearLayoutCompat
                                 android:layout_width="match_parent"
@@ -253,20 +300,15 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_marginTop="16dp"
                                 android:layout_marginEnd="12dp"
-                                android:background="@drawable/bg_round_4"
-                                android:backgroundTint="@color/color_text_highlight"
+                                android:background="@drawable/bg_button_round_blue_4"
                                 android:gravity="center"
                                 android:paddingVertical="8dp">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:srcCompat="@drawable/ic_person_edit" />
 
                                 <androidx.appcompat.widget.AppCompatTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="8dp"
+                                    android:drawableStart="@drawable/ic_person_edit"
+                                    android:drawablePadding="6dp"
                                     android:fontFamily="@font/f_roboto_medium"
                                     android:text="@string/edit_user_profile"
                                     android:textColor="@color/white"
@@ -290,24 +332,25 @@
                             android:id="@+id/civ_image_avatar_toolbar"
                             android:layout_width="32dp"
                             android:layout_height="32dp"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="6dp"
                             android:layout_marginEnd="6dp"
                             android:src="@drawable/default_avatar"
                             android:visibility="gone" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_user_name_toolbar"
-                            android:layout_width="160dp"
+                            android:layout_width="168dp"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="@font/f_roboto_medium"
                             android:maxLines="1"
-                            android:textColor="@color/color_text_bold"
-                            android:textSize="22sp"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="20sp"
                             android:visibility="gone" />
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/iv_menu_toolbar"
+                            style="@style/ClickableView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -326,7 +369,7 @@
                 android:id="@+id/l_nested_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
@@ -356,7 +399,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/f_roboto_medium"
                             android:text="@string/introduce"
-                            android:textColor="@color/color_text_bold"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="18sp" />
 
 
@@ -364,7 +407,8 @@
                             android:id="@+id/l_job_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_2"
@@ -381,8 +425,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info"
                                 android:layout_toEndOf="@+id/tv_label_2"
-                                android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -391,7 +434,8 @@
                             android:id="@+id/l_education_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_3"
@@ -408,8 +452,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info"
                                 android:layout_toEndOf="@+id/tv_label_3"
-                                android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -418,7 +461,8 @@
                             android:id="@+id/l_phone_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_4"
@@ -437,7 +481,7 @@
                                 android:layout_toEndOf="@id/tv_label_4"
                                 android:fontFamily="@font/f_roboto_regular"
                                 android:text="@string/phone"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -448,7 +492,7 @@
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info_content"
                                 android:layout_toEndOf="@+id/tv_label_5"
                                 android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -457,7 +501,8 @@
                             android:id="@+id/l_current_residence_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_6"
@@ -476,7 +521,7 @@
                                 android:layout_toEndOf="@id/tv_label_6"
                                 android:fontFamily="@font/f_roboto_regular"
                                 android:text="@string/current_residence"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -487,7 +532,7 @@
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info_content"
                                 android:layout_toEndOf="@+id/tv_label_7"
                                 android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -496,7 +541,8 @@
                             android:id="@+id/l_hometown_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_8"
@@ -515,7 +561,7 @@
                                 android:layout_toEndOf="@id/tv_label_8"
                                 android:fontFamily="@font/f_roboto_regular"
                                 android:text="@string/hometown"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -526,7 +572,7 @@
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info_content"
                                 android:layout_toEndOf="@+id/tv_label_9"
                                 android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -554,8 +600,16 @@
                                 android:layout_toEndOf="@id/tv_label_10"
                                 android:fontFamily="@font/f_roboto_regular"
                                 android:text="@string/gender"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_gender"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="3dp"
+                                android:layout_toEndOf="@+id/tv_label_11" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_gender"
@@ -563,9 +617,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info_content"
-                                android:layout_toEndOf="@+id/tv_label_11"
+                                android:layout_toEndOf="@+id/iv_gender"
                                 android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -574,7 +628,8 @@
                             android:id="@+id/l_relationship_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_12"
@@ -592,7 +647,7 @@
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info"
                                 android:layout_toEndOf="@id/tv_label_12"
                                 android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -601,7 +656,8 @@
                             android:id="@+id/l_website_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_top_user_profile_info">
+                            android:layout_marginTop="@dimen/margin_top_user_profile_info"
+                            android:visibility="gone">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/tv_label_13"
@@ -619,7 +675,7 @@
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info"
                                 android:layout_toEndOf="@id/tv_label_13"
                                 android:fontFamily="@font/f_roboto_medium"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -647,7 +703,7 @@
                                 android:layout_toEndOf="@id/tv_label_14"
                                 android:fontFamily="@font/f_roboto_regular"
                                 android:text="@string/title_join_in"
-                                android:textColor="@color/color_text_bold"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -657,8 +713,8 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/margin_start_user_profile_info_content"
                                 android:layout_toEndOf="@+id/tv_label_15"
-                                android:fontFamily="@font/f_roboto_bold"
-                                android:textColor="@color/color_text_bold"
+                                android:fontFamily="@font/f_roboto_medium"
+                                android:textColor="@color/color_text_primary"
                                 android:textSize="@dimen/text_size_user_profile_info" />
 
                         </RelativeLayout>
@@ -667,35 +723,77 @@
 
                     <include layout="@layout/divider_all" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/l_photo_user_profile"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/bg_round_8"
-                        android:backgroundTint="@color/color_background_text_with_icon_default"
-                        android:gravity="center"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp">
+                        android:layout_marginBottom="20dp">
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:tint="@color/color_text_bold"
-                            app:srcCompat="@drawable/ic_photo_library_24" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/l_photo_user_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:fontFamily="@font/f_roboto_medium"
-                            android:text="@string/photo"
-                            android:textColor="@color/color_text_bold"
-                            android:textSize="14sp" />
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_button_round_gray_8"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:tint="@color/color_text_primary"
+                                app:srcCompat="@drawable/ic_photo_library_24" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:fontFamily="@font/f_roboto_medium"
+                                android:text="@string/photo"
+                                android:textColor="@color/color_text_primary"
+                                android:textSize="14sp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/l_video_user_profile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:background="@drawable/bg_button_round_gray_8"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/l_photo_user_profile"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:tint="@color/color_text_primary"
+                                app:srcCompat="@drawable/ic_outline_video_library_24" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:fontFamily="@font/f_roboto_medium"
+                                android:text="@string/video_user_profile"
+                                android:textColor="@color/color_text_primary"
+                                android:textSize="14sp" />
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <include layout="@layout/divider_all" />
 
@@ -713,7 +811,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/f_roboto_medium"
                             android:text="@string/friend"
-                            android:textColor="@color/color_text_bold"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -723,10 +821,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@id/tv_label_20"
                             app:layout_constraintStart_toEndOf="@id/tv_label_20"
-                            app:layout_constraintTop_toTopOf="@id/tv_label_20" />
+                            app:layout_constraintTop_toTopOf="@+id/tv_label_20" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_friend"
@@ -740,7 +838,6 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_label_20"
                             tools:listitem="@layout/item_friend_user_profile_vertical" />
 
-
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_view_all_friend"
                             android:layout_width="match_parent"
@@ -748,13 +845,14 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginTop="12dp"
                             android:layout_marginEnd="12dp"
-                            android:background="@drawable/bg_round_8"
-                            android:backgroundTint="@color/color_background_text_with_icon_default"
+                            android:background="@drawable/bg_button_round_gray_8"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:fontFamily="@font/f_roboto_medium"
                             android:gravity="center"
-                            android:paddingVertical="8dp"
+                            android:paddingVertical="10dp"
                             android:text="@string/view_all_friend"
-                            android:textColor="@color/color_text_bold"
+                            android:textColor="@color/color_text_primary"
                             android:textSize="14sp"
                             app:layout_constraintTop_toBottomOf="@id/rv_friend" />
 
@@ -762,10 +860,22 @@
 
                     <include layout="@layout/divider_all" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/f_roboto_medium"
+                        android:text="@string/post"
+                        android:textColor="@color/color_text_primary"
+                        android:textSize="18sp" />
+
                     <include
                         layout="@layout/what_on_your_mind_feed"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"/>
 
                     <include layout="@layout/divider_all" />
 
@@ -789,9 +899,27 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <!-- loading layout -->
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/l_shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:shimmer_base_alpha="0.5">
+
+            <include
+                layout="@layout/layout_shimmer_user_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <!-- error layout -->
-
+        <include
+            android:id="@+id/l_error"
+            layout="@layout/layout_error_user_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

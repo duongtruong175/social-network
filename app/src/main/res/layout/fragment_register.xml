@@ -69,6 +69,15 @@
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_error_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/color_error_text"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"/>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -97,6 +106,15 @@
                     android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_error_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/color_error_text"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,6 +145,15 @@
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_error_confirm_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/color_error_text"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"/>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -137,7 +164,7 @@
                 android:fontFamily="@font/f_roboto_medium"
                 android:paddingVertical="@dimen/drawable_edit_text_vertical"
                 android:text="@string/authentication_name_label"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/edit_text_label_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/l_confirm_password" />
@@ -161,10 +188,20 @@
                     android:hint="@string/authentication_name_hint"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:maxLength="30"
                     android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
                     android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_error_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/color_error_text"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -176,7 +213,7 @@
                 android:fontFamily="@font/f_roboto_medium"
                 android:paddingVertical="@dimen/drawable_edit_text_vertical"
                 android:text="@string/authentication_birthday_label"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/edit_text_label_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/l_name" />
@@ -190,7 +227,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_birthday_label">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/et_birthday"
                     style="@style/BackgroundEditTextWithBorder"
                     android:layout_width="match_parent"
@@ -198,12 +235,22 @@
                     android:drawableStart="@drawable/ic_calendar_month_24"
                     android:drawablePadding="@dimen/drawable_edit_text_horizontal"
                     android:hint="@string/authentication_birthday_hint"
-                    android:inputType="datetime"
+                    android:gravity="center|start"
                     android:maxLines="1"
+                    android:textColor="@color/color_text_primary"
                     android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
                     android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
                     android:textSize="@dimen/edit_text_text_size" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_error_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/color_error_text"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -215,7 +262,7 @@
                 android:fontFamily="@font/f_roboto_medium"
                 android:paddingVertical="@dimen/drawable_edit_text_vertical"
                 android:text="@string/authentication_gender_label"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/edit_text_label_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/l_birthday" />
@@ -236,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="@string/authentication_gender_male"
+                    android:text="@string/male"
                     android:textSize="@dimen/edit_text_text_size" />
 
                 <RadioButton
@@ -244,7 +291,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/authentication_gender_female"
+                    android:text="@string/female"
                     android:textSize="@dimen/edit_text_text_size" />
 
                 <RadioButton
@@ -252,7 +299,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/authentication_gender_other"
+                    android:text="@string/other"
                     android:textSize="@dimen/edit_text_text_size" />
 
             </RadioGroup>
@@ -264,7 +311,7 @@
                 android:layout_marginTop="@dimen/authentication_edit_text_top_margin"
                 android:fontFamily="@font/f_roboto_regular"
                 android:text="@string/authentication_term_service_label"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/authentication_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -284,25 +331,29 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_register"
-                style="@style/BackgroundEditTextWithBorder"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/authentication_edit_text_top_margin"
-                android:backgroundTint="@color/colorAccent"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_button_round_blue_8"
                 android:text="@string/authentication_register"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="@dimen/button_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_term_service" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_login"
+                style="@style/ClickableView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/authentication_edit_text_top_margin"
                 android:fontFamily="@font/f_roboto_bold"
+                android:padding="4dp"
                 android:text="@string/authentication_login"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/authentication_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_register" />
@@ -314,7 +365,7 @@
                 android:layout_marginEnd="@dimen/drawable_edit_text_vertical"
                 android:fontFamily="@font/f_roboto_regular"
                 android:text="@string/authentication_already_account"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/authentication_text_size"
                 app:layout_constraintBottom_toBottomOf="@id/tv_login"
                 app:layout_constraintEnd_toStartOf="@id/tv_login"

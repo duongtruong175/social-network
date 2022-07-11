@@ -67,7 +67,7 @@ public class GenderProfileFragment extends Fragment {
 
         AppCompatSpinner spinner = view.findViewById(R.id.et_gender);
         String[] genders = getResources().getStringArray(R.array.gender);
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.simple_spinner_item, genders);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.item_simple_spinner, genders);
         spinner.setAdapter(adapter);
 
         return view;

@@ -102,37 +102,43 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_forgot_password"
+                style="@style/ClickableView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/authentication_text_view_top_margin"
                 android:fontFamily="@font/f_roboto_bold"
+                android:padding="4dp"
                 android:text="@string/authentication_forgot_password"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/authentication_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/l_password" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_login"
-                style="@style/BackgroundEditTextWithBorder"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_content_top_margin"
-                android:backgroundTint="@color/colorAccent"
+                android:background="@drawable/bg_button_round_blue_8"
                 android:text="@string/authentication_login"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="@dimen/button_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_forgot_password" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_register"
+                style="@style/ClickableView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/authentication_edit_text_top_margin"
                 android:fontFamily="@font/f_roboto_bold"
+                android:padding="4dp"
                 android:text="@string/authentication_register"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/authentication_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login" />
@@ -144,7 +150,7 @@
                 android:layout_marginEnd="@dimen/drawable_edit_text_vertical"
                 android:fontFamily="@font/f_roboto_regular"
                 android:text="@string/authentication_new_account"
-                android:textColor="@color/black"
+                android:textColor="@color/color_text_primary"
                 android:textSize="@dimen/authentication_text_size"
                 app:layout_constraintBottom_toBottomOf="@id/tv_register"
                 app:layout_constraintEnd_toStartOf="@id/tv_register"

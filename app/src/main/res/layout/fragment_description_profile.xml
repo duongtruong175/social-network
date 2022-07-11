@@ -16,7 +16,7 @@
         android:fontFamily="@font/f_roboto_medium"
         android:paddingVertical="@dimen/edit_text_padding_horizontal"
         android:text="@string/edit_profile_description_label"
-        android:textColor="@color/black"
+        android:textColor="@color/color_text_primary"
         android:textSize="@dimen/edit_text_label_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
         android:layout_marginTop="@dimen/edit_profile_text_view_waring_top_margin"
         android:fontFamily="@font/f_roboto_regular"
         android:text="@string/edit_profile_description_warning"
-        android:textColor="@color/black"
+        android:textColor="@color/color_text_primary"
         android:textSize="@dimen/edit_text_label_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/l_edit" />
