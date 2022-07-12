@@ -281,4 +281,15 @@ public class TimeExtension {
             return "";
         }
     }
+
+    /**
+     * Format birthday of user
+     *
+     * @param birthday birthday of user (yyyy-MM-dd)
+     * @return dd/MM/yyyy
+     */
+    public static String formatBirthday(String birthday) {
+        String[] s = birthday.split("-");
+        return s[2] + "/" + s[1] + "/" + s[0];
+    }
 }

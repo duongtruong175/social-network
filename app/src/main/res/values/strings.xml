@@ -69,7 +69,7 @@
     <string name="edit_profile_hometown_label">Quê quán</string>
     <string name="edit_profile_description_label">Thêm vài dòng mô tả ngắn về bạn hoặc câu nói mà bạn tâm đắc nhất</string>
     <string name="edit_profile_description_hint">Thêm vài dòng mô tả ngắn về bạn</string>
-    <string name="edit_profile_description_warning">Tối đa 1000 ký tự</string>
+    <string name="edit_profile_description_warning">Tối đa 100 ký tự</string>
     <string name="edit_profile_website_label">Link đến website của bạn</string>
     <string name="edit_profile_website_hint">Thêm link của bạn</string>
     <string name="edit_profile_website_warning">Lưu ý: Đảm bảo không có ký tự bất thường nào!</string>
@@ -319,4 +319,17 @@
     <string name="do_you_realy_want_to_delete_friend">Bạn có chắc chắn muốn hủy kết bạn với</string>
     <string name="do_you_realy_want_to_delete_request_friend">Bạn có chắc chắn muốn hủy lời mời kết bạn đã gửi cho</string>
     <string name="do_you_realy_want_to_accept_friend">Bạn có chắc chắn muốn kết bạn với</string>
+    <string name="error_init_data_edit_user_profile">Dữ liệu không hợp lệ, hãy thử lại</string>
+    <string name="update_name_success">Đổi tên thành công</string>
+    <string name="error_phone">Số điện thoại phải gồm 10 chữ số bắt đầu từ 0</string>
+    <string name="update_phone_success">Cập nhập số điện thoại thành công</string>
+    <string name="edit_profile_birthday_waring">Lưu ý: Ứng dụng chỉ dành cho người trên 14 tuổi</string>
+    <string name="update_birthday_success">Cập nhập ngày sinh thành công</string>
+    <string name="update_gender_success">Cập nhập thông tin thành công</string>
+    <string name="update_relationship_success">Cập nhập thông tin thành công</string>
+    <string name="update_website_success">Cập nhập thông tin thành công</string>
+    <string name="update_desciption_success">Cập nhập thông tin thành công</string>
+    <string name="update_address_success">Cập nhập thông tin thành công</string>
+    <string name="update_job_success">Cập nhập công việc thành công</string>
+    <string name="update_education_success">Cập nhập học vấn thành công</string>
 </resources>

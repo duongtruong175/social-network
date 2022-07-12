@@ -262,7 +262,8 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditUserProfileActivity.class);
-                startActivity(intent);
+                intent.putExtra("user", user);
+                openUpdateUserProfileActivityResultLauncher.launch(intent);
             }
         });
 
@@ -420,20 +421,22 @@ public class UserProfileFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         rvPost.setLayoutManager(layoutManager2);
         rvPost.setAdapter(postAdapter);
+        /*
         // error because RecyclerView in NestedScrollView -> findFirstVisibleItemPosition not working
-//        rvPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//                    int firstVisibleItem = manager.findFirstVisibleItemPosition();
-//                    if (firstVisibleItem != -1) {
-//                        postAdapter.playIndexThenPausePreviousPlayer(firstVisibleItem);
-//                    }
-//                }
-//            }
-//        });
+        rvPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int firstVisibleItem = manager.findFirstVisibleItemPosition();
+                    if (firstVisibleItem != -1) {
+                        postAdapter.playIndexThenPausePreviousPlayer(firstVisibleItem);
+                    }
+                }
+            }
+        });
+         */
 
         // call api to get all data
         getData();
@@ -569,6 +572,24 @@ public class UserProfileFragment extends Fragment {
                                     bottomNavigationView.setSelectedItemId(R.id.groupFragment);
                                 }
                             }
+                        }
+                    }
+                }
+            });
+
+    // ActivityResultLauncher for update user profile
+    ActivityResultLauncher<Intent> openUpdateUserProfileActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Get data from result
+                        Intent data = result.getData();
+                        if (data != null) {
+                            // update value
+                            user = data.getParcelableExtra("updated_user");
+                            handleUserToView();
                         }
                     }
                 }

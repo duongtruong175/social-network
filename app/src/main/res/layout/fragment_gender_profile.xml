@@ -4,42 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/activity_content_start_margin"
-    android:paddingEnd="@dimen/activity_content_end_margin"
     tools:context=".ui.main.userprofile.edit.gender.GenderProfileFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/edit_profile_text_view_top_margin"
-        android:fontFamily="@font/f_roboto_medium"
-        android:paddingVertical="@dimen/edit_text_padding_vertical"
-        android:text="@string/edit_profile_gender_label"
-        android:textColor="@color/color_text_primary"
-        android:textSize="@dimen/edit_text_label_size"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_custom"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/et_gender"
-        style="@style/BackgroundEditTextWithBorder"
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/pb_loading"
         android:layout_width="0dp"
-        android:layout_height="@dimen/edit_text_height"
-        android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
-        android:paddingVertical="@dimen/edit_text_padding_vertical"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:theme="@style/CustomLinearProgressIndicator"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_label" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:trackThickness="3dp" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
-        android:paddingVertical="@dimen/edit_text_padding_vertical"
-        app:layout_constraintBottom_toBottomOf="@id/et_gender"
-        app:layout_constraintEnd_toEndOf="@id/et_gender"
-        app:layout_constraintTop_toTopOf="@id/et_gender"
-        app:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+        android:paddingStart="@dimen/activity_content_start_margin"
+        android:paddingEnd="@dimen/activity_content_end_margin"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/edit_profile_text_view_top_margin"
+            android:fontFamily="@font/f_roboto_medium"
+            android:paddingVertical="@dimen/edit_text_padding_vertical"
+            android:text="@string/edit_profile_gender_label"
+            android:textColor="@color/color_text_primary"
+            android:textSize="@dimen/edit_text_label_size"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ExposedDropdownMenuTheme"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_label">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/et_gender"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:background="@drawable/bg_round_gray_8_with_border_1"
+                android:ellipsize="end"
+                android:inputType="none"
+                android:maxLines="1"
+                android:paddingStart="12dp"
+                android:paddingEnd="4dp"
+                android:singleLine="true"
+                android:textSize="@dimen/edit_text_text_size" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

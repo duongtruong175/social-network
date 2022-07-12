@@ -1,9 +1,12 @@
 package vn.hust.socialnetwork.network;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
@@ -31,6 +34,10 @@ public interface UserProfileService {
     @POST("user-profile/v1.0/profile/{id}/update-cover-image")
     @Headers({"multipart: true"})
     Call<BaseResponse<ChangeCoverImageResponse>> updateCoverImage(@Part MultipartBody.Part coverImage, @Path("id") int id);
+
+    @FormUrlEncoded
+    @POST("user-profile/v1.0/profile/{id}/update-profile")
+    Call<BaseResponse<User>> updateProfile(@Path("id") int id, @FieldMap Map<String, Object> map);
 
     @GET("user-profile/v1.0/profile/{id}/photo-album")
     Call<BaseResponse<List<String>>> getPhotoAlbum(@Path("id") int id);

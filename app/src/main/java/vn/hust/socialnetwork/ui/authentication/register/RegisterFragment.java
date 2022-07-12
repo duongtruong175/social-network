@@ -257,6 +257,7 @@ public class RegisterFragment extends Fragment {
         dpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int nYear, int nMonth, int nDay) {
+                c = Calendar.getInstance();
                 c.set(nYear, nMonth, nDay);
                 Date date = c.getTime();
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

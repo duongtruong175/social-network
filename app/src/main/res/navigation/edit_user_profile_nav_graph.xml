@@ -131,4 +131,5 @@
         android:name="vn.hust.socialnetwork.ui.main.userprofile.edit.education.EducationProfileFragment"
         android:label="fragment_education_profile"
         tools:layout="@layout/fragment_education_profile" />
+
 </navigation>
