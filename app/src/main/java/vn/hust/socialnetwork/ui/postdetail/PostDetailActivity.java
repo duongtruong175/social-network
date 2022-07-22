@@ -3,6 +3,7 @@ package vn.hust.socialnetwork.ui.postdetail;
 import static vn.hust.socialnetwork.utils.ContextExtension.getImageFromLayout;
 import static vn.hust.socialnetwork.utils.StringExtension.checkValidValueString;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +38,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.hawk.Hawk;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.vanniktech.emoji.EmojiPopup;
@@ -57,17 +64,26 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
+import vn.hust.socialnetwork.models.fcm.Data;
+import vn.hust.socialnetwork.models.fcm.DataMessageSender;
+import vn.hust.socialnetwork.models.fcm.FCMResponse;
+import vn.hust.socialnetwork.models.fcm.Token;
 import vn.hust.socialnetwork.models.media.Media;
+import vn.hust.socialnetwork.models.notification.Notification;
 import vn.hust.socialnetwork.models.post.CommentPost;
 import vn.hust.socialnetwork.models.post.Post;
 import vn.hust.socialnetwork.models.post.ReactUser;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.CommentService;
+import vn.hust.socialnetwork.network.NotificationService;
 import vn.hust.socialnetwork.network.PostService;
 import vn.hust.socialnetwork.network.UploadMediaService;
+import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
 import vn.hust.socialnetwork.ui.mediaviewer.MediaViewerActivity;
 import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.adapters.OnPostListener;
@@ -78,6 +94,7 @@ import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
 import vn.hust.socialnetwork.utils.FileExtension;
 import vn.hust.socialnetwork.utils.MediaPicker;
+import vn.hust.socialnetwork.utils.NotificationExtension;
 import vn.hust.socialnetwork.utils.RequestCodeResultActivity;
 
 public class PostDetailActivity extends AppCompatActivity {
@@ -99,6 +116,8 @@ public class PostDetailActivity extends AppCompatActivity {
     private PostService postService;
     private CommentService commentService;
     private UploadMediaService uploadMediaService;
+    private NotificationService notificationService;
+
     private int postId;
     private boolean isShowCommentInput;
     private String uploadImageCommentPath;
@@ -129,6 +148,7 @@ public class PostDetailActivity extends AppCompatActivity {
         postService = ApiClient.getClient().create(PostService.class);
         commentService = ApiClient.getClient().create(CommentService.class);
         uploadMediaService = ApiClient.getClient().create(UploadMediaService.class);
+        notificationService = ApiClient.getClient().create(NotificationService.class);
 
         // binding
         lSwipeRefresh = findViewById(R.id.l_swipe_refresh);
@@ -325,6 +345,9 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onGroupPostClick() {
                 // open group detail
+                Intent intent = new Intent(PostDetailActivity.this, GroupDetailActivity.class);
+                intent.putExtra("group_id", post.getGroup().getId());
+                startActivity(intent);
             }
 
             @Override
@@ -430,7 +453,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 showPopupMenuComment(view, position);
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PostDetailActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(PostDetailActivity.this);
         rvPostDetail.setLayoutManager(layoutManager);
         rvPostDetail.setHasFixedSize(true);
         rvPostDetail.setAdapter(postDetailAdapter);
@@ -556,6 +579,19 @@ public class PostDetailActivity extends AppCompatActivity {
                     comments.add(res.getData());
                     postDetailAdapter.notifyItemInserted(comments.size());
                     rvPostDetail.smoothScrollToPosition(comments.size());
+
+                    // send a notification
+                    if (Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0) != post.getUser().getId()) {
+                        int receiverId = post.getUser().getId();
+                        String imageUrl = "";
+                        if (!Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "").isEmpty()) {
+                            imageUrl = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "");
+                        }
+                        int type = 3;
+                        String contentNotification = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, "") + " đã bình luận về bài viết của bạn: " + content;
+                        String url = "post/" + postId;
+                        sendNotification(receiverId, imageUrl, type, contentNotification, url);
+                    }
                 } else {
                     Toast.makeText(PostDetailActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 }
@@ -905,5 +941,33 @@ public class PostDetailActivity extends AppCompatActivity {
         popupMenu.setForceShowIcon(true);
         // Showing the popup menu
         popupMenu.show();
+    }
+
+    private void sendNotification(int receiverId, String imageUrl, int type, String content, String url){
+        Map<String, Object> req = new HashMap<>();
+        req.put("receiver_id", receiverId);
+        req.put("type", type);
+        req.put("content", content);
+        req.put("url", url);
+        if (!imageUrl.isEmpty()) {
+            req.put("image_url", imageUrl);
+        }
+        Call<BaseResponse<Notification>> call = notificationService.createNotification(req);
+        call.enqueue(new Callback<BaseResponse<Notification>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<Notification>> call, Response<BaseResponse<Notification>> response) {
+                if (response.isSuccessful()) {
+                    // send a notification to FCM
+                    Data data = new Data("Social Network", content, "notification", url);
+                    NotificationExtension.sendFCMNotification(receiverId, data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
+                // error
+                call.cancel();
+            }
+        });
     }
 }

@@ -51,7 +51,7 @@
     <dimen name="corner_radius_story_item">10dp</dimen>
     <dimen name="avatar_story_size">30dp</dimen>
     <dimen name="story_text_padding">4dp</dimen>
-    <dimen name="story_item_space">2dp</dimen>
+    <dimen name="story_item_space">3dp</dimen>
     <dimen name="text_name_story_size">12sp</dimen>
     <dimen name="view_text_with_icon_radius">24dp</dimen>
     <dimen name="text_post_size">14sp</dimen>
@@ -76,4 +76,8 @@
     <dimen name="icon_small_react_post_size">16dp</dimen>
     <dimen name="drop_down_height">250dp</dimen>
     <dimen name="drop_down_vertical_offset">6dp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_normal">14sp</dimen>
+    <dimen name="item_menu_group_padding">12dp</dimen>
+    <dimen name="item_menu_group_height">48dp</dimen>
 </resources>

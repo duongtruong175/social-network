@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -72,7 +73,7 @@ public class VideoAlbumActivity extends AppCompatActivity {
             }
         });
         int numberOfColumns = 3;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(VideoAlbumActivity.this, numberOfColumns);
+        LinearLayoutManager layoutManager = new GridLayoutManager(VideoAlbumActivity.this, numberOfColumns);
         rvVideo.setLayoutManager(layoutManager);
         rvVideo.setAdapter(videoAdapter);
 

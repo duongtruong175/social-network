@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fillViewport="true"
     tools:context=".ui.groupcreator.GroupCreatorActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,6 +104,15 @@
                     android:textColorHint="@color/color_text_secondary"
                     android:textSize="16sp" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_error_name_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/color_error_text"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -132,7 +142,7 @@
                     style="@style/BackgroundEditTextWithBorder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|top|center_horizontal|center_vertical|center"
+                    android:gravity="start|top"
                     android:hint="@string/create_group_hint_introduction"
                     android:inputType="textMultiLine|textCapSentences"
                     android:lines="5"
@@ -151,6 +161,51 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/f_roboto_medium"
+                android:paddingBottom="2dp"
+                android:text="@string/create_group_label_type"
+                android:textColor="@color/color_text_primary"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/l_introduction_group" />
+
+            <RadioGroup
+                android:id="@+id/rg_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_type_label">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_public"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:drawableEnd="@drawable/ic_public"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_private"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_private"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_create_group"
                 style="?android:attr/borderlessButtonStyle"
@@ -164,7 +219,7 @@
                 android:textSize="@dimen/button_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/l_introduction_group" />
+                app:layout_constraintTop_toBottomOf="@id/rg_type" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,10 +19,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:theme="@style/CustomLinearProgressIndicator"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:trackThickness="3dp" />
 
     <!-- List user -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -40,8 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_button_round_gray_24"
                 android:focusable="false"
                 android:nextFocusLeft="@+id/search"
@@ -58,10 +60,11 @@
                 android:id="@+id/tv_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/f_roboto_medium"
                 android:padding="12dp"
                 android:textColor="@color/color_text_primary"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/sv_search" />
 

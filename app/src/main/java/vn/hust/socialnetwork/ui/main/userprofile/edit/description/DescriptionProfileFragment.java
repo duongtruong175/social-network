@@ -121,7 +121,7 @@ public class DescriptionProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), R.string.update_desciption_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.update_description_success, Toast.LENGTH_SHORT).show();
                     // update user
                     if (description.isEmpty()) {
                         user.setShortDescription(null);

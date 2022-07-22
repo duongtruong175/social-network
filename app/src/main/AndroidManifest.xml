@@ -16,7 +16,7 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
@@ -27,6 +27,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.menuprofile.changepassword.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.message.MessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.story.StoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/StoryTheme" />
+        <activity
+            android:name=".ui.groupdetail.requestjoin.RequestJoinGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.groupdetail.changeinformation.ChangeInformationGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.groupdetail.viewmember.ViewMemberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mygroup.MyGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.proposegroup.ProposeGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.groupdetail.menu.MenuGroupDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.groupdetail.GroupDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.groupdetail.crop.CropGroupCoverActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.groupcreator.GroupCreatorActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.friend.AllFriendActivity"
             android:screenOrientation="portrait" />
@@ -62,10 +99,6 @@
         <activity
             android:name=".ui.groupcreator.crop.CropGroupCoverActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.groupcreator.GroupCreatorActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".ui.search.SearchActivity"
             android:screenOrientation="portrait" />
@@ -118,7 +151,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" />
+            android:resource="@drawable/splash_logo" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />

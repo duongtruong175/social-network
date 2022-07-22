@@ -1,5 +1,6 @@
 package vn.hust.socialnetwork.ui.menuprofile;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -8,6 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,10 +30,13 @@ import vn.hust.socialnetwork.models.user.User;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.AuthenticationService;
 import vn.hust.socialnetwork.ui.authentication.AuthenticationActivity;
+import vn.hust.socialnetwork.ui.menuprofile.changepassword.ChangePasswordActivity;
 import vn.hust.socialnetwork.ui.qrcodescanner.QrCodeScannerActivity;
 import vn.hust.socialnetwork.ui.relation.RelationActivity;
 import vn.hust.socialnetwork.ui.search.SearchActivity;
+import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
+import vn.hust.socialnetwork.utils.ContextExtension;
 
 public class MenuProfileActivity extends AppCompatActivity {
 
@@ -141,6 +147,9 @@ public class MenuProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // open activity change password
+                Intent intent = new Intent(MenuProfileActivity.this, ChangePasswordActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
             }
         });
 
@@ -161,12 +170,30 @@ public class MenuProfileActivity extends AppCompatActivity {
         tvLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MenuProfileActivity.this, R.style.AlertDialogTheme);
+                builder.setTitle(R.string.logout);
+                builder.setMessage(R.string.do_you_realy_want_to_logout);
+                builder.setPositiveButton(R.string.agree, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        logout();
+                    }
+                });
+                builder.setNegativeButton(R.string.not_agree, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create().show();
             }
         });
     }
 
     private void logout() {
+        Dialog processDialog = ContextExtension.createProgressDialog(MenuProfileActivity.this);
+        processDialog.show();
         Call<BaseResponse<String>> call = authenticationService.logout();
         call.enqueue(new Callback<BaseResponse<String>>() {
             @Override
@@ -184,12 +211,14 @@ public class MenuProfileActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MenuProfileActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 }
+                processDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
                 // error
                 call.cancel();
+                processDialog.dismiss();
                 Toast.makeText(MenuProfileActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
             }
         });

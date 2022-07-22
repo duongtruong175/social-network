@@ -61,6 +61,7 @@ public class ChangePasswordFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_change_password, container, false);
 
+        // api
         authenticationService = ApiClient.getClient().create(AuthenticationService.class);
 
         // binding

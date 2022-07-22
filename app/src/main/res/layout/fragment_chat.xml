@@ -42,7 +42,7 @@
                 android:fontFamily="@font/f_roboto_medium"
                 android:maxLines="1"
                 android:textColor="@color/color_text_primary"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/iv_strange_chat"
                 app:layout_constraintStart_toEndOf="@id/civ_my_avatar"

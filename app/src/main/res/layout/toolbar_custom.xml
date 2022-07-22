@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/toolbar_padding"
         android:ellipsize="end"
-        android:fontFamily="@font/f_roboto_bold"
+        android:fontFamily="@font/f_roboto_medium"
         android:maxLines="1"
         android:textColor="@color/color_text_primary"
         android:textSize="@dimen/toolbar_title_text_size"

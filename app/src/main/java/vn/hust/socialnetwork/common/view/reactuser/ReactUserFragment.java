@@ -3,6 +3,7 @@ package vn.hust.socialnetwork.common.view.reactuser;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -46,6 +47,7 @@ import vn.hust.socialnetwork.models.post.ReactUser;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.CommentService;
 import vn.hust.socialnetwork.network.PostService;
+import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 
 public class ReactUserFragment extends BottomSheetDialogFragment {
 
@@ -129,10 +131,13 @@ public class ReactUserFragment extends BottomSheetDialogFragment {
         reactUserAdapter = new ReactUserAdapter(getContext(), viewReactUsers, new OnReactUserListener() {
             @Override
             public void onItemClick(int position) {
-
+                // open user detail
+                Intent intent = new Intent(getActivity(), UserDetailActivity.class);
+                intent.putExtra("user_id", viewReactUsers.get(position).getUser().getId());
+                startActivity(intent);
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvReactUser.setLayoutManager(layoutManager);
         rvReactUser.setAdapter(reactUserAdapter);
 

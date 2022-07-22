@@ -276,7 +276,7 @@
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:id="@+id/l_chat_relation"
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:background="@drawable/bg_button_round_blue_4"
                                     android:gravity="center"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -284,7 +284,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent">
 
-                                    <androidx.appcompat.widget.AppCompatButton
+                                    <androidx.appcompat.widget.AppCompatTextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:background="@android:color/transparent"
@@ -688,7 +688,7 @@
                                 android:layout_height="@dimen/icon_size_user_profile_info"
                                 android:layout_centerVertical="true"
                                 android:tint="@color/color_drawable_user_profile"
-                                app:srcCompat="@drawable/ic_baseline_language_24" />
+                                app:srcCompat="@drawable/ic_website" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_website"

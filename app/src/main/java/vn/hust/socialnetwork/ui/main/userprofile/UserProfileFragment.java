@@ -17,7 +17,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -28,16 +27,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +43,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -82,8 +76,7 @@ import vn.hust.socialnetwork.network.PostService;
 import vn.hust.socialnetwork.network.UserProfileService;
 import vn.hust.socialnetwork.ui.album.PhotoAlbumActivity;
 import vn.hust.socialnetwork.ui.album.VideoAlbumActivity;
-import vn.hust.socialnetwork.ui.authentication.login.LoginFragment;
-import vn.hust.socialnetwork.ui.main.group.GroupFragment;
+import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
 import vn.hust.socialnetwork.ui.main.userprofile.adapters.FriendAdapter;
 import vn.hust.socialnetwork.ui.main.userprofile.adapters.OnFriendListener;
 import vn.hust.socialnetwork.ui.main.userprofile.adapters.OnPostListener;
@@ -324,7 +317,7 @@ public class UserProfileFragment extends Fragment {
                 onItemFriendClick(position);
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvFriend.setLayoutManager(layoutManager);
         rvFriend.setAdapter(friendAdapter);
 
@@ -341,6 +334,9 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onGroupPostClick(int position) {
                 // open group detail
+                Intent intent = new Intent(getActivity(), GroupDetailActivity.class);
+                intent.putExtra("group_id", posts.get(position).getGroup().getId());
+                startActivity(intent);
             }
 
             @Override
@@ -418,7 +414,7 @@ public class UserProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         rvPost.setLayoutManager(layoutManager2);
         rvPost.setAdapter(postAdapter);
         /*
@@ -445,6 +441,14 @@ public class UserProfileFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            postAdapter.pauseAllPlayers();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         postAdapter.continueCurrentPlayingVideo();
@@ -467,8 +471,6 @@ public class UserProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE_IMAGE_AVATAR && resultCode == Activity.RESULT_OK && data != null) {
             // Put selected image to Crop Avatar Activity
-            List<String> s = Matisse.obtainPathResult(data);
-            String s1 = Matisse.obtainPathResult(data).get(0);
             Intent intent = new Intent(getActivity(), CropUserAvatarActivity.class);
             intent.putExtra("image_path", Matisse.obtainPathResult(data).get(0));
             cropAvatarActivityResultLauncher.launch(intent);
@@ -481,8 +483,6 @@ public class UserProfileFragment extends Fragment {
         }
         if (requestCode == REQUEST_CODE_CHOOSE_IMAGE_COVER && resultCode == Activity.RESULT_OK && data != null) {
             // Put selected image to Crop Cover Activity
-            List<String> s = Matisse.obtainPathResult(data);
-            String s1 = Matisse.obtainPathResult(data).get(0);
             Intent intent = new Intent(getActivity(), CropUserCoverActivity.class);
             intent.putExtra("image_path", Matisse.obtainPathResult(data).get(0));
             intent.putExtra("image_avatar", user.getAvatar());

@@ -48,7 +48,8 @@ dependencies {
     // Add the dependency for the Firebase SDK for Google Analytics
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-messaging:23.0.6'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-database'
 
     // UI core
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -120,6 +121,12 @@ dependencies {
 
     // qrcode scanner
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
+
+    // story progress
+    implementation 'com.github.shts:StoriesProgressView:3.0.0'
+
+    // event bus
+    implementation 'org.greenrobot:eventbus:3.3.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

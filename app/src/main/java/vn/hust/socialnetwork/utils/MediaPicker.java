@@ -51,6 +51,24 @@ public class MediaPicker {
                 .forResult(requestCode);
     }
 
+    public static void openImagePicker(Fragment fragment, int requestCode, int maxItemSelectable, boolean isCapture) {
+        Matisse.from(fragment)
+                .choose(MimeType.ofImage(), false)
+                .countable(true)
+                .theme(R.style.Matisse_Custom)
+                .maxSelectable(maxItemSelectable)
+                .capture(isCapture)
+                .captureStrategy(new CaptureStrategy(false, Intrinsics.stringPlus(fragment.requireContext().getPackageName(), ".fileprovider"), FileExtension.CAPTURE_PHOTO_FOLDER_SAVED))
+                .addFilter(new ImageSizeFilter(MIN_WIDTH_IMAGE_UPLOAD, MIN_HEIGHT_IMAGE_UPLOAD, MAX_SIZE_IMAGE_UPLOAD))
+                .gridExpectedSize(fragment.getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                .showSingleMediaType(true)
+                .thumbnailScale(0.85f)
+                .autoHideToolbarOnSingleTap(true)
+                .imageEngine(new GlideEngine())
+                .forResult(requestCode);
+    }
+
     public static void openAvatarPicker(Activity activity, int requestCode, int maxItemSelectable, boolean isCapture) {
         Matisse.from(activity)
                 .choose(MimeType.ofImage(), false)

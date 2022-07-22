@@ -80,12 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 .error(R.drawable.default_avatar)
                 .into(holder.civUserAvatar);
         holder.tvUserName.setText(post.getUser().getName());
-        if (post.getGroup() != null) {
-            holder.tvGroupName.setVisibility(View.VISIBLE);
-            holder.tvGroupName.setText(post.getGroup().getName());
-        } else {
-            holder.tvGroupName.setVisibility(View.GONE);
-        }
+        holder.tvGroupName.setVisibility(View.GONE);
         holder.tvTimePost.setText(TimeExtension.formatTimePost(post.getUpdatedAt()));
         if (post.getCreatedAt().equals(post.getUpdatedAt())) {
             holder.lEdited.setVisibility(View.GONE);

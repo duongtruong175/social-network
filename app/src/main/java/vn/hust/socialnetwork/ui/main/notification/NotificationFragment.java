@@ -1,5 +1,6 @@
 package vn.hust.socialnetwork.ui.main.notification;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageView;
@@ -33,8 +34,13 @@ import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.notification.Notification;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.NotificationService;
+import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
+import vn.hust.socialnetwork.ui.groupdetail.requestjoin.RequestJoinGroupActivity;
 import vn.hust.socialnetwork.ui.main.notification.adapters.NotificationAdapter;
 import vn.hust.socialnetwork.ui.main.notification.adapters.OnNotificationListener;
+import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
+import vn.hust.socialnetwork.ui.relation.RelationActivity;
+import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 
 public class NotificationFragment extends Fragment {
 
@@ -86,7 +92,7 @@ public class NotificationFragment extends Fragment {
                 onItemNotificationClick(position);
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvNotification.setLayoutManager(layoutManager);
         rvNotification.setAdapter(notificationAdapter);
 
@@ -124,21 +130,23 @@ public class NotificationFragment extends Fragment {
         // type: new request friend 1 => request_friend
         //       new accept friend  2 => user/{user_id}
         //       new action post    3 => post/{post_id}
-        //       new action group   4 => group/{group_id}
+        //       new action group   4 => group/{group_id} or request_join_group/{group_id}
         String[] s = url.split("/");
         if (s.length == 1) {
-            if (notification.getType() == 1 || s[0].equals("request_friend")) {
+            if (notification.getType() == 1 && s[0].equals("request_friend")) {
                 openActivityMyFriend();
             }
         } else if (s.length == 2) {
             try {
                 int id = Integer.parseInt(s[1]);
-                if (notification.getType() == 2 || s[0].equals("user")) {
+                if (notification.getType() == 2 && s[0].equals("user")) {
                     openActivityUserDetail(id);
-                } else if (notification.getType() == 3 || s[0].equals("post")) {
+                } else if (notification.getType() == 3 && s[0].equals("post")) {
                     openActivityPost(id);
-                } else if (notification.getType() == 4 || s[0].equals("group")) {
+                } else if (notification.getType() == 4 && s[0].equals("group")) {
                     openActivityGroupDetail(id);
+                } else if (notification.getType() == 4 && s[0].equals("request_join_group")) {
+                    openActivityGroupRequest(id);
                 }
             } catch (NumberFormatException ignored) {
 
@@ -146,16 +154,39 @@ public class NotificationFragment extends Fragment {
         }
     }
 
-    private void openActivityGroupDetail(int group_id) {
+    private void openActivityGroupRequest(int groupId) {
+        // open group request
+        Intent intent = new Intent(getActivity(), RequestJoinGroupActivity.class);
+        intent.putExtra("group_id", groupId);
+        startActivity(intent);
     }
 
-    private void openActivityPost(int post_id) {
+    private void openActivityGroupDetail(int groupId) {
+        // open group detail
+        Intent intent = new Intent(getActivity(), GroupDetailActivity.class);
+        intent.putExtra("group_id", groupId);
+        startActivity(intent);
     }
 
-    private void openActivityUserDetail(int user_id) {
+    private void openActivityPost(int postId) {
+        // open post detail
+        Intent intent = new Intent(getActivity(), PostDetailActivity.class);
+        intent.putExtra("post_id", postId);
+        startActivity(intent);
+    }
+
+    private void openActivityUserDetail(int userId) {
+        // open user detail
+        Intent intent = new Intent(getActivity(), UserDetailActivity.class);
+        intent.putExtra("user_id", userId);
+        startActivity(intent);
     }
 
     private void openActivityMyFriend() {
+        // open relation add friend
+        Intent intent = new Intent(getActivity(), RelationActivity.class);
+        intent.putExtra("navigation_to", "add_friend");
+        startActivity(intent);
     }
 
     private void onMenuItemNotificationClick(int position) {

@@ -63,12 +63,12 @@
             android:id="@+id/tb_relation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorHeight="0dp"
             app:tabGravity="start"
-            app:tabRippleColor="@null"
-            app:tabPaddingStart="6dp"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="scrollable"
             app:tabPaddingEnd="6dp"
-            app:tabMode="scrollable" />
+            app:tabPaddingStart="6dp"
+            app:tabRippleColor="@null" />
 
     </FrameLayout>
 
@@ -84,10 +84,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:theme="@style/CustomLinearProgressIndicator"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/v_divider" />
+        app:layout_constraintTop_toBottomOf="@+id/v_divider"
+        app:trackThickness="3dp" />
 
     <!-- List user -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

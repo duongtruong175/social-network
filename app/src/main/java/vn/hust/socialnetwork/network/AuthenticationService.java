@@ -18,6 +18,10 @@ public interface AuthenticationService {
     Call<BaseResponse<TokenResponse>> login(@Body LoginRequest loginRequest);
 
     @FormUrlEncoded
+    @POST("auth/v1.0/update-password")
+    Call<BaseResponse<String>> updatePassword(@Field("current_password") String currentPassword, @Field("new_password") String newPassword, @Field("confirm_password") String confirmPassword);
+
+    @FormUrlEncoded
     @POST("auth/v1.0/forgot-password")
     Call<BaseResponse<User>> forgotPassword(@Field("email") String email);
 

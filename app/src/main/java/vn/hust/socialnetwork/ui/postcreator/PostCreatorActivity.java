@@ -42,7 +42,6 @@ import vn.hust.socialnetwork.models.post.Post;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.PostService;
 import vn.hust.socialnetwork.network.UploadMediaService;
-import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
 import vn.hust.socialnetwork.utils.FileExtension;
@@ -64,6 +63,8 @@ public class PostCreatorActivity extends AppCompatActivity {
     private Dialog progressDialog;
 
     private String fileUploadPath, fileUploadType;
+    private int typePost;
+    private int groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,15 @@ public class PostCreatorActivity extends AppCompatActivity {
                         .into(ivPreviewMedia);
                 ivClearPickedMedia.setVisibility(View.VISIBLE);
             }
+            typePost = extras.getInt("type", 1);
+            if (extras.containsKey("group_id")) {
+                groupId = extras.getInt("group_id");
+            } else {
+                groupId = 0;
+            }
+        } else {
+            typePost = 1;
+            groupId = 0;
         }
 
         ivToolbarBack.setOnClickListener(new View.OnClickListener() {
@@ -243,9 +253,12 @@ public class PostCreatorActivity extends AppCompatActivity {
     private void uploadPostWithMedia(String caption, Media media) {
         Map<String, Object> req = new HashMap<>();
         req.put("caption", caption);
-        req.put("type", 1); // type = 1 -> bài viết cá nhân
+        req.put("type", typePost); // type = 1 -> bài viết cá nhân, = 2 -> bài viết trong nhóm
         if (media != null) {
             req.put("media_id", media.getId());
+        }
+        if(typePost == 2 && groupId != 0) {
+            req.put("group_id", groupId);
         }
 
         Call<BaseResponse<Post>> call = postService.createPost(req);
@@ -257,7 +270,7 @@ public class PostCreatorActivity extends AppCompatActivity {
                     Post newPost = res.getData();
 
                     // create a notification
-                    NotificationExtension.showPostSuccess(PostCreatorActivity.this);
+                    NotificationExtension.showCreatePostSuccess(PostCreatorActivity.this);
 
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("new_post", newPost);

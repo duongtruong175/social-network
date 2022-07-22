@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,10 +43,9 @@ public class StoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (viewType == ADD_STORY_TYPE) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_story, parent, false);
             return new AddStoryViewHolder(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_story, parent, false);
-            return new StoryViewHolder(view);
         }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_story, parent, false);
+        return new StoryViewHolder(view);
     }
 
     @Override
@@ -57,27 +56,32 @@ public class StoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     .asBitmap()
                     .load(avatar)
                     .error(R.drawable.default_avatar)
-                    .into(((AddStoryViewHolder)holder).ivMyAvatar);
+                    .into(((AddStoryViewHolder) holder).ivMyAvatar);
         } else {
             // because recycle view display (addStory + stories)
             // story position = (position of item in recycle view) - 1
-            Story story = this.stories.get(position - 1);
-            ((StoryViewHolder)holder).tvName.setText(story.getUser().getAvatar());
+            Story story = stories.get(position - 1);
+            ((StoryViewHolder) holder).tvName.setText(story.getUser().getName());
             Glide.with(context)
                     .asBitmap()
                     .load(story.getMedia().getSrc())
-                    .into(((StoryViewHolder)holder).ivImageStory);
+                    .into(((StoryViewHolder) holder).ivImageStory);
             Glide.with(context)
                     .asBitmap()
                     .load(story.getUser().getAvatar())
                     .error(R.drawable.default_avatar)
-                    .into(((StoryViewHolder)holder).civAvatar);
+                    .into(((StoryViewHolder) holder).civAvatar);
+            if (story.isViewed()) {
+                ((StoryViewHolder) holder).civAvatar.setBorderColor(ContextCompat.getColor(context, R.color.white));
+            } else {
+                ((StoryViewHolder) holder).civAvatar.setBorderColor(ContextCompat.getColor(context, R.color.color_text_highlight));
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return this.stories.size() + 1;
+        return stories.size() + 1;
     }
 
     @Override
@@ -91,9 +95,9 @@ public class StoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public long getItemId(int position) {
         if (position == 0) {
-            return -1;
+            return 0;
         }
-        return this.stories.get(position - 1).getId();
+        return stories.get(position - 1).getId();
     }
 
     public class StoryViewHolder extends RecyclerView.ViewHolder {
@@ -113,7 +117,7 @@ public class StoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onStoryListener.onItemClick(getBindingAdapterPosition());
+                        onStoryListener.onItemClick(getBindingAdapterPosition() - 1);
                     }
                 });
             }
@@ -124,18 +128,20 @@ public class StoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         AppCompatImageView ivMyAvatar;
         ProgressBar pbLoadingAddStory;
+        AppCompatTextView tvAddStory;
 
         public AddStoryViewHolder(@NonNull View itemView) {
             super(itemView);
             // binding
             ivMyAvatar = itemView.findViewById(R.id.iv_my_avatar);
             pbLoadingAddStory = itemView.findViewById(R.id.pb_loading_add_story);
+            tvAddStory = itemView.findViewById(R.id.tv_add_story);
 
             if (onStoryListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onStoryListener.onAddStory();
+                        onStoryListener.onAddStory(itemView);
                     }
                 });
             }

@@ -3,6 +3,7 @@ package vn.hust.socialnetwork.ui.userdetail;
 import static vn.hust.socialnetwork.utils.ContextExtension.getImageFromLayout;
 import static vn.hust.socialnetwork.utils.StringExtension.checkValidValueString;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -37,22 +38,37 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.hawk.Hawk;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.style.CustomTypefaceSpan;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
+import vn.hust.socialnetwork.models.fcm.Data;
+import vn.hust.socialnetwork.models.fcm.DataMessageSender;
+import vn.hust.socialnetwork.models.fcm.FCMResponse;
+import vn.hust.socialnetwork.models.fcm.Token;
 import vn.hust.socialnetwork.models.media.Media;
+import vn.hust.socialnetwork.models.notification.Notification;
 import vn.hust.socialnetwork.models.post.Post;
 import vn.hust.socialnetwork.models.post.ReactUser;
 import vn.hust.socialnetwork.models.relation.RelationUser;
@@ -60,15 +76,19 @@ import vn.hust.socialnetwork.models.user.CountsUser;
 import vn.hust.socialnetwork.models.user.Relation;
 import vn.hust.socialnetwork.models.user.User;
 import vn.hust.socialnetwork.network.ApiClient;
+import vn.hust.socialnetwork.network.NotificationService;
 import vn.hust.socialnetwork.network.PostService;
 import vn.hust.socialnetwork.network.RelationService;
 import vn.hust.socialnetwork.network.UserProfileService;
 import vn.hust.socialnetwork.ui.album.PhotoAlbumActivity;
 import vn.hust.socialnetwork.ui.album.VideoAlbumActivity;
 import vn.hust.socialnetwork.ui.friend.AllFriendActivity;
+import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
 import vn.hust.socialnetwork.ui.mediaviewer.MediaViewerActivity;
+import vn.hust.socialnetwork.ui.message.MessageActivity;
 import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
+import vn.hust.socialnetwork.ui.relation.RelationActivity;
 import vn.hust.socialnetwork.ui.userdetail.adapters.FriendAdapter;
 import vn.hust.socialnetwork.ui.userdetail.adapters.OnFriendListener;
 import vn.hust.socialnetwork.ui.userdetail.adapters.OnPostListener;
@@ -76,6 +96,7 @@ import vn.hust.socialnetwork.ui.userdetail.adapters.PostAdapter;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
 import vn.hust.socialnetwork.utils.FileExtension;
+import vn.hust.socialnetwork.utils.NotificationExtension;
 import vn.hust.socialnetwork.utils.TimeExtension;
 
 public class UserDetailActivity extends AppCompatActivity {
@@ -83,6 +104,7 @@ public class UserDetailActivity extends AppCompatActivity {
     private UserProfileService userProfileService;
     private PostService postService;
     private RelationService relationService;
+    private NotificationService notificationService;
 
     private int userId;
     private int relationId;
@@ -127,6 +149,7 @@ public class UserDetailActivity extends AppCompatActivity {
         userProfileService = ApiClient.getClient().create(UserProfileService.class);
         postService = ApiClient.getClient().create(PostService.class);
         relationService = ApiClient.getClient().create(RelationService.class);
+        notificationService = ApiClient.getClient().create(NotificationService.class);
 
         // binding
         lMain = findViewById(R.id.l_main);
@@ -254,11 +277,13 @@ public class UserDetailActivity extends AppCompatActivity {
             }
         });
 
-        // open chat activity
         lChatRelation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // open chat activity
+                Intent intent = new Intent(UserDetailActivity.this, MessageActivity.class);
+                intent.putExtra("user_id", user.getId());
+                startActivity(intent);
             }
         });
 
@@ -283,7 +308,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 onItemFriendClick(position);
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(UserDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(UserDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
         rvFriend.setLayoutManager(layoutManager);
         rvFriend.setAdapter(friendAdapter);
 
@@ -300,6 +325,9 @@ public class UserDetailActivity extends AppCompatActivity {
             @Override
             public void onGroupPostClick(int position) {
                 // open group detail
+                Intent intent = new Intent(UserDetailActivity.this, GroupDetailActivity.class);
+                intent.putExtra("group_id", posts.get(position).getGroup().getId());
+                startActivity(intent);
             }
 
             @Override
@@ -377,7 +405,7 @@ public class UserDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(UserDetailActivity.this);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(UserDetailActivity.this);
         rvPost.setLayoutManager(layoutManager2);
         rvPost.setAdapter(postAdapter);
 
@@ -649,8 +677,7 @@ public class UserDetailActivity extends AppCompatActivity {
         // update relation
         if (userId == Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0)) {
             lRelationUserProfile.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             handleRelation();
         }
     }
@@ -659,19 +686,19 @@ public class UserDetailActivity extends AppCompatActivity {
         switch (user.getRelation()) {
             case "friend":
                 btnChangeRelation.setText(R.string.friend);
-                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person_edit, 0,0,0);
+                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person_edit, 0, 0, 0);
                 break;
             case "receiver":
                 btnChangeRelation.setText(R.string.relation_sender_user_profile);
-                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_friend_request_cancel, 0,0,0);
+                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_friend_request_cancel, 0, 0, 0);
                 break;
             case "sender":
                 btnChangeRelation.setText(R.string.relation_receiver_user_profile);
-                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_friend_receiver, 0,0,0);
+                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_friend_receiver, 0, 0, 0);
                 break;
             default:
                 btnChangeRelation.setText(R.string.relation_default_user_profile);
-                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_friend_add, 0,0,0);
+                btnChangeRelation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_friend_add, 0, 0, 0);
         }
     }
 
@@ -882,6 +909,17 @@ public class UserDetailActivity extends AppCompatActivity {
                     user.setRelation("friend");
                     handleRelation();
                     Toast.makeText(UserDetailActivity.this, R.string.accept_friend_success, Toast.LENGTH_SHORT).show();
+
+                    // send a notification
+                    int receiverId = userId;
+                    String imageUrl = "";
+                    if (!Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "").isEmpty()) {
+                        imageUrl = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "");
+                    }
+                    int type = 2;
+                    String content = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, "") + " đã chấp nhận lời mời kết bạn của bạn";
+                    String url = "user/" + Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0);
+                    sendNotification(receiverId, imageUrl, type, content, url);
                 } else {
                     Toast.makeText(UserDetailActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 }
@@ -934,6 +972,17 @@ public class UserDetailActivity extends AppCompatActivity {
                     user.setRelation("receiver");
                     handleRelation();
                     Toast.makeText(UserDetailActivity.this, R.string.relation_create_request_friend_success, Toast.LENGTH_SHORT).show();
+
+                    // send a notification
+                    int receiverId = userId;
+                    String imageUrl = "";
+                    if (!Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "").isEmpty()) {
+                        imageUrl = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "");
+                    }
+                    int type = 1;
+                    String content = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, "") + " đã gửi cho bạn một lời mời kết bạn";
+                    String url = "request_friend";
+                    sendNotification(receiverId, imageUrl, type, content, url);
                 } else {
                     Toast.makeText(UserDetailActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 }
@@ -1179,6 +1228,34 @@ public class UserDetailActivity extends AppCompatActivity {
                 // error
                 call.cancel();
                 Toast.makeText(UserDetailActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendNotification(int receiverId, String imageUrl, int type, String content, String url) {
+        Map<String, Object> req = new HashMap<>();
+        req.put("receiver_id", receiverId);
+        req.put("type", type);
+        req.put("content", content);
+        req.put("url", url);
+        if (!imageUrl.isEmpty()) {
+            req.put("image_url", imageUrl);
+        }
+        Call<BaseResponse<Notification>> call = notificationService.createNotification(req);
+        call.enqueue(new Callback<BaseResponse<Notification>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<Notification>> call, Response<BaseResponse<Notification>> response) {
+                if (response.isSuccessful()) {
+                    // send a notification to FCM
+                    Data data = new Data("Social Network", content, "notification", url);
+                    NotificationExtension.sendFCMNotification(receiverId, data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
+                // error
+                call.cancel();
             }
         });
     }

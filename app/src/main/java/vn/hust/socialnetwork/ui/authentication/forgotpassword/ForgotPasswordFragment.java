@@ -88,12 +88,14 @@ public class ForgotPasswordFragment extends Fragment {
                     tvErrorEmail.setText(R.string.error_email_validation);
                     ContextExtension.showKeyboard(etEmail);
                 } else {
+                    btnSearchAccount.setEnabled(false);
                     pbLoading.setVisibility(View.VISIBLE);
                     // get user api
                     Call<BaseResponse<User>> call = authenticationService.forgotPassword(email);
                     call.enqueue(new Callback<BaseResponse<User>>() {
                         @Override
                         public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
+                            btnSearchAccount.setEnabled(true);
                             if (response.isSuccessful()) {
                                 BaseResponse<User> res = response.body();
                                 User user = res.getData();
@@ -116,6 +118,7 @@ public class ForgotPasswordFragment extends Fragment {
                             call.cancel();
                             Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                             pbLoading.setVisibility(View.GONE);
+                            btnSearchAccount.setEnabled(true);
                         }
                     });
                 }

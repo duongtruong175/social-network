@@ -27,11 +27,28 @@ public class StringExtension {
     }
 
     /**
+     * Format string member group count.
+     *
+     * @param count number member of the group
+     * @return xxxk
+     */
+    public static String formatMemberGroupCount(int count) {
+        if (count >= 1000000) {
+            double temp = count / 1000000.0;
+            return ((double) Math.floor(temp * 10) / 10) + " triệu";
+        }
+        if (count >= 1000) {
+            return (count / 1000) + "k";
+        }
+        return String.valueOf(count);
+    }
+
+    /**
      * Check not null and not empty for a string object.
      *
      * @param str a string
      * @return true if string is not null and has value
-     *         <p>false if string is null or empty
+     * <p>false if string is null or empty
      */
     public static boolean checkValidValueString(String str) {
         return str != null && !str.isEmpty();

@@ -7,6 +7,18 @@
     android:background="@color/white"
     tools:context=".ui.main.group.GroupFragment">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/pb_loading"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:theme="@style/CustomLinearProgressIndicator"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:trackThickness="3dp" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/l_header"
         android:layout_width="match_parent"
@@ -29,6 +41,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_search"
             android:layout_width="@dimen/icon_with_background_size_default"
             android:layout_height="@dimen/icon_with_background_size_default"
             android:background="@drawable/bg_button_circle_gray"
@@ -41,123 +54,187 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/l_group_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="@dimen/story_padding"
         app:layout_constraintTop_toBottomOf="@+id/l_header">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <HorizontalScrollView
+            android:id="@+id/l_action_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_my_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_button_round_gray_24"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_round_groups_24"
+                    android:drawablePadding="6dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/f_roboto_regular"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="@string/my_group"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_propose_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_button_round_gray_24"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_baseline_stars_24"
+                    android:drawablePadding="6dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/f_roboto_regular"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="@string/propose"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_my_group"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_add_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_button_round_gray_24"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_sharp_add_group_24"
+                    android:drawablePadding="6dp"
+                    android:focusable="true"
+                    android:fontFamily="@font/f_roboto_regular"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="@string/create_group"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/tv_propose_group"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </HorizontalScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/l_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/l_group_menu">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="6dp"
-                android:paddingVertical="@dimen/story_padding">
+                android:orientation="vertical">
 
-                <HorizontalScrollView
-                    android:id="@+id/l_action_group"
+                <!-- Main layout -->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/l_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_my_group"
-                            android:layout_width="wrap_content"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_group"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_button_round_gray_24"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:drawableStart="@drawable/ic_round_groups_24"
-                            android:drawablePadding="6dp"
-                            android:fontFamily="@font/f_roboto_regular"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp"
-                            android:text="@string/my_group"
-                            android:textColor="@color/color_text_primary"
-                            android:textSize="14sp"
+                            android:orientation="horizontal"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingBottom="12dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:listitem="@layout/item_group" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_propose_group"
+                            android:id="@+id/tv_group_empty"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:background="@drawable/bg_button_round_gray_24"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:drawableStart="@drawable/ic_baseline_stars_24"
-                            android:drawablePadding="6dp"
-                            android:fontFamily="@font/f_roboto_regular"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp"
-                            android:text="@string/propose"
+                            android:paddingStart="20dp"
+                            android:paddingTop="50dp"
+                            android:paddingEnd="20dp"
+                            android:paddingBottom="50dp"
+                            android:text="@string/empty_join_group"
                             android:textColor="@color/color_text_primary"
-                            android:textSize="14sp"
-                            app:layout_constraintStart_toEndOf="@+id/tv_my_group"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tv_add_group"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:background="@drawable/bg_button_round_gray_24"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:drawableStart="@drawable/ic_sharp_add_group_24"
-                            android:drawablePadding="6dp"
-                            android:fontFamily="@font/f_roboto_regular"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp"
-                            android:text="@string/create_group"
-                            android:textColor="@color/color_text_primary"
-                            android:textSize="14sp"
-                            app:layout_constraintStart_toEndOf="@+id/tv_propose_group"
+                            android:textSize="18sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </HorizontalScrollView>
+                    <include layout="@layout/divider_all" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_feed_group"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_post"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_post" />
+
+                    <!-- Post empty -->
+                    <include
+                        android:id="@+id/l_post_empty"
+                        layout="@layout/post_empty"
+                        android:visibility="gone" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <!-- loading layout -->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/l_shimmer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/story_padding"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/l_action_group"
-                    tools:listitem="@layout/item_feed_group" />
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:shimmer_base_alpha="0.5">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <include
+                        layout="@layout/layout_shimmer_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-            <include layout="@layout/divider_all" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_post"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_post" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

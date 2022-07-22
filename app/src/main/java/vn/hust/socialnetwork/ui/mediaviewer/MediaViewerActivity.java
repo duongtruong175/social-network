@@ -132,7 +132,7 @@ public class MediaViewerActivity extends AppCompatActivity {
                         .subscribe(granted -> {
                             if (granted) {
                                 if (checkValidValueString(media_url)) {
-                                    String domain = "5478be9f822ec1";
+                                    String domain = "304a34d3fb5607";
                                     String urlDownload = media_url.replace("http://192.168.43.2:8000", "https://" + domain + ".lhrtunnel.link");
                                     new MediaDownloader(MediaViewerActivity.this).download(urlDownload);
                                 }

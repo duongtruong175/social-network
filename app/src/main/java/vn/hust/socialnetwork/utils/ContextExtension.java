@@ -1,6 +1,7 @@
 package vn.hust.socialnetwork.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -24,6 +25,7 @@ import com.github.pgreze.reactions.ReactionsConfigBuilder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import vn.hust.socialnetwork.R;
 
@@ -161,5 +163,23 @@ public class ContextExtension {
         fileOutputStream.flush();
         fileOutputStream.close();
         return file;
+    }
+
+    /**
+     * Check app is running background or not
+     */
+    public static boolean isAppRunning(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        if (appProcesses == null) {
+            return false;
+        }
+        final String packageName = context.getPackageName();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName.equals(packageName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -73,10 +73,10 @@
                     android:id="@+id/tv_error_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/color_error_text"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
+                    android:visibility="gone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,10 +111,10 @@
                     android:id="@+id/tv_error_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/color_error_text"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
+                    android:visibility="gone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,10 +149,10 @@
                     android:id="@+id/tv_error_confirm_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/color_error_text"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
+                    android:visibility="gone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,8 +187,8 @@
                     android:drawablePadding="@dimen/drawable_edit_text_horizontal"
                     android:hint="@string/authentication_name_hint"
                     android:inputType="text"
-                    android:maxLines="1"
                     android:maxLength="30"
+                    android:maxLines="1"
                     android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
                     android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
@@ -198,10 +198,10 @@
                     android:id="@+id/tv_error_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/color_error_text"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
+                    android:visibility="gone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -234,23 +234,23 @@
                     android:layout_height="@dimen/edit_text_height"
                     android:drawableStart="@drawable/ic_calendar_month_24"
                     android:drawablePadding="@dimen/drawable_edit_text_horizontal"
-                    android:hint="@string/authentication_birthday_hint"
                     android:gravity="center|start"
+                    android:hint="@string/authentication_birthday_hint"
                     android:maxLines="1"
-                    android:textColor="@color/color_text_primary"
                     android:paddingHorizontal="@dimen/edit_text_padding_horizontal"
                     android:paddingVertical="@dimen/edit_text_padding_vertical"
                     android:singleLine="true"
+                    android:textColor="@color/color_text_primary"
                     android:textSize="@dimen/edit_text_text_size" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_error_birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/color_error_text"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
+                    android:visibility="gone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -277,7 +277,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_gender_label">
 
-                <RadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_male"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -286,7 +286,7 @@
                     android:text="@string/male"
                     android:textSize="@dimen/edit_text_text_size" />
 
-                <RadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_female"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -294,7 +294,7 @@
                     android:text="@string/female"
                     android:textSize="@dimen/edit_text_text_size" />
 
-                <RadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_other"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

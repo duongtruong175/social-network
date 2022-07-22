@@ -38,6 +38,17 @@
         <item name="android:statusBarColor">@color/black</item>
     </style>
 
+    <!-- Theme for view story -->
+    <style name="StoryTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
     <!-- Theme for ExposedDropdownMenu -->
     <style name="ExposedDropdownMenuTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/black</item>

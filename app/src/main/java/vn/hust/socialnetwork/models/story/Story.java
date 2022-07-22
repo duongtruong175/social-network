@@ -23,7 +23,10 @@ public class Story implements Parcelable {
     private String endTime;
     @SerializedName("viewed")
     @Expose
-    private int viewed;
+    private boolean viewed;
+    @SerializedName("viewer_count")
+    @Expose
+    private int viewerCount;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -31,12 +34,13 @@ public class Story implements Parcelable {
     @Expose
     private String updatedAt;
 
-    public Story(int id, UserStory user, Media media, String endTime, int viewed, String createdAt, String updatedAt) {
+    public Story(int id, UserStory user, Media media, String endTime, boolean viewed, int viewerCount, String createdAt, String updatedAt) {
         this.id = id;
         this.user = user;
         this.media = media;
         this.endTime = endTime;
         this.viewed = viewed;
+        this.viewerCount = viewerCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -46,7 +50,8 @@ public class Story implements Parcelable {
         user = in.readParcelable(UserStory.class.getClassLoader());
         media = in.readParcelable(Media.class.getClassLoader());
         endTime = in.readString();
-        viewed = in.readInt();
+        viewed = in.readByte() != 0;
+        viewerCount = in.readInt();
         createdAt = in.readString();
         updatedAt = in.readString();
     }
@@ -69,14 +74,15 @@ public class Story implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeParcelable(user, i);
-        parcel.writeParcelable(media, i);
-        parcel.writeString(endTime);
-        parcel.writeInt(viewed);
-        parcel.writeString(createdAt);
-        parcel.writeString(updatedAt);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeParcelable(user, flags);
+        dest.writeParcelable(media, flags);
+        dest.writeString(endTime);
+        dest.writeByte((byte) (viewed ? 1 : 0));
+        dest.writeInt(viewerCount);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
     }
 
     public int getId() {
@@ -111,12 +117,20 @@ public class Story implements Parcelable {
         this.endTime = endTime;
     }
 
-    public int getViewed() {
+    public boolean isViewed() {
         return viewed;
     }
 
-    public void setViewed(int viewed) {
+    public void setViewed(boolean viewed) {
         this.viewed = viewed;
+    }
+
+    public int getViewerCount() {
+        return viewerCount;
+    }
+
+    public void setViewerCount(int viewerCount) {
+        this.viewerCount = viewerCount;
     }
 
     public String getCreatedAt() {

@@ -116,6 +116,36 @@ public class TimeExtension {
     }
 
     /**
+     * Format time string to display time story.
+     * Calculator difference time to now.
+     *
+     * @param time a UTC ISO-8601 datetime string (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')
+     * @return time ago
+     */
+    public static String formatTimeStory(String time) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = sdf.parse(time);
+            long t = date.getTime();
+            long now = System.currentTimeMillis();
+            CharSequence ago;
+            if (now - t > DateUtils.DAY_IN_MILLIS) {
+                ago = (now - t) / DateUtils.DAY_IN_MILLIS + " ngày trước";
+            } else if (now - t > DateUtils.HOUR_IN_MILLIS) {
+                ago = DateUtils.getRelativeTimeSpanString(t, now, DateUtils.HOUR_IN_MILLIS);
+            } else if (now - t > DateUtils.MINUTE_IN_MILLIS) {
+                ago = DateUtils.getRelativeTimeSpanString(t, now, DateUtils.MINUTE_IN_MILLIS);
+            } else {
+                ago = "Vừa xong";
+            }
+            return (String) ago;
+        } catch (ParseException e) {
+            return "";
+        }
+    }
+
+    /**
      * Format time string to display time relation.
      * Calculator difference time to now.
      *
@@ -168,6 +198,45 @@ public class TimeExtension {
             // Add one to month {0 - 11}
             int month = calendar.get(Calendar.MONTH) + 1;
             return "Tháng " + month + " năm " + year;
+        } catch (ParseException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Format time string to display time message send.
+     * Calculator difference time to now.
+     *
+     * @param time a UTC ISO-8601 datetime string (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')
+     * @return HH:mm, dd-MM-yyy
+     */
+    public static String formatTimeMessage(long time) {
+        if (time == 0) {
+            return "";
+        }
+        Date date = new Date(time);
+        SimpleDateFormat newFormat = new SimpleDateFormat("HH:mm, dd-MM-yyyy");
+        return newFormat.format(date);
+    }
+
+    /**
+     * Format time string to display time create group.
+     *
+     * @param time a UTC ISO-8601 datetime string (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')
+     * @return dd/MM/yyyy
+     */
+    public static String formatTimeCreateGroup(String time) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+            Date date = sdf.parse(time);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int year = calendar.get(Calendar.YEAR);
+            // Add one to month {0 - 11}
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            return day + "/" + month + "/" + year;
         } catch (ParseException e) {
             return "";
         }

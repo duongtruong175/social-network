@@ -103,6 +103,7 @@ public class VerifyOtpFragment extends Fragment {
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ContextExtension.hideKeyboard(getActivity());
                 String otp_code = etOtp.getText().toString().trim();
                 if (otp_code.length() != 6) {
                     ContextExtension.showKeyboard(etOtp);
@@ -138,8 +139,7 @@ public class VerifyOtpFragment extends Fragment {
                                 call.cancel();
                                 Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                                 pbLoading.setVisibility(View.GONE);
-                            }
-                        });
+                            }                        });
                     }
                     else if (type == 2) {
                         pbLoading.setVisibility(View.VISIBLE);

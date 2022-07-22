@@ -1,5 +1,6 @@
 package vn.hust.socialnetwork.ui.relation;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -19,25 +20,47 @@ import android.widget.Toast;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.models.BaseResponse;
+import vn.hust.socialnetwork.models.fcm.Data;
+import vn.hust.socialnetwork.models.fcm.DataMessageSender;
+import vn.hust.socialnetwork.models.fcm.FCMResponse;
+import vn.hust.socialnetwork.models.fcm.Token;
+import vn.hust.socialnetwork.models.notification.Notification;
 import vn.hust.socialnetwork.models.relation.DestinationUser;
 import vn.hust.socialnetwork.models.relation.RelationUser;
 import vn.hust.socialnetwork.network.ApiClient;
+import vn.hust.socialnetwork.network.NotificationService;
 import vn.hust.socialnetwork.network.RelationService;
+import vn.hust.socialnetwork.ui.main.userprofile.crop.CropUserAvatarActivity;
+import vn.hust.socialnetwork.ui.message.MessageActivity;
 import vn.hust.socialnetwork.ui.relation.adapters.OnAddFriendListener;
 import vn.hust.socialnetwork.ui.relation.adapters.OnFriendListener;
 import vn.hust.socialnetwork.ui.relation.adapters.OnRequestFriendListener;
 import vn.hust.socialnetwork.ui.relation.adapters.OnSuggestFriendListener;
 import vn.hust.socialnetwork.ui.relation.adapters.RelationAdapter;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
+import vn.hust.socialnetwork.utils.AppSharedPreferences;
+import vn.hust.socialnetwork.utils.NotificationExtension;
+import vn.hust.socialnetwork.utils.StringExtension;
 
 public class RelationActivity extends AppCompatActivity {
 
@@ -47,6 +70,7 @@ public class RelationActivity extends AppCompatActivity {
     private static final int ITEM_SUGGEST_FRIEND = 4;
 
     private RelationService relationService;
+    private NotificationService notificationService;
 
     private AppCompatImageView ivToolbarBack;
     private SearchView svToolbarSearch;
@@ -65,6 +89,7 @@ public class RelationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_relation);
         // api
         relationService = ApiClient.getClient().create(RelationService.class);
+        notificationService = ApiClient.getClient().create(NotificationService.class);
 
         // binding
         ivToolbarBack = findViewById(R.id.iv_toolbar_back);
@@ -92,7 +117,9 @@ public class RelationActivity extends AppCompatActivity {
                 DestinationUser user = viewRelations.get(position).getUser();
                 if (user != null) {
                     // open chat activity
-
+                    Intent intent = new Intent(RelationActivity.this, MessageActivity.class);
+                    intent.putExtra("user_id", user.getId());
+                    startActivity(intent);
                 }
             }
         }, new OnAddFriendListener() {
@@ -146,7 +173,7 @@ public class RelationActivity extends AppCompatActivity {
                 // delete suggest friend
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(RelationActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(RelationActivity.this);
         rvRelation.setLayoutManager(layoutManager);
         rvRelation.setAdapter(relationAdapter);
 
@@ -181,6 +208,25 @@ public class RelationActivity extends AppCompatActivity {
         // init tab layout
         initRelationTabs();
         tbRelation.getTabAt(2).select();
+
+        // navigation
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String navigation = extras.getString("navigation_to");
+            switch (navigation) {
+                case "add_friend":
+                    tbRelation.getTabAt(0).select();
+                    break;
+                case "suggest_friend":
+                    tbRelation.getTabAt(1).select();
+                    break;
+                case "request_friend":
+                    tbRelation.getTabAt(3).select();
+                    break;
+                default:
+                    tbRelation.getTabAt(2).select();
+            }
+        }
 
         // get data
         getData();
@@ -347,6 +393,17 @@ public class RelationActivity extends AppCompatActivity {
                     viewRelations.remove(position);
                     relationAdapter.notifyItemRemoved(position);
                     Toast.makeText(RelationActivity.this, R.string.accept_friend_success, Toast.LENGTH_SHORT).show();
+
+                    // send a notification
+                    int receiverId = relationUser.getUser().getId();
+                    String imageUrl = "";
+                    if (!Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "").isEmpty()) {
+                        imageUrl = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "");
+                    }
+                    int type = 2;
+                    String content = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, "") + " đã chấp nhận lời mời kết bạn của bạn";
+                    String url = "user/" + Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0);
+                    sendNotification(receiverId, imageUrl, type, content, url);
                 } else {
                     Toast.makeText(RelationActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 }
@@ -412,6 +469,17 @@ public class RelationActivity extends AppCompatActivity {
                     // update list
                     relations.add(res.getData());
                     Toast.makeText(RelationActivity.this, R.string.relation_create_request_friend_success, Toast.LENGTH_SHORT).show();
+
+                    // send a notification
+                    int receiverId = destinationUser.getId();
+                    String imageUrl = "";
+                    if (!Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "").isEmpty()) {
+                        imageUrl = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "");
+                    }
+                    int type = 1;
+                    String content = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, "") + " đã gửi cho bạn một lời mời kết bạn";
+                    String url = "request_friend";
+                    sendNotification(receiverId, imageUrl, type, content, url);
                 } else {
                     Toast.makeText(RelationActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 }
@@ -425,6 +493,34 @@ public class RelationActivity extends AppCompatActivity {
                 call.cancel();
                 pbLoading.setVisibility(View.GONE);
                 Toast.makeText(RelationActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendNotification(int receiverId, String imageUrl, int type, String content, String url){
+        Map<String, Object> req = new HashMap<>();
+        req.put("receiver_id", receiverId);
+        req.put("type", type);
+        req.put("content", content);
+        req.put("url", url);
+        if (!imageUrl.isEmpty()) {
+            req.put("image_url", imageUrl);
+        }
+        Call<BaseResponse<Notification>> call = notificationService.createNotification(req);
+        call.enqueue(new Callback<BaseResponse<Notification>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<Notification>> call, Response<BaseResponse<Notification>> response) {
+                if (response.isSuccessful()) {
+                    // send a notification to FCM
+                    Data data = new Data("Social Network", content, "notification", url);
+                    NotificationExtension.sendFCMNotification(receiverId, data);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
+                // error
+                call.cancel();
             }
         });
     }

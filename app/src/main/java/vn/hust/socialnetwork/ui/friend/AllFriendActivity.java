@@ -83,7 +83,7 @@ public class AllFriendActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AllFriendActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(AllFriendActivity.this);
         rvFriend.setLayoutManager(layoutManager);
         rvFriend.setAdapter(friendAdapter);
 

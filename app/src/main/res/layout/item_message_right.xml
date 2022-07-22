@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_time_send_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/l_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/civ_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time_send_message">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/l_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-10dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/tv_message_content"
+            app:layout_constraintEnd_toEndOf="@+id/tv_message_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_reply"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="4dp"
+                android:tint="@color/color_text_secondary"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_reply_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_reply_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_reply_name"
+                app:srcCompat="@drawable/ic_reply_black" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reply_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:ellipsize="end"
+                android:maxWidth="200dp"
+                android:maxLines="1"
+                android:textSize="12sp"
+                android:tint="@color/color_text_secondary"
+                app:layout_constraintBottom_toTopOf="@+id/tv_reply_message"
+                app:layout_constraintEnd_toEndOf="@+id/tv_reply_message" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reply_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_8"
+                android:backgroundTint="#F6F6F6"
+                android:ellipsize="end"
+                android:maxWidth="200dp"
+                android:maxLines="2"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_message_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_16"
+            android:backgroundTint="@color/color_text_highlight"
+            android:maxWidth="250dp"
+            android:paddingStart="12dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/l_react_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="1dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/l_message"
+        app:layout_constraintTop_toBottomOf="@+id/l_message">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_react_message"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_avatar"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="2dp"
+        android:src="@drawable/default_avatar"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -55,7 +56,6 @@ public class RegisterFragment extends Fragment {
 
     private TextInputEditText etEmail, etPassword, etConfirmPassword, etName;
     private RadioGroup rgGender;
-    private RadioButton rbSelected;
     private AppCompatTextView etBirthday, tvTermService, tvLogin, tvErrorEmail, tvErrorPassword, tvErrorConfirmPassword, tvErrorBirthday, tvErrorName;
     private AppCompatButton btnRegister;
 
@@ -154,9 +154,15 @@ public class RegisterFragment extends Fragment {
         String[] s = birthday.split("/");
         birthday = s[2] + "-" + s[1] + "-" + s[0];
         // get gender
-        int selectedId = rgGender.getCheckedRadioButtonId();
-        rbSelected = getView().findViewById(selectedId);
-        String gender = rbSelected.getText().toString().trim();
+        int rbSelectedId = rgGender.getCheckedRadioButtonId();
+        String gender = getString(R.string.male); // default "Nam"
+        if (rbSelectedId == R.id.rb_male){
+            gender = getString(R.string.male);
+        } else if (rbSelectedId == R.id.rb_female) {
+            gender = getString(R.string.female);
+        } else if (rbSelectedId == R.id.rb_other) {
+            gender = getString(R.string.other);
+        }
 
         // validate
         if (email.isEmpty() || !validateEmail(email)) {

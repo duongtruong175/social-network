@@ -190,6 +190,7 @@ public class CropUserCoverActivity extends AppCompatActivity {
             });
         } else {
             progressDialog.dismiss();
+            Toast.makeText(CropUserCoverActivity.this, R.string.error_crop_image_failure, Toast.LENGTH_SHORT).show();
         }
     }
 }
