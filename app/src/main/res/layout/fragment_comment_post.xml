@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/l_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".common.view.commentpost.CommentPostFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_bottom_sheet_white_round_right_left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/f_roboto_medium"
+                android:padding="10dp"
+                android:text="@string/comment"
+                android:textColor="@color/color_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/v_divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_divider_line"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+            <!-- main layout -->
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/l_swipe_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- list comment -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toTopOf="@+id/v_divider_3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_comment" />
+
+                    <!-- empty data -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/l_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/v_divider_3"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_empty_text_data"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="4dp"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_empty_text_data"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:srcCompat="@drawable/ic_comment_empty" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_empty_text_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/comment_no_data"
+                            android:textColor="@color/color_text_secondary"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_empty_text_data_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/comment_no_data_description"
+                            android:textColor="@color/color_text_secondary"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_empty_text_data" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- error layout -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/l_error"
+                        style="@style/ClickableLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/v_divider_3"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            app:layout_constraintBottom_toTopOf="@+id/tv_error"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:srcCompat="@drawable/ic_comment_network_error" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_error"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="@font/f_roboto_medium"
+                            android:text="@string/error_load_comment"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_error_reload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:drawableStart="@drawable/ic_reload"
+                            android:drawablePadding="6dp"
+                            android:drawableTint="@color/color_text_primary"
+                            android:text="@string/error_reload_comment"
+                            android:textColor="@color/color_text_primary"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_error" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/v_divider_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/color_divider_line"
+                        app:layout_constraintBottom_toTopOf="@+id/l_comment_container"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- Comment container -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/l_comment_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <!-- hide/show photo of input comment -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/l_input_media_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toTopOf="@+id/l_input_content_comment"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_upload_photo_comment"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                android:adjustViewBounds="true"
+                                android:scaleType="centerInside"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_cancel_upload_photo"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="-6dp"
+                                android:layout_marginTop="-10dp"
+                                android:tint="@color/color_drawable_edit_text"
+                                app:layout_constraintStart_toEndOf="@+id/iv_upload_photo_comment"
+                                app:layout_constraintTop_toTopOf="@+id/iv_upload_photo_comment"
+                                app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- input text of comment -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/l_input_content_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/l_input_media_comment">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_round_light_gray_12"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/iv_send_comment"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/et_content_comment"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:background="@android:color/transparent"
+                                    android:gravity="center_vertical"
+                                    android:hint="@string/write_comment"
+                                    android:inputType="textMultiLine|textCapSentences"
+                                    android:maxLength="1000"
+                                    android:maxLines="5"
+                                    android:paddingTop="8dp"
+                                    android:paddingBottom="8dp"
+                                    android:scrollbarStyle="insideOverlay"
+                                    android:scrollbars="vertical"
+                                    android:singleLine="false"
+                                    android:textColor="@color/color_text_post"
+                                    android:textColorHint="@color/color_text_secondary"
+                                    android:textSize="15sp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/iv_add_emoji_comment"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_add_emoji_comment"
+                                    style="@style/ClickableView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent"
+                                    android:padding="8dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/iv_add_photo_comment"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_add_sticker" />
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_add_photo_comment"
+                                    style="@style/ClickableView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="8dp"
+                                    android:tint="@color/color_drawable_post"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:srcCompat="@drawable/ic_add_photo_comment" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_send_comment"
+                                style="@style/ClickableView"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:padding="4dp"
+                                android:tint="@drawable/selector_button_send"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_send" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/pb_loading_comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:theme="@style/CustomLinearProgressIndicator"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_divider"
+                app:trackThickness="3dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

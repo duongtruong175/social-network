@@ -23,6 +23,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -162,20 +163,13 @@ public class ReactUserFragment extends BottomSheetDialogFragment {
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
         ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
 
-        int windowHeight = getWindowHeight();
+        int windowHeight = WindowManager.LayoutParams.MATCH_PARENT;
         if (layoutParams != null) {
             layoutParams.height = windowHeight;
         }
         bottomSheet.setLayoutParams(layoutParams);
         // if want dialog display fullscreen when opening, uncomment the line below
         //behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    private int getWindowHeight() {
-        // Calculate window height for fullscreen use
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.heightPixels;
     }
 
     private void getData() {

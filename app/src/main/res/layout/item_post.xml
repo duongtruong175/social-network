@@ -369,8 +369,8 @@
         android:id="@+id/l_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         app:layout_constraintTop_toBottomOf="@+id/v_divider_2">

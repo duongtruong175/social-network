@@ -63,6 +63,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.style.CustomTypefaceSpan;
+import vn.hust.socialnetwork.common.view.commentpost.CommentPostFragment;
+import vn.hust.socialnetwork.common.view.commentpost.OnBottomSheetDismiss;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.media.Media;
@@ -403,6 +405,19 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onShareActionClick(View lContentToShare, int position) {
                 showSharePost(lContentToShare, position);
+            }
+
+            @Override
+            public void onShowCommentDialogClick(AppCompatTextView tvCommentCount, int position) {
+                Post post = posts.get(position);
+                BottomSheetDialogFragment bottomSheetDialogFragment = new CommentPostFragment(post, new OnBottomSheetDismiss() {
+                    @Override
+                    public void onDialogDismiss(int totalComment) {
+                        posts.get(position).getCounts().setCommentCount(totalComment);
+                        tvCommentCount.setText(totalComment + " " + getString(R.string.comment_count));
+                    }
+                });
+                bottomSheetDialogFragment.show(getParentFragmentManager(), bottomSheetDialogFragment.getTag());
             }
 
             @Override

@@ -34,6 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vn.hust.socialnetwork.R;
+import vn.hust.socialnetwork.common.view.viewerstory.OnBottomSheetDismiss;
 import vn.hust.socialnetwork.common.view.viewerstory.ViewerStoryFragment;
 import vn.hust.socialnetwork.event.StoryChangeEvent;
 import vn.hust.socialnetwork.models.BaseResponse;

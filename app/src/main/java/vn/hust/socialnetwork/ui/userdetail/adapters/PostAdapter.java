@@ -473,7 +473,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 lComment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onPostListener.onCommentActionClick(getBindingAdapterPosition());
+                        onPostListener.onShowCommentDialogClick(tvCommentCount, getBindingAdapterPosition());
                     }
                 });
                 lHeader.setOnClickListener(new View.OnClickListener() {

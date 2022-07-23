@@ -3,7 +3,6 @@ package vn.hust.socialnetwork.ui.postdetail;
 import static vn.hust.socialnetwork.utils.ContextExtension.getImageFromLayout;
 import static vn.hust.socialnetwork.utils.StringExtension.checkValidValueString;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;

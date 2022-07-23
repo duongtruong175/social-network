@@ -1,4 +1,4 @@
-package vn.hust.socialnetwork.ui.story;
+package vn.hust.socialnetwork.common.view.viewerstory;
 
 public interface OnBottomSheetDismiss {
     void onDialogDismiss();

@@ -72,6 +72,8 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_chat_selected.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_chat_unselected.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_clear_edit_text.xml" value="0.11" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_comment_empty.xml" value="0.2085" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_comment_network_error.xml" value="0.1605" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_comment_post.xml" value="0.21" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_continue_post.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_copy_link.xml" value="0.1" />
@@ -135,6 +137,7 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_private.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_public.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_qr_code.xml" value="0.11" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_reload_24.xml" value="0.1275" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_reply_black_24dp.xml" value="0.1075" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_reply_white.xml" value="0.2555" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_report.xml" value="0.1" />
@@ -229,6 +232,7 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_birthday_profile.xml" value="0.4" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_change_password.xml" value="0.2" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_chat.xml" value="0.14423076923076922" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_comment_post.xml" value="0.264" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_description_profile.xml" value="0.264" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_education_profile.xml" value="0.4" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_feed.xml" value="0.2344894968246214" />
@@ -248,7 +252,7 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_relationship_profile.xml" value="0.4" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_user_profile.xml" value="0.264" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_verify_otp.xml" value="0.264" />
-        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_viewer_story.xml" value="0.1777456647398844" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_viewer_story.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_website_profile.xml" value="0.264" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/item_add_story.xml" value="0.6" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/item_album.xml" value="0.6" />
