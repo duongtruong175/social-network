@@ -412,4 +412,9 @@
     <string name="call_response_reject">Cuộc gọi bị từ chối</string>
     <string name="call_audio_description">Cuộc gọi thoại trên Social Network</string>
     <string name="call_video_description">Cuộc gọi video trên Social Network</string>
+    <string name="album_photo_empty">Chưa có ảnh nào</string>
+    <string name="album_video_empty">Chưa có video nào</string>
+    <string name="search_user">Tìm người</string>
+    <string name="search_group">Tìm nhóm</string>
+    <string name="search_empty">Không tìm được kết quả nào phù hợp</string>
 </resources>

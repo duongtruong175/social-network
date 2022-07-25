@@ -433,7 +433,7 @@ public class MessageActivity extends AppCompatActivity {
                     messageAdapter.notifyDataSetChanged();
 
                     // new message -> show button "scroll to end"
-                    if (btnScrollEnd.getVisibility() == View.INVISIBLE) {
+                    if (btnScrollEnd.getVisibility() == View.INVISIBLE && messages.size() > 0) {
                         LinearLayoutManager layoutManager = (LinearLayoutManager) rvMessage.getLayoutManager();
                         if (layoutManager != null) {
                             if (isAddOrFirstLoadMessage) {
@@ -441,7 +441,11 @@ public class MessageActivity extends AppCompatActivity {
                                 isAddOrFirstLoadMessage = false;
                             } else {
                                 int lastVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
-                                if (lastVisiblePosition != messages.size() - 1) {
+                                // if screen is displaying least two last message -> scroll
+                                if (lastVisiblePosition + 3 >= messages.size()) {
+                                    rvMessage.smoothScrollToPosition(messages.size() - 1);
+                                }
+                                else if (lastVisiblePosition != messages.size() - 1) {
                                     btnScrollEnd.setVisibility(View.VISIBLE);
                                     btnScrollEnd.startAnimation(AnimationUtils.loadAnimation(MessageActivity.this, R.anim.slide_in_up));
                                 }

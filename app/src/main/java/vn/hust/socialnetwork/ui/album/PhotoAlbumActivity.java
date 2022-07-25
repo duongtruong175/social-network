@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
 
     private RecyclerView rvPhoto;
     private AppCompatImageView ivToolbarBack;
-    private AppCompatTextView tvToolbarTitle;
+    private AppCompatTextView tvToolbarTitle, tvEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         ivToolbarBack = findViewById(R.id.iv_toolbar_back);
         tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
         rvPhoto = findViewById(R.id.rv_photo);
+        tvEmpty = findViewById(R.id.tv_empty_text_data);
 
         // init
         tvToolbarTitle.setText(R.string.toolbar_title_photo_album);
@@ -99,12 +101,17 @@ public class PhotoAlbumActivity extends AppCompatActivity {
                     // update new photos
                     photos.addAll(res.getData());
                     photoAdapter.notifyDataSetChanged();
+                    if (photos.size() == 0) {
+                        tvEmpty.setVisibility(View.VISIBLE);
+                    } else {
+                        tvEmpty.setVisibility(View.GONE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<BaseResponse<List<String>>> call, Throwable t) {
-
+                Toast.makeText(PhotoAlbumActivity.this, R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
             }
         });
     }

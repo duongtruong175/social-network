@@ -248,7 +248,7 @@ public class RegisterFragment extends Fragment {
         ContextExtension.hideKeyboard(getActivity());
         String birthday = etBirthday.getText().toString().trim();
         int day, month, year;
-        if (birthday.equals("dd/MM/yyyy")) {
+        if (birthday.isEmpty() || birthday.equals("dd/MM/yyyy")) {
             c = Calendar.getInstance();
             day = c.get(Calendar.DAY_OF_MONTH);
             month = c.get(Calendar.MONTH);

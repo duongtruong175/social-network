@@ -46,21 +46,125 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
+        android:id="@+id/pb_loading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:theme="@style/CustomLinearProgressIndicator"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:trackThickness="3dp" />
 
     <!-- show result of search -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/l_list_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/f_roboto_medium"
+                    android:text="@string/search_user"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_friend_user_profile_vertical" />
+
+                <include layout="@layout/divider_all" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/l_list_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/l_list_user">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/f_roboto_medium"
+                    android:text="@string/search_group"
+                    android:textColor="@color/color_text_primary"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_group" />
+
+                <include layout="@layout/divider_all" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/l_search_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:tint="@color/color_text_secondary"
+            app:srcCompat="@drawable/ic_round_search_off_24" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/f_roboto_medium"
+            android:gravity="center"
+            android:text="@string/search_empty"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="20sp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -109,66 +109,79 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:layout_height="wrap_content" >
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/f_roboto_medium"
-                android:text="@string/friend"
-                android:textColor="@color/color_text_primary"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_friend"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_label"
-                tools:listitem="@layout/item_friend_chat_vertical" />
+                android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
 
-        <include layout="@layout/divider_line" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/f_roboto_medium"
+                        android:text="@string/friend"
+                        android:textColor="@color/color_text_primary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_friend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label"
+                        tools:listitem="@layout/item_friend_chat_vertical" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_label_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/f_roboto_medium"
-                android:text="@string/conversation"
-                android:textColor="@color/color_text_primary"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_conversation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_2"
-                tools:listitem="@layout/item_conversation" />
+                <include layout="@layout/divider_line" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_label_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/f_roboto_medium"
+                        android:text="@string/conversation"
+                        android:textColor="@color/color_text_primary"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_conversation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_label_2"
+                        tools:listitem="@layout/item_conversation" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
