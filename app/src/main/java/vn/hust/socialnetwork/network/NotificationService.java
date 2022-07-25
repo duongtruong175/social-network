@@ -44,5 +44,5 @@ public interface NotificationService {
             }
     )
     @POST("fcm/send")
-    Call<FCMResponse> sendFCMNotification(@Body DataMessageSender body);
+    Call<FCMResponse> sendFCMNotification(@Body DataMessageSender message);
 }

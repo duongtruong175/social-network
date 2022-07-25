@@ -155,8 +155,8 @@ public class LoginFragment extends Fragment {
                             Hawk.put(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, user.getName());
                             Hawk.put(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, user.getAvatar());
                             Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
-                            getActivity().finish();
                         }
                     } else {
                         // response code is not 2xx

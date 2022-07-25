@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -30,7 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.orhanobut.hawk.Hawk;
+import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.vanniktech.emoji.EmojiPopup;
 import com.vanniktech.emoji.listeners.OnEmojiPopupDismissListener;
 import com.vanniktech.emoji.listeners.OnEmojiPopupShownListener;
@@ -62,12 +66,16 @@ import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.ChatService;
 import vn.hust.socialnetwork.network.NotificationService;
 import vn.hust.socialnetwork.network.UserProfileService;
+import vn.hust.socialnetwork.ui.call.CallOutgoingActivity;
 import vn.hust.socialnetwork.ui.message.adapters.MessageAdapter;
 import vn.hust.socialnetwork.ui.message.adapters.OnMessageListener;
+import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
+import vn.hust.socialnetwork.utils.MediaPicker;
 import vn.hust.socialnetwork.utils.NotificationExtension;
+import vn.hust.socialnetwork.utils.RequestCodeResultActivity;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -203,14 +211,32 @@ public class MessageActivity extends AppCompatActivity {
         ivCallPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // call a phone (update later)
+                // call a phone
+                RxPermissions rxPermissions = new RxPermissions(MessageActivity.this);
+                rxPermissions.request(Manifest.permission.RECORD_AUDIO)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                initiateAudioMeeting();
+                            } else {
+                                Toast.makeText(MessageActivity.this, R.string.permission_request_denied, Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
         ivCallVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // call a video (update later)
+                // call a video
+                RxPermissions rxPermissions = new RxPermissions(MessageActivity.this);
+                rxPermissions.request(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
+                        .subscribe(granted -> {
+                            if (granted) {
+                                initiateVideoMeeting();
+                            } else {
+                                Toast.makeText(MessageActivity.this, R.string.permission_request_denied, Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
@@ -241,6 +267,22 @@ public class MessageActivity extends AppCompatActivity {
 
         // get data
         getUserDetail();
+    }
+
+    private void initiateAudioMeeting() {
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MessageActivity.this);
+        Intent intent = new Intent(MessageActivity.this, CallOutgoingActivity.class);
+        intent.putExtra("user", friend);
+        intent.putExtra("meeting_type", "audio");
+        startActivity(intent, options.toBundle());
+    }
+
+    private void initiateVideoMeeting() {
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MessageActivity.this);
+        Intent intent = new Intent(MessageActivity.this, CallOutgoingActivity.class);
+        intent.putExtra("user", friend);
+        intent.putExtra("meeting_type", "video");
+        startActivity(intent, options.toBundle());
     }
 
     private void handleView() {

@@ -30,6 +30,9 @@ import vn.hust.socialnetwork.network.NotificationService;
 
 public class NotificationExtension {
 
+    private static final String FCM_BASE_URL = "https://fcm.googleapis.com/";
+    private static Retrofit retrofit = null;
+
     public static final String CHANNEL_POST_SUCCESS = "post_success";
     public static final String CHANNEL_GROUP_SUCCESS = "group_success";
     public static final String CHANNEL_STORY_SUCCESS = "story_success";
@@ -113,8 +116,8 @@ public class NotificationExtension {
      * Send a notification to FCM
      */
     public static NotificationService getFCMApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://fcm.googleapis.com/")
+        retrofit = new Retrofit.Builder()
+                .baseUrl(FCM_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(NotificationService.class);
@@ -126,19 +129,21 @@ public class NotificationExtension {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // one value
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Token token = snap.getValue(Token.class);
                     DataMessageSender messageSender = new DataMessageSender(data, token.getToken());
                     NotificationService fcmApi = getFCMApi();
-                    fcmApi.sendFCMNotification(messageSender).enqueue(new Callback<FCMResponse>() {
+                    Call<FCMResponse> call = fcmApi.sendFCMNotification(messageSender);
+                    call.enqueue(new Callback<FCMResponse>() {
                         @Override
                         public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-
+                            // nothing
                         }
 
                         @Override
                         public void onFailure(Call<FCMResponse> call, Throwable t) {
-
+                            call.cancel();
                         }
                     });
                 }

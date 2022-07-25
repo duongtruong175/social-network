@@ -33,9 +33,11 @@ public class SplashActivity extends AppCompatActivity {
     private void checkLogin() {
         String token = Hawk.get(AppSharedPreferences.TOKEN_KEY, "");
         boolean isLogin = Hawk.get(AppSharedPreferences.IS_LOGIN_KEY, false);
+        int userId = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0);
+        String userName = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_NAME_KEY, "");
 
         Intent intent;
-        if (!token.isEmpty() && isLogin) {
+        if (!token.isEmpty() && isLogin && userId != 0 && !userName.isEmpty()) {
             intent = new Intent(SplashActivity.this, MainActivity.class);
         } else {
             intent = new Intent(SplashActivity.this, AuthenticationActivity.class);

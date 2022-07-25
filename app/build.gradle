@@ -127,6 +127,9 @@ dependencies {
 
     // event bus
     implementation 'org.greenrobot:eventbus:3.3.1'
+
+    // video/audio call
+    implementation ('org.jitsi.react:jitsi-meet-sdk:3.8.0') { transitive = true }
 }
 
 apply plugin: 'com.google.gms.google-services'

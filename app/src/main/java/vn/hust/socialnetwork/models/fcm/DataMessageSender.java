@@ -1,19 +1,19 @@
 package vn.hust.socialnetwork.models.fcm;
 
 public class DataMessageSender {
-    private Data data;
-    private String to;
+    private Object data;
+    private String to; // if wants send many device -> registration_ids: []
 
-    public DataMessageSender(Data data, String to) {
+    public DataMessageSender(Object data, String to) {
         this.data = data;
         this.to = to;
     }
 
-    public Data getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

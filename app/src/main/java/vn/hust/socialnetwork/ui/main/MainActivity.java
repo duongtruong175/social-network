@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // disable auto change color of BottomNavigationView
         bottomNavigation.setItemIconTintList(null);
 
+        // update FCM token
         String fcmToken = Hawk.get(AppSharedPreferences.FCM_TOKEN, "");
         if (!fcmToken.isEmpty()) {
             String userId = String.valueOf(Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0));

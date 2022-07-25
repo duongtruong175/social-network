@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.FirebaseDatabase;
 import com.orhanobut.hawk.Hawk;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 
@@ -205,6 +206,10 @@ public class MenuProfileActivity extends AppCompatActivity {
                     Hawk.put(AppSharedPreferences.LOGGED_IN_USER_AVATAR_KEY, "");
                     Hawk.put(AppSharedPreferences.IS_LOGIN_KEY, false);
                     Hawk.put(AppSharedPreferences.TOKEN_KEY, "");
+                    // clear FCM token
+                    String userId = String.valueOf(user.getId());
+                    FirebaseDatabase.getInstance().getReference("fcmTokens").child(userId).setValue(null);
+
                     Intent intent = new Intent(MenuProfileActivity.this, AuthenticationActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
