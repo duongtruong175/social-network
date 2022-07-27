@@ -417,4 +417,7 @@
     <string name="search_user">Tìm người</string>
     <string name="search_group">Tìm nhóm</string>
     <string name="search_empty">Không tìm được kết quả nào phù hợp</string>
+    <string name="account_locked">Tài khoản của bạn tạm thời bị khóa</string>
+    <string name="locked_description">Tài khoản của bạn đã bị vô hiệu hóa vì những hành vi không chuẩn mực. Điều này trái với tiêu chuẩn cộng đồng của Social Network.</string>
+    <string name="locked_report">Nếu bạn cho rằng chúng tôi đã nhầm lẫn, hãy cho chúng tôi biết.</string>
 </resources>

@@ -131,7 +131,7 @@ public class PostDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             } else {
                 postHolder.lEdited.setVisibility(View.VISIBLE);
             }
-            postHolder.tvContent.setText(post.getCaption());
+            postHolder.tvContent.setText(StringExtension.cleanContent(post.getCaption()));
             Media media = post.getMedia();
             if (media != null) {
                 postHolder.lMediaContent.setVisibility(View.VISIBLE);
@@ -257,7 +257,7 @@ public class PostDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .error(R.drawable.default_avatar)
                     .into(commentHolder.civImageAvatarComment);
             commentHolder.tvUserNameComment.setText(comment.getUser().getName());
-            commentHolder.tvContentComment.setText(comment.getContent());
+            commentHolder.tvContentComment.setText(StringExtension.cleanContent(comment.getContent()));
             commentHolder.tvTimeComment.setText(TimeExtension.formatTimeComment(comment.getUpdatedAt()));
             if (comment.getCreatedAt().equals(comment.getUpdatedAt())) {
                 commentHolder.lEdited.setVisibility(View.GONE);

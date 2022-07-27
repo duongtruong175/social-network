@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,9 +14,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import vn.hust.socialnetwork.R;
+import vn.hust.socialnetwork.models.BaseResponse;
+import vn.hust.socialnetwork.network.ApiClient;
+import vn.hust.socialnetwork.network.SensitiveWordService;
 import vn.hust.socialnetwork.ui.main.chat.ChatFragment;
 import vn.hust.socialnetwork.ui.main.feed.FeedFragment;
 import vn.hust.socialnetwork.ui.main.group.GroupFragment;
@@ -28,6 +32,8 @@ import vn.hust.socialnetwork.ui.main.userprofile.UserProfileFragment;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SensitiveWordService sensitiveWordService;
 
     private BottomNavigationView bottomNavigation;
     private FeedFragment feedFragment;
@@ -44,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(0, 0);
         setContentView(R.layout.activity_main);
 
+        // api
+        sensitiveWordService = ApiClient.getClient().create(SensitiveWordService.class);
+
         // binding
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
@@ -59,9 +68,8 @@ public class MainActivity extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference("fcmTokens").child(userId).setValue(values);
         }
 
-        // set navigation graph with bottom navigation
-        // NavController navController = Navigation.findNavController(this, R.id.main_nav_host_fragment);
-        // NavigationUI.setupWithNavController(bottomNavigation, navController);
+        // get sensitive word
+        getSensitiveWord();
 
         bottomNavigation.setOnItemSelectedListener(onItemSelectedListener);
         bottomNavigation.setOnItemReselectedListener(onItemReselectedListener);
@@ -179,4 +187,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void getSensitiveWord() {
+        Call<BaseResponse<List<String>>> call = sensitiveWordService.getSensitiveWords();
+        call.enqueue(new Callback<BaseResponse<List<String>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<String>>> call, Response<BaseResponse<List<String>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<String>> res = response.body();
+                    List<String> words = res.getData();
+                    Hawk.put(AppSharedPreferences.SENSITIVE_WORD_KEY, words);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<String>>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
 }

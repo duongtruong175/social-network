@@ -1,5 +1,12 @@
 package vn.hust.socialnetwork.utils;
 
+import android.util.Log;
+
+import com.orhanobut.hawk.Hawk;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class StringExtension {
 
     /**
@@ -52,5 +59,29 @@ public class StringExtension {
      */
     public static boolean checkValidValueString(String str) {
         return str != null && !str.isEmpty();
+    }
+
+    /**
+     * Replace sensitive words to ***
+     */
+    public static String cleanContent(String content) {
+        List<String> sensitiveWords = Hawk.get(AppSharedPreferences.SENSITIVE_WORD_KEY, new ArrayList<>());
+        for (String word : sensitiveWords) {
+            String lowerWord = word.toLowerCase();
+            String upperWord = word.toUpperCase();
+            String convertWord = getConvertWord(word.length());
+            content = content.replace(word, convertWord);
+            content = content.replace(lowerWord, convertWord);
+            content = content.replace(upperWord, convertWord);
+        }
+        return content;
+    }
+
+    public static String getConvertWord(int lengthWord) {
+        String s = "";
+        for (int i = 0; i < lengthWord; i++) {
+            s = s + "*";
+        }
+        return s;
     }
 }

@@ -63,7 +63,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 .error(R.drawable.default_avatar)
                 .into(holder.civImageAvatarComment);
         holder.tvUserNameComment.setText(comment.getUser().getName());
-        holder.tvContentComment.setText(comment.getContent());
+        holder.tvContentComment.setText(StringExtension.cleanContent(comment.getContent()));
         holder.tvTimeComment.setText(TimeExtension.formatTimeComment(comment.getUpdatedAt()));
         if (comment.getCreatedAt().equals(comment.getUpdatedAt())) {
             holder.lEdited.setVisibility(View.GONE);

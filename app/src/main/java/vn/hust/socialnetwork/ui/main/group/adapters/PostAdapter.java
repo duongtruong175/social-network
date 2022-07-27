@@ -92,7 +92,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         } else {
             holder.lEdited.setVisibility(View.VISIBLE);
         }
-        holder.tvContent.setText(post.getCaption());
+        holder.tvContent.setText(StringExtension.cleanContent(post.getCaption()));
         Media media = post.getMedia();
         if (media != null) {
             holder.lMediaContent.setVisibility(View.VISIBLE);
