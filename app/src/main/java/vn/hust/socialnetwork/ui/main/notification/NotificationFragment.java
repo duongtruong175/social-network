@@ -3,6 +3,7 @@ package vn.hust.socialnetwork.ui.main.notification;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -95,6 +96,15 @@ public class NotificationFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvNotification.setLayoutManager(layoutManager);
         rvNotification.setAdapter(notificationAdapter);
+        rvNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!lSwipeRefresh.isRefreshing()) {
+                    lSwipeRefresh.setEnabled(!rvNotification.canScrollVertically(-1));
+                }
+            }
+        });
 
         ivReadAll.setEnabled(false);
         ivReadAll.setColorFilter(ContextCompat.getColor(getActivity(), R.color.color_text_secondary));

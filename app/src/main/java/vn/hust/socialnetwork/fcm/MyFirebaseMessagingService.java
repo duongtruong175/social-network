@@ -20,6 +20,7 @@ import java.util.Map;
 
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.ui.call.CallIncomingActivity;
+import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
 import vn.hust.socialnetwork.ui.groupdetail.requestjoin.RequestJoinGroupActivity;
 import vn.hust.socialnetwork.ui.message.MessageActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
@@ -154,6 +155,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 intent = new Intent(this, PostDetailActivity.class);
                                 intent.putExtra("post_id", id);
                             } else if (s[0].equals("group")) {
+                                intent = new Intent(this, GroupDetailActivity.class);
+                                intent.putExtra("group_id", id);
+                            } else if (s[0].equals("request_join_group")) {
                                 intent = new Intent(this, RequestJoinGroupActivity.class);
                                 intent.putExtra("group_id", id);
                             }
