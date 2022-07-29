@@ -18,6 +18,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -123,6 +124,7 @@ public class GroupDetailActivity extends AppCompatActivity {
     private CoordinatorLayout lMain;
     private ShimmerFrameLayout lShimmer;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private NestedScrollView lNestedScrollView;
     private AppBarLayout appBarLayout;
     private AppCompatTextView tvGroupNameToolbar, tvGroupName, tvJoinGroup, tvInviteFriend, tvGroupType, tvGroupMemberCount, tvGroupPostCount, tvCreateGroupTime;
     private LinearLayoutCompat lMemberGroup;
@@ -134,6 +136,11 @@ public class GroupDetailActivity extends AppCompatActivity {
     private AppCompatButton btnRefresh;
     private RecyclerView rvPost;
     private FloatingActionButton btnAddPost;
+
+    private int limitPost = 5;
+    private int pagePost = 1;
+    private boolean isLoadingMorePost = false;
+    private boolean canLoadMorePost = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +168,7 @@ public class GroupDetailActivity extends AppCompatActivity {
         pbLoading = findViewById(R.id.pb_loading);
         btnRefresh = findViewById(R.id.btn_refresh);
         swipeRefreshLayout = findViewById(R.id.l_swipe_refresh);
+        lNestedScrollView = findViewById(R.id.l_nested_scroll_view);
         appBarLayout = findViewById(R.id.ab_main_group_detail);
         ivBackToolbar = findViewById(R.id.iv_back_toolbar);
         ivMenuToolbar = findViewById(R.id.iv_menu_toolbar);
@@ -390,6 +398,18 @@ public class GroupDetailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(GroupDetailActivity.this);
         rvPost.setLayoutManager(layoutManager);
         rvPost.setAdapter(postAdapter);
+
+        // detect scroll bottom of RecyclerView in NestedScrollView
+        lNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    if (canLoadMorePost && !isLoadingMorePost) {
+                        loadMorePost(groupId);
+                    }
+                }
+            }
+        });
 
         // call api to get all data
         getData();
@@ -716,7 +736,10 @@ public class GroupDetailActivity extends AppCompatActivity {
     }
 
     private void getPosts(int groupId) {
-        Call<BaseResponse<List<Post>>> call = groupService.getGroupPosts(groupId);
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitPost * pagePost);
+        options.put("page", 1);
+        Call<BaseResponse<List<Post>>> call = groupService.getGroupPosts(groupId, options);
         call.enqueue(new Callback<BaseResponse<List<Post>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
@@ -727,8 +750,10 @@ public class GroupDetailActivity extends AppCompatActivity {
                     postAdapter.notifyDataSetChanged();
                     if (posts.size() == 0) {
                         lPostEmpty.setVisibility(View.VISIBLE);
+                        canLoadMorePost = false;
                     } else {
                         lPostEmpty.setVisibility(View.GONE);
+                        canLoadMorePost = true;
                     }
                 }
             }
@@ -1283,6 +1308,44 @@ public class GroupDetailActivity extends AppCompatActivity {
             public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
                 // error
                 call.cancel();
+            }
+        });
+    }
+
+    private void loadMorePost(int groupId) {
+        isLoadingMorePost = true;
+        // call api to get more post
+        pbLoading.setVisibility(View.VISIBLE);
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitPost);
+        options.put("page", pagePost + 1);
+        Call<BaseResponse<List<Post>>> call = groupService.getGroupPosts(groupId, options);
+        call.enqueue(new Callback<BaseResponse<List<Post>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<Post>> res = response.body();
+                    List<Post> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = posts.size();
+                        posts.addAll(moreData);
+                        postAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                    } else {
+                        canLoadMorePost = false;
+                    }
+                    pagePost++;
+                }
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMorePost = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Post>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMorePost = false;
             }
         });
     }

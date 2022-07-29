@@ -9,15 +9,15 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/pb_loading"
-        android:theme="@style/CustomLinearProgressIndicator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:theme="@style/CustomLinearProgressIndicator"
         android:visibility="gone"
-        app:trackThickness="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:trackThickness="3dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/l_header"
@@ -44,11 +44,11 @@
             android:id="@+id/iv_read_all"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:padding="8dp"
+            android:tint="@color/color_text_secondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:padding="8dp"
-            android:tint="@color/color_text_secondary"
             app:srcCompat="@drawable/ic_baseline_playlist_add_check_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -57,9 +57,9 @@
         android:id="@+id/l_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/l_header">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,6 +73,24 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/item_notification" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_empty_text_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:drawableStart="@drawable/ic_star_notification"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/color_text_primary"
+                android:text="@string/no_data_notification"
+                android:textColor="@color/color_text_primary"
+                android:textSize="20sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

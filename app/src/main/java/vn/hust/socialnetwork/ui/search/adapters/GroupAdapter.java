@@ -16,6 +16,7 @@ import java.util.List;
 
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.models.group.Group;
+import vn.hust.socialnetwork.utils.StringExtension;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
 
@@ -32,7 +33,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     @NonNull
     @Override
     public GroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_group, parent, false);
         return new GroupViewHolder(view);
     }
 
@@ -45,6 +46,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
                 .error(R.drawable.default_group_cover)
                 .into(holder.ivGroupCover);
         holder.tvGroupName.setText(group.getName());
+        holder.tvGroupMemberCount.setText(StringExtension.formatMemberGroupCount(group.getCounts().getMemberCount()) + " thành viên");
     }
 
     @Override
@@ -55,13 +57,14 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     public class GroupViewHolder extends RecyclerView.ViewHolder {
 
         AppCompatImageView ivGroupCover;
-        AppCompatTextView tvGroupName;
+        AppCompatTextView tvGroupName, tvGroupMemberCount;
 
         public GroupViewHolder(@NonNull View itemView) {
             super(itemView);
             // binding
             ivGroupCover = itemView.findViewById(R.id.iv_group_cover);
             tvGroupName = itemView.findViewById(R.id.tv_group_name);
+            tvGroupMemberCount = itemView.findViewById(R.id.tv_group_member_count);
 
             if (onGroupListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {

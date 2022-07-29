@@ -246,11 +246,13 @@
                         android:padding="16dp"
                         android:weightSum="3">
 
+                        <!-- update later -->
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/l_security_menu_profile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="invisible">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/iv_function_4"
@@ -275,11 +277,13 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+                        <!-- update later -->
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/l_setting_menu_profile"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:visibility="invisible">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/iv_function_5"

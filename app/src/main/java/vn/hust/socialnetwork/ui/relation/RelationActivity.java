@@ -1,6 +1,5 @@
 package vn.hust.socialnetwork.ui.relation;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -20,12 +19,6 @@ import android.widget.Toast;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.ArrayList;
@@ -36,21 +29,15 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.fcm.Data;
-import vn.hust.socialnetwork.models.fcm.DataMessageSender;
-import vn.hust.socialnetwork.models.fcm.FCMResponse;
-import vn.hust.socialnetwork.models.fcm.Token;
 import vn.hust.socialnetwork.models.notification.Notification;
 import vn.hust.socialnetwork.models.relation.DestinationUser;
 import vn.hust.socialnetwork.models.relation.RelationUser;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.NotificationService;
 import vn.hust.socialnetwork.network.RelationService;
-import vn.hust.socialnetwork.ui.main.userprofile.crop.CropUserAvatarActivity;
 import vn.hust.socialnetwork.ui.message.MessageActivity;
 import vn.hust.socialnetwork.ui.relation.adapters.OnAddFriendListener;
 import vn.hust.socialnetwork.ui.relation.adapters.OnFriendListener;
@@ -60,7 +47,6 @@ import vn.hust.socialnetwork.ui.relation.adapters.RelationAdapter;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.NotificationExtension;
-import vn.hust.socialnetwork.utils.StringExtension;
 
 public class RelationActivity extends AppCompatActivity {
 

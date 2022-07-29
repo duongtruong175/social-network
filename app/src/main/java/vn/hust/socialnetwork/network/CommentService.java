@@ -11,7 +11,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.post.CommentPost;
 import vn.hust.socialnetwork.models.post.ReactCount;
@@ -20,7 +20,7 @@ import vn.hust.socialnetwork.models.post.ReactUser;
 public interface CommentService {
     // Comment
     @GET("comment/v1.0/comments")
-    Call<BaseResponse<List<CommentPost>>> getCommentsByPostId(@Query("post_id") int postId);
+    Call<BaseResponse<List<CommentPost>>> getCommentsByPostId(@QueryMap Map<String, Object> options);
 
     @FormUrlEncoded
     @POST("comment/v1.0/create")

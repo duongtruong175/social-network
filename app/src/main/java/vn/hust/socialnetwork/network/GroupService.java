@@ -15,6 +15,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.group.Group;
 import vn.hust.socialnetwork.models.group.MemberGroup;
@@ -29,13 +30,13 @@ public interface GroupService {
     Call<BaseResponse<List<Group>>> getSuggestGroups();
 
     @GET("group/v1.0/groups/feed")
-    Call<BaseResponse<List<Post>>> getFeedGroup();
+    Call<BaseResponse<List<Post>>> getFeedGroup(@QueryMap Map<String, Object> options);
 
     @GET("group/v1.0/view/{id}")
     Call<BaseResponse<Group>> getGroupDetail(@Path("id") int id);
 
     @GET("group/v1.0/{id}/posts")
-    Call<BaseResponse<List<Post>>> getGroupPosts(@Path("id") int id);
+    Call<BaseResponse<List<Post>>> getGroupPosts(@Path("id") int id, @QueryMap Map<String, Object> options);
 
     @GET("group/v1.0/{id}/members")
     Call<BaseResponse<List<MemberGroup>>> getMemberGroups(@Path("id") int id);

@@ -1,4 +1,4 @@
-package vn.hust.socialnetwork.ui.main.feed.adapters;
+package vn.hust.socialnetwork.ui.search.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

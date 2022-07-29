@@ -132,20 +132,22 @@ public class NotificationExtension {
                 // one value
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     Token token = snap.getValue(Token.class);
-                    DataMessageSender messageSender = new DataMessageSender(data, token.getToken());
-                    NotificationService fcmApi = getFCMApi();
-                    Call<FCMResponse> call = fcmApi.sendFCMNotification(messageSender);
-                    call.enqueue(new Callback<FCMResponse>() {
-                        @Override
-                        public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
-                            // nothing
-                        }
+                    if (token != null && !token.getToken().isEmpty()) {
+                        DataMessageSender messageSender = new DataMessageSender(data, token.getToken());
+                        NotificationService fcmApi = getFCMApi();
+                        Call<FCMResponse> call = fcmApi.sendFCMNotification(messageSender);
+                        call.enqueue(new Callback<FCMResponse>() {
+                            @Override
+                            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                                // nothing
+                            }
 
-                        @Override
-                        public void onFailure(Call<FCMResponse> call, Throwable t) {
-                            call.cancel();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<FCMResponse> call, Throwable t) {
+                                call.cancel();
+                            }
+                        });
+                    }
                 }
             }
 

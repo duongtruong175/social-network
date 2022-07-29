@@ -116,6 +116,11 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
     private List<CommentPost> comments;
     private CommentAdapter commentAdapter;
 
+    private int limitComment = 5;
+    private int pageComment = 1;
+    private boolean isLoadingMoreComment = false;
+    private boolean canLoadMoreComment = true;
+
     public CommentPostFragment() {
         // Required empty public constructor
     }
@@ -327,6 +332,17 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
         rvComment.setAdapter(commentAdapter);
         rvComment.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                // end list
+                if (!recyclerView.canScrollVertically(1)) {
+                    if (canLoadMoreComment && !isLoadingMoreComment) {
+                        loadMoreComment(postId);
+                    }
+                }
+            }
+
+            @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (!lSwipeRefresh.isRefreshing()) {
@@ -413,7 +429,11 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
     }
 
     private void getCommentPost(int postId) {
-        Call<BaseResponse<List<CommentPost>>> call = commentService.getCommentsByPostId(postId);
+        Map<String, Object> options = new HashMap<>();
+        options.put("post_id", postId);
+        options.put("limit", limitComment * pageComment);
+        options.put("page", 1);
+        Call<BaseResponse<List<CommentPost>>> call = commentService.getCommentsByPostId(options);
         call.enqueue(new Callback<BaseResponse<List<CommentPost>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<CommentPost>>> call, Response<BaseResponse<List<CommentPost>>> response) {
@@ -425,8 +445,10 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
                     lError.setVisibility(View.GONE);
                     if (comments.size() == 0) {
                         lEmpty.setVisibility(View.VISIBLE);
+                        canLoadMoreComment = false;
                     } else {
                         lEmpty.setVisibility(View.GONE);
+                        canLoadMoreComment = true;
                     }
                 } else {
                     lError.setVisibility(View.VISIBLE);
@@ -671,6 +693,44 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
             public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
                 // error
                 call.cancel();
+            }
+        });
+    }
+
+    private void loadMoreComment(int postId) {
+        isLoadingMoreComment = true;
+        pbLoadingComment.setVisibility(View.VISIBLE);
+        Map<String, Object> options = new HashMap<>();
+        options.put("post_id", postId);
+        options.put("limit", limitComment);
+        options.put("page", pageComment + 1);
+        Call<BaseResponse<List<CommentPost>>> call = commentService.getCommentsByPostId(options);
+        call.enqueue(new Callback<BaseResponse<List<CommentPost>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<CommentPost>>> call, Response<BaseResponse<List<CommentPost>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<CommentPost>> res = response.body();
+                    List<CommentPost> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = comments.size();
+                        comments.addAll(moreData);
+                        commentAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                    } else {
+                        canLoadMoreComment = false;
+                    }
+                    pageComment++;
+                }
+                pbLoadingComment.setVisibility(View.GONE);
+                isLoadingMoreComment = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<CommentPost>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                pbLoadingComment.setVisibility(View.GONE);
+                isLoadingMoreComment = false;
             }
         });
     }

@@ -12,18 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/pb_loading"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:theme="@style/CustomLinearProgressIndicator"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:trackThickness="3dp" />
-
         <!-- main layout -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/l_main"
@@ -919,6 +907,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
+
+        <!-- load more -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/pb_loading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:theme="@style/CustomLinearProgressIndicator"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:trackThickness="3dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

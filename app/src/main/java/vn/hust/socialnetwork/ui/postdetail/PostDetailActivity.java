@@ -3,6 +3,7 @@ package vn.hust.socialnetwork.ui.postdetail;
 import static vn.hust.socialnetwork.utils.ContextExtension.getImageFromLayout;
 import static vn.hust.socialnetwork.utils.StringExtension.checkValidValueString;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -126,6 +128,11 @@ public class PostDetailActivity extends AppCompatActivity {
     private List<Post> viewPosts; // only a item
     private List<CommentPost> comments;
     private PostDetailAdapter postDetailAdapter;
+
+    private int limitComment = 5;
+    private int pageComment = 1;
+    private boolean isLoadingMoreComment = false;
+    private boolean canLoadMoreComment = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -456,6 +463,18 @@ public class PostDetailActivity extends AppCompatActivity {
         rvPostDetail.setLayoutManager(layoutManager);
         rvPostDetail.setHasFixedSize(true);
         rvPostDetail.setAdapter(postDetailAdapter);
+        rvPostDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                // end list
+                if (!recyclerView.canScrollVertically(1)) {
+                    if (canLoadMoreComment && !isLoadingMoreComment) {
+                        loadMoreComment(postId);
+                    }
+                }
+            }
+        });
     }
 
     private void getPostDetail(int postId) {
@@ -493,7 +512,11 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void getCommentPost(int postId) {
-        Call<BaseResponse<List<CommentPost>>> call = commentService.getCommentsByPostId(postId);
+        Map<String, Object> options = new HashMap<>();
+        options.put("post_id", postId);
+        options.put("limit", limitComment * pageComment);
+        options.put("page", 1);
+        Call<BaseResponse<List<CommentPost>>> call = commentService.getCommentsByPostId(options);
         call.enqueue(new Callback<BaseResponse<List<CommentPost>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<CommentPost>>> call, Response<BaseResponse<List<CommentPost>>> response) {
@@ -502,6 +525,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     comments.clear();
                     comments.addAll(res.getData());
                     postDetailAdapter.notifyDataSetChanged();
+                    if (comments.size() == 0) {
+                        canLoadMoreComment = false;
+                    } else {
+                        canLoadMoreComment = true;
+                    }
                 }
             }
 
@@ -942,7 +970,7 @@ public class PostDetailActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    private void sendNotification(int receiverId, String imageUrl, int type, String content, String url){
+    private void sendNotification(int receiverId, String imageUrl, int type, String content, String url) {
         Map<String, Object> req = new HashMap<>();
         req.put("receiver_id", receiverId);
         req.put("type", type);
@@ -966,6 +994,44 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onFailure(Call<BaseResponse<Notification>> call, Throwable t) {
                 // error
                 call.cancel();
+            }
+        });
+    }
+
+    private void loadMoreComment(int postId) {
+        isLoadingMoreComment = true;
+        pbLoadingComment.setVisibility(View.VISIBLE);
+        Map<String, Object> options = new HashMap<>();
+        options.put("post_id", postId);
+        options.put("limit", limitComment);
+        options.put("page", pageComment + 1);
+        Call<BaseResponse<List<CommentPost>>> call = commentService.getCommentsByPostId(options);
+        call.enqueue(new Callback<BaseResponse<List<CommentPost>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<CommentPost>>> call, Response<BaseResponse<List<CommentPost>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<CommentPost>> res = response.body();
+                    List<CommentPost> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = 1 + comments.size();
+                        comments.addAll(moreData);
+                        postDetailAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                    } else {
+                        canLoadMoreComment = false;
+                    }
+                    pageComment++;
+                }
+                pbLoadingComment.setVisibility(View.GONE);
+                isLoadingMoreComment = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<CommentPost>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                pbLoadingComment.setVisibility(View.GONE);
+                isLoadingMoreComment = false;
             }
         });
     }

@@ -106,10 +106,7 @@ dependencies {
 
     // shared preferences
     implementation 'com.orhanobut:hawk:2.0.1'
-
-    // toast custom
-    implementation 'com.github.GrenderG:Toasty:1.5.2'
-
+    
     // shimmer loading
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 

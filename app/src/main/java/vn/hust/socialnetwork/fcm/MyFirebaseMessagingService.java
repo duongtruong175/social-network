@@ -17,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.orhanobut.hawk.Hawk;
 
 import java.util.Map;
+import java.util.Random;
 
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.ui.call.CallIncomingActivity;
@@ -33,6 +34,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String CHANNEL_NOTIFICATION = "fcm_notification";
     public static final String CHANNEL_MESSAGE = "fcm_message";
+    public static final String GROUP_NOTIFICATION_MESSAGE = "vn.hust.socialnetwork.message";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
@@ -120,6 +122,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 .setContentTitle(title)
                                 .setContentText(body)
                                 .setContentIntent(pendingIntent)
+                                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                                .setGroup(GROUP_NOTIFICATION_MESSAGE)
                                 .setAutoCancel(true)
                                 .setOngoing(false)
                                 .setSmallIcon(R.drawable.splash_logo)
@@ -127,7 +131,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 .setWhen(System.currentTimeMillis())
                                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                        int notificationId = 6;
+                        int notificationId = new Random().nextInt(1001) + 10; // random int in [10, 1000]
                         notificationManager.notify(notificationId, builder.build());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -178,6 +182,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .setContentTitle(title)
                             .setContentText(body)
                             .setContentIntent(pendingIntent)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
                             .setAutoCancel(true)
                             .setOngoing(false)
                             .setSmallIcon(R.drawable.splash_logo)
@@ -185,7 +190,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .setWhen(System.currentTimeMillis())
                             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                    int notificationId = 8;
+                    int notificationId = new Random().nextInt(2001) + 1001; // random int in [1001, 2000]
                     notificationManager.notify(notificationId, builder.build());
                 } catch (Exception e) {
                     e.printStackTrace();

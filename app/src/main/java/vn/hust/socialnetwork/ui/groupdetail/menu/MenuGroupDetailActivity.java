@@ -185,6 +185,7 @@ public class MenuGroupDetailActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         if (data != null) {
                             group = data.getParcelableExtra("updated_group");
+                            tvGroupName.setText(group.getName());
                         }
                     }
                 }

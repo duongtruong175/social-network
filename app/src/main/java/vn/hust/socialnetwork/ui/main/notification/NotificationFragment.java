@@ -23,10 +23,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,11 +50,17 @@ public class NotificationFragment extends Fragment {
 
     private LinearProgressIndicator pbLoading;
     private AppCompatImageView ivReadAll;
+    private AppCompatTextView tvEmptyTextData;
     private SwipeRefreshLayout lSwipeRefresh;
     private RecyclerView rvNotification;
 
     private NotificationAdapter notificationAdapter;
     private List<Notification> notifications;
+
+    private int limitNotification = 5;
+    private int pageNotification = 1;
+    private boolean isLoadingMoreNotification = false;
+    private boolean canLoadMoreNotification = true;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -79,6 +86,7 @@ public class NotificationFragment extends Fragment {
         ivReadAll = view.findViewById(R.id.iv_read_all);
         lSwipeRefresh = view.findViewById(R.id.l_swipe_refresh);
         rvNotification = view.findViewById(R.id.rv_notification);
+        tvEmptyTextData = view.findViewById(R.id.tv_empty_text_data);
 
         // init
         notifications = new ArrayList<>();
@@ -98,10 +106,13 @@ public class NotificationFragment extends Fragment {
         rvNotification.setAdapter(notificationAdapter);
         rvNotification.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (!lSwipeRefresh.isRefreshing()) {
-                    lSwipeRefresh.setEnabled(!rvNotification.canScrollVertically(-1));
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                // end list
+                if (!recyclerView.canScrollVertically(1)) {
+                    if (canLoadMoreNotification && !isLoadingMoreNotification) {
+                        loadMoreNotification();
+                    }
                 }
             }
         });
@@ -341,7 +352,7 @@ public class NotificationFragment extends Fragment {
                 // error network (no internet connection, socket timeout, unknown host, ...)
                 // error serializing/deserializing the data
                 call.cancel();
-                Toasty.error(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT, true).show();
+                Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 ivReadAll.setEnabled(true);
                 ivReadAll.setColorFilter(ContextCompat.getColor(getActivity(), R.color.color_text_primary));
                 pbLoading.setVisibility(View.GONE);
@@ -356,7 +367,10 @@ public class NotificationFragment extends Fragment {
     private void getAllNotifications() {
         // call api get notifications
         pbLoading.setVisibility(View.VISIBLE);
-        Call<BaseResponse<List<Notification>>> call = notificationService.getNotifications();
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitNotification * pageNotification);
+        options.put("page", 1);
+        Call<BaseResponse<List<Notification>>> call = notificationService.getNotifications(options);
         call.enqueue(new Callback<BaseResponse<List<Notification>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Notification>>> call, Response<BaseResponse<List<Notification>>> response) {
@@ -367,6 +381,13 @@ public class NotificationFragment extends Fragment {
                     notifications.addAll(res.getData());
                     notificationAdapter.notifyDataSetChanged();
                     handleUnreadNotifications();
+                    if (notifications.size() == 0) {
+                        tvEmptyTextData.setVisibility(View.VISIBLE);
+                        canLoadMoreNotification = false;
+                    } else {
+                        tvEmptyTextData.setVisibility(View.GONE);
+                        canLoadMoreNotification = true;
+                    }
                 }
                 pbLoading.setVisibility(View.GONE);
             }
@@ -376,8 +397,49 @@ public class NotificationFragment extends Fragment {
                 // error network (no internet connection, socket timeout, unknown host, ...)
                 // error serializing/deserializing the data
                 call.cancel();
-                Toasty.error(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT, true).show();
+                Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
                 pbLoading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void loadMoreNotification() {
+        isLoadingMoreNotification = true;
+        // call api get more notifications
+        pbLoading.setVisibility(View.VISIBLE);
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitNotification);
+        options.put("page", pageNotification + 1);
+        Call<BaseResponse<List<Notification>>> call = notificationService.getNotifications(options);
+        call.enqueue(new Callback<BaseResponse<List<Notification>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Notification>>> call, Response<BaseResponse<List<Notification>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<Notification>> res = response.body();
+                    List<Notification> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = notifications.size();
+                        // update new notifications
+                        notifications.addAll(moreData);
+                        notificationAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                        handleUnreadNotifications();
+                    } else {
+                        canLoadMoreNotification = false;
+                    }
+                    pageNotification++;
+                }
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMoreNotification = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Notification>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMoreNotification = false;
             }
         });
     }

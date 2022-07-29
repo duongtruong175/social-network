@@ -13,6 +13,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.post.Post;
 import vn.hust.socialnetwork.models.user.Relation;
@@ -52,5 +53,5 @@ public interface UserProfileService {
     Call<BaseResponse<List<Relation>>> getAllFriends(@Path("id") int id);
 
     @GET("user-profile/v1.0/profile/{id}/posts")
-    Call<BaseResponse<List<Post>>> getPosts(@Path("id") int id);
+    Call<BaseResponse<List<Post>>> getPosts(@Path("id") int id, @QueryMap Map<String, Object> options);
 }

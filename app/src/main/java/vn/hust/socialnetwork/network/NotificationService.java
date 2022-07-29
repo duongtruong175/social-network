@@ -13,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.fcm.DataMessageSender;
 import vn.hust.socialnetwork.models.fcm.FCMResponse;
@@ -21,7 +22,7 @@ import vn.hust.socialnetwork.models.notification.Notification;
 public interface NotificationService {
     // Notification
     @GET("notification/v1.0/notifications")
-    Call<BaseResponse<List<Notification>>> getNotifications();
+    Call<BaseResponse<List<Notification>>> getNotifications(@QueryMap Map<String, Object> options);
 
     @FormUrlEncoded
     @POST("notification/v1.0/create")

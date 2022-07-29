@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import vn.hust.socialnetwork.models.group.Group;
+import vn.hust.socialnetwork.models.post.Post;
 import vn.hust.socialnetwork.models.user.User;
 
 public class SearchResult {
@@ -15,10 +16,14 @@ public class SearchResult {
     @SerializedName("groups")
     @Expose
     private List<Group> groups;
+    @SerializedName("posts")
+    @Expose
+    private List<Post> posts;
 
-    public SearchResult(List<User> users, List<Group> groups) {
+    public SearchResult(List<User> users, List<Group> groups, List<Post> posts) {
         this.users = users;
         this.groups = groups;
+        this.posts = posts;
     }
 
     public List<User> getUsers() {
@@ -35,5 +40,13 @@ public class SearchResult {
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

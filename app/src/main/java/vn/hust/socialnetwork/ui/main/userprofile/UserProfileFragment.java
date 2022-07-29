@@ -26,6 +26,7 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +56,9 @@ import com.zhihu.matisse.Matisse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -122,6 +125,7 @@ public class UserProfileFragment extends Fragment {
     private ShimmerFrameLayout lShimmer;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AppBarLayout appBarLayout;
+    private NestedScrollView lNestedScrollView;
     private AppCompatTextView tvUserNameToolbar, tvUserName, tvZodiac, tvDescription, tvFollowerCount, tvPostCount, tvReactCount, tvFriendCount, tvViewAllFriend;
     private LinearLayoutCompat lEditUserProfile, lPhotoUserProfile, lVideoUserProfile, lNewPost;
     private AppCompatButton btnRefresh;
@@ -130,6 +134,11 @@ public class UserProfileFragment extends Fragment {
     private CircleImageView civImageAvatarToolbar, civImageAvatar, civMyAvatar;
     private AppCompatImageView ivMenuToolbar, ivImageCover, ivImageAvatarCamera, ivImageCoverCamera, ivNewPostWithPhoto, ivZodiac, ivGender;
     private RecyclerView rvFriend, rvPost;
+
+    private int limitPost = 5;
+    private int pagePost = 1;
+    private boolean isLoadingMorePost = false;
+    private boolean canLoadMorePost = true;
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -159,6 +168,7 @@ public class UserProfileFragment extends Fragment {
         pbLoading = view.findViewById(R.id.pb_loading);
         swipeRefreshLayout = view.findViewById(R.id.l_swipe_refresh);
         appBarLayout = view.findViewById(R.id.ab_main_user_profile);
+        lNestedScrollView = view.findViewById(R.id.l_nested_scroll_view);
         tvUserNameToolbar = view.findViewById(R.id.tv_user_name_toolbar);
         civImageAvatarToolbar = view.findViewById(R.id.civ_image_avatar_toolbar);
         ivMenuToolbar = view.findViewById(R.id.iv_menu_toolbar);
@@ -432,22 +442,18 @@ public class UserProfileFragment extends Fragment {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         rvPost.setLayoutManager(layoutManager2);
         rvPost.setAdapter(postAdapter);
-        /*
-        // error because RecyclerView in NestedScrollView -> findFirstVisibleItemPosition not working
-        rvPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+        // detect scroll bottom of RecyclerView in NestedScrollView
+        lNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int firstVisibleItem = manager.findFirstVisibleItemPosition();
-                    if (firstVisibleItem != -1) {
-                        postAdapter.playIndexThenPausePreviousPlayer(firstVisibleItem);
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    if (canLoadMorePost && !isLoadingMorePost) {
+                        loadMorePost(user.getId());
                     }
                 }
             }
         });
-         */
 
         // call api to get all data
         getData();
@@ -922,7 +928,10 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void getPosts(int userId) {
-        Call<BaseResponse<List<Post>>> call = userProfileService.getPosts(userId);
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitPost * pagePost);
+        options.put("page", 1);
+        Call<BaseResponse<List<Post>>> call = userProfileService.getPosts(userId, options);
         call.enqueue(new Callback<BaseResponse<List<Post>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
@@ -933,8 +942,10 @@ public class UserProfileFragment extends Fragment {
                     postAdapter.notifyDataSetChanged();
                     if (posts.size() == 0) {
                         lPostEmpty.setVisibility(View.VISIBLE);
+                        canLoadMorePost = false;
                     } else {
                         lPostEmpty.setVisibility(View.GONE);
+                        canLoadMorePost = true;
                     }
                 }
             }
@@ -1318,6 +1329,44 @@ public class UserProfileFragment extends Fragment {
                 // error
                 call.cancel();
                 Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadMorePost(int userId) {
+        isLoadingMorePost = true;
+        // call api to get more post
+        pbLoading.setVisibility(View.VISIBLE);
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitPost);
+        options.put("page", pagePost + 1);
+        Call<BaseResponse<List<Post>>> call = userProfileService.getPosts(userId, options);
+        call.enqueue(new Callback<BaseResponse<List<Post>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<Post>> res = response.body();
+                    List<Post> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = posts.size();
+                        posts.addAll(moreData);
+                        postAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                    } else {
+                        canLoadMorePost = false;
+                    }
+                    pagePost++;
+                }
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMorePost = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Post>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMorePost = false;
             }
         });
     }

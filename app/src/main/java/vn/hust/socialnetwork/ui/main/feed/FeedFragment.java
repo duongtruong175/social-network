@@ -14,12 +14,14 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,7 +53,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -109,6 +113,7 @@ public class FeedFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayoutCompat lMain;
     private ShimmerFrameLayout lShimmer;
+    private NestedScrollView lNestedScrollView;
     private LinearProgressIndicator pbLoading;
     private ConstraintLayout lPostEmpty;
     private View viewItemAddStory;
@@ -118,6 +123,11 @@ public class FeedFragment extends Fragment {
     private List<Story> stories;
     private List<Post> posts;
     private PostAdapter postAdapter;
+
+    private int limitStory = 5, limitPost = 5;
+    private int pageStory = 1, pagePost = 1;
+    private boolean isLoadingMoreStory = false, isLoadingMorePost = false;
+    private boolean canLoadMoreStory = true, canLoadMorePost = true;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -152,6 +162,7 @@ public class FeedFragment extends Fragment {
         pbLoading = view.findViewById(R.id.pb_loading);
         rvStory = view.findViewById(R.id.rv_story);
         rvPost = view.findViewById(R.id.rv_post);
+        lNestedScrollView = view.findViewById(R.id.l_nested_scroll_view);
 
         // init
         stories = new ArrayList<>();
@@ -176,6 +187,18 @@ public class FeedFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvStory.setLayoutManager(linearLayoutManager);
         rvStory.setAdapter(storyAdapter);
+        rvStory.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                // end list
+                if (!recyclerView.canScrollVertically(1)) {
+                    if (canLoadMoreStory && !isLoadingMoreStory) {
+                        loadMoreStory();
+                    }
+                }
+            }
+        });
 
         posts = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), posts, new OnPostListener() {
@@ -286,6 +309,18 @@ public class FeedFragment extends Fragment {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         rvPost.setLayoutManager(layoutManager2);
         rvPost.setAdapter(postAdapter);
+
+        // detect scroll bottom of RecyclerView in NestedScrollView
+        lNestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                    if (canLoadMorePost && !isLoadingMorePost) {
+                        loadMorePost();
+                    }
+                }
+            }
+        });
 
         handleRefreshView();
 
@@ -441,7 +476,10 @@ public class FeedFragment extends Fragment {
     }
 
     private void getStories() {
-        Call<BaseResponse<List<Story>>> call = feedService.getStories();
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitStory * pageStory);
+        options.put("page", 1);
+        Call<BaseResponse<List<Story>>> call = feedService.getStories(options);
         call.enqueue(new Callback<BaseResponse<List<Story>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Story>>> call, Response<BaseResponse<List<Story>>> response) {
@@ -450,6 +488,11 @@ public class FeedFragment extends Fragment {
                     stories.clear();
                     stories.addAll(res.getData());
                     storyAdapter.notifyDataSetChanged();
+                    if (stories.size() == 0) {
+                        canLoadMoreStory = false;
+                    } else {
+                        canLoadMoreStory = true;
+                    }
                 }
                 lMain.setVisibility(View.VISIBLE);
                 lShimmer.stopShimmer();
@@ -471,7 +514,10 @@ public class FeedFragment extends Fragment {
     }
 
     private void getPosts() {
-        Call<BaseResponse<List<Post>>> call = feedService.getFeedPosts();
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitPost * pagePost);
+        options.put("page", 1);
+        Call<BaseResponse<List<Post>>> call = feedService.getFeedPosts(options);
         call.enqueue(new Callback<BaseResponse<List<Post>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
@@ -482,8 +528,10 @@ public class FeedFragment extends Fragment {
                     postAdapter.notifyDataSetChanged();
                     if (posts.size() == 0) {
                         lPostEmpty.setVisibility(View.VISIBLE);
+                        canLoadMorePost = false;
                     } else {
                         lPostEmpty.setVisibility(View.GONE);
+                        canLoadMorePost = true;
                     }
                 }
             }
@@ -789,6 +837,78 @@ public class FeedFragment extends Fragment {
                 // error
                 call.cancel();
                 Toast.makeText(getContext(), R.string.error_call_api_failure, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadMorePost() {
+        isLoadingMorePost = true;
+        // call api to get more post
+        pbLoading.setVisibility(View.VISIBLE);
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitPost);
+        options.put("page", pagePost + 1);
+        Call<BaseResponse<List<Post>>> call = feedService.getFeedPosts(options);
+        call.enqueue(new Callback<BaseResponse<List<Post>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<Post>> res = response.body();
+                    List<Post> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = posts.size();
+                        posts.addAll(moreData);
+                        postAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                    } else {
+                        canLoadMorePost = false;
+                    }
+                    pagePost++;
+                }
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMorePost = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Post>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                pbLoading.setVisibility(View.GONE);
+                isLoadingMorePost = false;
+            }
+        });
+    }
+
+    private void loadMoreStory() {
+        isLoadingMoreStory = true;
+        Map<String, Object> options = new HashMap<>();
+        options.put("limit", limitStory);
+        options.put("page", pageStory + 1);
+        Call<BaseResponse<List<Story>>> call = feedService.getStories(options);
+        call.enqueue(new Callback<BaseResponse<List<Story>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<Story>>> call, Response<BaseResponse<List<Story>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<Story>> res = response.body();
+                    List<Story> moreData = res.getData();
+                    if (moreData.size() > 0) {
+                        int oldSize = stories.size();
+                        stories.addAll(moreData);
+                        storyAdapter.notifyItemRangeInserted(oldSize, moreData.size());
+                    } else {
+                        canLoadMoreStory = false;
+                    }
+                    pageStory++;
+                }
+                isLoadingMoreStory = false;
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<Story>>> call, Throwable t) {
+                // error network (no internet connection, socket timeout, unknown host, ...)
+                // error serializing/deserializing the data
+                call.cancel();
+                isLoadingMoreStory = false;
             }
         });
     }
