@@ -70,6 +70,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.view.commentpost.CommentPostFragment;
 import vn.hust.socialnetwork.common.view.commentpost.OnBottomSheetDismiss;
+import vn.hust.socialnetwork.common.view.editpost.EditPostFragment;
+import vn.hust.socialnetwork.common.view.editpost.OnEditPostListener;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.fcm.Data;
@@ -94,6 +96,7 @@ import vn.hust.socialnetwork.ui.groupdetail.viewmember.ViewMemberActivity;
 import vn.hust.socialnetwork.ui.mediaviewer.MediaViewerActivity;
 import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
@@ -1221,7 +1224,16 @@ public class GroupDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open fragment edit post
-
+                    EditPostFragment editPostFragment = new EditPostFragment(post, new OnEditPostListener() {
+                        @Override
+                        public void onConfirmClick(Post updatedPost) {
+                            if (updatedPost != null) {
+                                posts.set(position, updatedPost);
+                                postAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    });
+                    editPostFragment.show(getSupportFragmentManager(), editPostFragment.getTag());
                 }
             });
             lDeletePost.setOnClickListener(new View.OnClickListener() {
@@ -1253,7 +1265,10 @@ public class GroupDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open activity report post
-                    Toast.makeText(GroupDetailActivity.this, R.string.report_post_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(GroupDetailActivity.this, ReportActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("url", "post/" + post.getId());
+                    startActivity(intent);
                 }
             });
         }

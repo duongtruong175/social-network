@@ -25,6 +25,7 @@
 
     <!-- Theme for transparent background BottomSheetDialog -->
     <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>

@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +66,8 @@ import retrofit2.Response;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.view.commentpost.CommentPostFragment;
 import vn.hust.socialnetwork.common.view.commentpost.OnBottomSheetDismiss;
+import vn.hust.socialnetwork.common.view.editpost.EditPostFragment;
+import vn.hust.socialnetwork.common.view.editpost.OnEditPostListener;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.event.StoryChangeEvent;
 import vn.hust.socialnetwork.models.BaseResponse;
@@ -78,17 +79,15 @@ import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.FeedService;
 import vn.hust.socialnetwork.network.PostService;
 import vn.hust.socialnetwork.network.StoryService;
-import vn.hust.socialnetwork.network.UploadMediaService;
-import vn.hust.socialnetwork.network.UserProfileService;
 import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
 import vn.hust.socialnetwork.ui.main.feed.adapters.OnPostListener;
 import vn.hust.socialnetwork.ui.main.feed.adapters.OnStoryListener;
 import vn.hust.socialnetwork.ui.main.feed.adapters.StoryAdapter;
 import vn.hust.socialnetwork.ui.main.feed.adapters.PostAdapter;
-import vn.hust.socialnetwork.ui.main.userprofile.crop.CropUserAvatarActivity;
 import vn.hust.socialnetwork.ui.mediaviewer.MediaViewerActivity;
 import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.search.SearchActivity;
 import vn.hust.socialnetwork.ui.story.StoryActivity;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
@@ -97,7 +96,6 @@ import vn.hust.socialnetwork.utils.ContextExtension;
 import vn.hust.socialnetwork.utils.FileExtension;
 import vn.hust.socialnetwork.utils.MediaPicker;
 import vn.hust.socialnetwork.utils.NotificationExtension;
-import vn.hust.socialnetwork.utils.RequestCodeResultActivity;
 
 public class FeedFragment extends Fragment {
 
@@ -778,7 +776,16 @@ public class FeedFragment extends Fragment {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open fragment edit post
-
+                    EditPostFragment editPostFragment = new EditPostFragment(post, new OnEditPostListener() {
+                        @Override
+                        public void onConfirmClick(Post updatedPost) {
+                            if (updatedPost != null) {
+                                posts.set(position, updatedPost);
+                                postAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    });
+                    editPostFragment.show(getParentFragmentManager(), editPostFragment.getTag());
                 }
             });
             lDeletePost.setOnClickListener(new View.OnClickListener() {
@@ -810,7 +817,10 @@ public class FeedFragment extends Fragment {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open activity report post
-                    Toast.makeText(getContext(), R.string.report_post_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), ReportActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("url", "post/" + post.getId());
+                    startActivity(intent);
                 }
             });
         }

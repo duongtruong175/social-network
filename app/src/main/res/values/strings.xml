@@ -426,4 +426,19 @@
     <string name="tab_search_group">Nhóm</string>
     <string name="tab_search_user">Mọi người</string>
     <string name="search_history">Tìm kiếm gần đây</string>
+    <string name="report_hint">Nội dung</string>
+    <string name="create_report">Tiếp tục</string>
+    <string name="report_description">Báo cáo nội dung này</string>
+    <string name="init_report_error">Có lỗi xảy ra, hãy thử lại</string>
+    <string name="title_toolbar_report">Báo cáo</string>
+    <string name="report_post_description">Báo cáo bài viết này</string>
+    <string name="report_comment_description">Báo cáo bình luận này</string>
+    <string name="report_group_description">Báo cáo nhóm này</string>
+    <string name="error_content_report_empty">Nội dung báo cáo không được để trống</string>
+    <string name="report_success">Chúng tôi đã ghi nhận báo cáo nội dung của bạn.</string>
+    <string name="error_comment_empty">Nội dung bình luận không được để trống</string>
+    <string name="update_comment_confirm">Cập nhập</string>
+    <string name="update_comment_title">Chỉnh sửa bình luận</string>
+    <string name="update_post_title">Chỉnh sửa bài viết</string>
+    <string name="update_post_confirm">Cập nhập</string>
 </resources>

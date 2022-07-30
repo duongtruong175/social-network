@@ -37,6 +37,8 @@ import vn.hust.socialnetwork.ui.groupdetail.GroupDetailActivity;
 import vn.hust.socialnetwork.ui.groupdetail.changeinformation.ChangeInformationGroupActivity;
 import vn.hust.socialnetwork.ui.groupdetail.requestjoin.RequestJoinGroupActivity;
 import vn.hust.socialnetwork.ui.groupdetail.viewmember.ViewMemberActivity;
+import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.StringExtension;
 
@@ -158,6 +160,10 @@ public class MenuGroupDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // open activity report group
+                Intent intent = new Intent(MenuGroupDetailActivity.this, ReportActivity.class);
+                intent.putExtra("type", 3);
+                intent.putExtra("url", "group/" + group.getId());
+                startActivity(intent);
             }
         });
 

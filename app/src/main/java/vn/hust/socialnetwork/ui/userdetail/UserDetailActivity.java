@@ -64,6 +64,8 @@ import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.style.CustomTypefaceSpan;
 import vn.hust.socialnetwork.common.view.commentpost.CommentPostFragment;
 import vn.hust.socialnetwork.common.view.commentpost.OnBottomSheetDismiss;
+import vn.hust.socialnetwork.common.view.editpost.EditPostFragment;
+import vn.hust.socialnetwork.common.view.editpost.OnEditPostListener;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.fcm.Data;
@@ -92,6 +94,7 @@ import vn.hust.socialnetwork.ui.message.MessageActivity;
 import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
 import vn.hust.socialnetwork.ui.relation.RelationActivity;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.userdetail.adapters.FriendAdapter;
 import vn.hust.socialnetwork.ui.userdetail.adapters.OnFriendListener;
 import vn.hust.socialnetwork.ui.userdetail.adapters.OnPostListener;
@@ -1209,7 +1212,16 @@ public class UserDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open fragment edit post
-
+                    EditPostFragment editPostFragment = new EditPostFragment(post, new OnEditPostListener() {
+                        @Override
+                        public void onConfirmClick(Post updatedPost) {
+                            if (updatedPost != null) {
+                                posts.set(position, updatedPost);
+                                postAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    });
+                    editPostFragment.show(getSupportFragmentManager(), editPostFragment.getTag());
                 }
             });
             lDeletePost.setOnClickListener(new View.OnClickListener() {
@@ -1241,7 +1253,10 @@ public class UserDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open activity report post
-                    Toast.makeText(UserDetailActivity.this, R.string.report_post_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UserDetailActivity.this, ReportActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("url", "post/" + post.getId());
+                    startActivity(intent);
                 }
             });
         }

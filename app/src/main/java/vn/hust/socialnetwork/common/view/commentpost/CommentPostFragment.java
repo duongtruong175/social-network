@@ -68,6 +68,8 @@ import retrofit2.Response;
 import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.view.commentpost.adapters.CommentAdapter;
 import vn.hust.socialnetwork.common.view.commentpost.adapters.OnCommentListener;
+import vn.hust.socialnetwork.common.view.editcomment.EditCommentFragment;
+import vn.hust.socialnetwork.common.view.editcomment.OnEditCommentListener;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.fcm.Data;
@@ -81,6 +83,8 @@ import vn.hust.socialnetwork.network.CommentService;
 import vn.hust.socialnetwork.network.NotificationService;
 import vn.hust.socialnetwork.network.UploadMediaService;
 import vn.hust.socialnetwork.ui.mediaviewer.MediaViewerActivity;
+import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
@@ -629,7 +633,16 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
                     Toast.makeText(getContext(), R.string.content_copied, Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.action_edit_comment) {
                     // open fragment edit comment
-
+                    EditCommentFragment editCommentFragment = new EditCommentFragment(comment, new OnEditCommentListener() {
+                        @Override
+                        public void onConfirmClick(CommentPost updatedComment) {
+                            if (updatedComment != null) {
+                                comments.set(position, updatedComment);
+                                commentAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    });
+                    editCommentFragment.show(getParentFragmentManager(), editCommentFragment.getTag());
                 } else if (item.getItemId() == R.id.action_delete_comment) {
                     // open dialog confirm delete
                     AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme);
@@ -651,17 +664,21 @@ public class CommentPostFragment extends BottomSheetDialogFragment {
                     builder.create().show();
                 } else if (item.getItemId() == R.id.action_report_comment) {
                     // open activity report comment
-                    Toast.makeText(getContext(), R.string.report_comment_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), ReportActivity.class);
+                    intent.putExtra("type", 2);
+                    intent.putExtra("url", "comment/" + comment.getId());
+                    startActivity(intent);
                 }
                 return false;
             }
         });
-        if (comment.getUser().getId() != Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0)) {
+        int myUserId = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0);
+        if (comment.getUser().getId() != myUserId) {
             popupMenu.getMenu().removeItem(R.id.action_edit_comment);
         } else {
             popupMenu.getMenu().removeItem(R.id.action_report_comment);
         }
-        if (post.getUser().getId() != Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0)) {
+        if (post.getUser().getId() != myUserId && comment.getUser().getId() != myUserId) {
             popupMenu.getMenu().removeItem(R.id.action_delete_comment);
         }
         popupMenu.setForceShowIcon(true);

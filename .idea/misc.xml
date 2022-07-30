@@ -144,6 +144,7 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_reply_white.xml" value="0.2555" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_report.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_report_comment.xml" value="0.1" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_report_feature.xml" value="0.1585" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_round_arrow_right_24.xml" value="0.21" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_round_close_24.xml" value="0.1" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/drawable/ic_round_shape.xml" value="0.1845" />
@@ -209,6 +210,7 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_propose_group.xml" value="0.15705128205128205" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_qr_code_scanner.xml" value="0.264" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_relation.xml" value="0.176" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_report.xml" value="0.4171779141104294" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_request_join_group.xml" value="0.2" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_search.xml" value="0.22448979591836735" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/activity_story.xml" value="0.1993517017828201" />
@@ -239,6 +241,8 @@
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_chat.xml" value="0.14423076923076922" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_comment_post.xml" value="0.1377551020408163" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_description_profile.xml" value="0.264" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_edit_comment.xml" value="0.264" />
+        <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_edit_post.xml" value="0.20521590423257802" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_education_profile.xml" value="0.4" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_feed.xml" value="0.1307017543859649" />
         <entry key="..\:/Hust/20212/DoAnKySu/Code/social-network/app/SocialNetwork/app/src/main/res/layout/fragment_forgot_password.xml" value="0.4" />

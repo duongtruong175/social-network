@@ -1,11 +1,14 @@
 package vn.hust.socialnetwork.models.post;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import vn.hust.socialnetwork.models.media.Media;
 
-public class CommentPost {
+public class CommentPost implements Parcelable {
     @SerializedName("id")
     @Expose
     private int id;
@@ -45,6 +48,30 @@ public class CommentPost {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    protected CommentPost(Parcel in) {
+        id = in.readInt();
+        user = in.readParcelable(UserPost.class.getClassLoader());
+        content = in.readString();
+        media = in.readParcelable(Media.class.getClassLoader());
+        reactStatus = in.readInt();
+        reactCount = in.readParcelable(ReactCount.class.getClassLoader());
+        counts = in.readParcelable(CountsPost.class.getClassLoader());
+        createdAt = in.readString();
+        updatedAt = in.readString();
+    }
+
+    public static final Creator<CommentPost> CREATOR = new Creator<CommentPost>() {
+        @Override
+        public CommentPost createFromParcel(Parcel in) {
+            return new CommentPost(in);
+        }
+
+        @Override
+        public CommentPost[] newArray(int size) {
+            return new CommentPost[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -116,5 +143,23 @@ public class CommentPost {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeParcelable(user, flags);
+        dest.writeString(content);
+        dest.writeParcelable(media, flags);
+        dest.writeInt(reactStatus);
+        dest.writeParcelable(reactCount, flags);
+        dest.writeParcelable(counts, flags);
+        dest.writeString(createdAt);
+        dest.writeString(updatedAt);
     }
 }

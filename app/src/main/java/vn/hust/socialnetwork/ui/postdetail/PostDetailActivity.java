@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,12 +38,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.hawk.Hawk;
 import com.tbruyelle.rxpermissions3.RxPermissions;
 import com.vanniktech.emoji.EmojiPopup;
@@ -65,15 +58,14 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import vn.hust.socialnetwork.R;
+import vn.hust.socialnetwork.common.view.editcomment.EditCommentFragment;
+import vn.hust.socialnetwork.common.view.editcomment.OnEditCommentListener;
+import vn.hust.socialnetwork.common.view.editpost.EditPostFragment;
+import vn.hust.socialnetwork.common.view.editpost.OnEditPostListener;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.fcm.Data;
-import vn.hust.socialnetwork.models.fcm.DataMessageSender;
-import vn.hust.socialnetwork.models.fcm.FCMResponse;
-import vn.hust.socialnetwork.models.fcm.Token;
 import vn.hust.socialnetwork.models.media.Media;
 import vn.hust.socialnetwork.models.notification.Notification;
 import vn.hust.socialnetwork.models.post.CommentPost;
@@ -90,6 +82,7 @@ import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.adapters.OnPostListener;
 import vn.hust.socialnetwork.ui.postdetail.adapters.PostDetailAdapter;
 import vn.hust.socialnetwork.ui.postdetail.adapters.OnCommentListener;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
@@ -876,7 +869,18 @@ public class PostDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open fragment edit post
-
+                    EditPostFragment editPostFragment = new EditPostFragment(post, new OnEditPostListener() {
+                        @Override
+                        public void onConfirmClick(Post updatedPost) {
+                            if (updatedPost != null) {
+                                post = updatedPost;
+                                viewPosts.clear();
+                                viewPosts.add(updatedPost);
+                                postDetailAdapter.notifyItemChanged(0);
+                            }
+                        }
+                    });
+                    editPostFragment.show(getSupportFragmentManager(), editPostFragment.getTag());
                 }
             });
             lDeletePost.setOnClickListener(new View.OnClickListener() {
@@ -908,7 +912,10 @@ public class PostDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open activity report post
-                    Toast.makeText(PostDetailActivity.this, R.string.report_post_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PostDetailActivity.this, ReportActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("url", "post/" + post.getId());
+                    startActivity(intent);
                 }
             });
         }
@@ -930,7 +937,16 @@ public class PostDetailActivity extends AppCompatActivity {
                     Toast.makeText(PostDetailActivity.this, R.string.content_copied, Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.action_edit_comment) {
                     // open fragment edit comment
-
+                    EditCommentFragment editCommentFragment = new EditCommentFragment(comment, new OnEditCommentListener() {
+                        @Override
+                        public void onConfirmClick(CommentPost updatedComment) {
+                            if (updatedComment != null) {
+                                comments.set(position, updatedComment);
+                                postDetailAdapter.notifyItemChanged(1 + position);
+                            }
+                        }
+                    });
+                    editCommentFragment.show(getSupportFragmentManager(), editCommentFragment.getTag());
                 } else if (item.getItemId() == R.id.action_delete_comment) {
                     // open dialog confirm delete
                     AlertDialog.Builder builder = new AlertDialog.Builder(PostDetailActivity.this, R.style.AlertDialogTheme);
@@ -952,17 +968,21 @@ public class PostDetailActivity extends AppCompatActivity {
                     builder.create().show();
                 } else if (item.getItemId() == R.id.action_report_comment) {
                     // open activity report comment
-                    Toast.makeText(PostDetailActivity.this, R.string.report_comment_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PostDetailActivity.this, ReportActivity.class);
+                    intent.putExtra("type", 2);
+                    intent.putExtra("url", "comment/" + comment.getId());
+                    startActivity(intent);
                 }
                 return false;
             }
         });
-        if (comment.getUser().getId() != Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0)) {
+        int myUserId = Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0);
+        if (comment.getUser().getId() != myUserId) {
             popupMenu.getMenu().removeItem(R.id.action_edit_comment);
         } else {
             popupMenu.getMenu().removeItem(R.id.action_report_comment);
         }
-        if (post.getUser().getId() != Hawk.get(AppSharedPreferences.LOGGED_IN_USER_ID_KEY, 0)) {
+        if (post.getUser().getId() != myUserId && comment.getUser().getId() != myUserId) {
             popupMenu.getMenu().removeItem(R.id.action_delete_comment);
         }
         popupMenu.setForceShowIcon(true);

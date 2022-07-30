@@ -31,6 +31,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".ui.report.ReportActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.locked.LockedActivity"
             android:screenOrientation="portrait" />
         <activity

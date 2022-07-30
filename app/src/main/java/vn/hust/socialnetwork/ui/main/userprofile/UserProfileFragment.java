@@ -68,6 +68,8 @@ import vn.hust.socialnetwork.R;
 import vn.hust.socialnetwork.common.style.CustomTypefaceSpan;
 import vn.hust.socialnetwork.common.view.commentpost.CommentPostFragment;
 import vn.hust.socialnetwork.common.view.commentpost.OnBottomSheetDismiss;
+import vn.hust.socialnetwork.common.view.editpost.EditPostFragment;
+import vn.hust.socialnetwork.common.view.editpost.OnEditPostListener;
 import vn.hust.socialnetwork.common.view.reactuser.ReactUserFragment;
 import vn.hust.socialnetwork.models.BaseResponse;
 import vn.hust.socialnetwork.models.media.Media;
@@ -94,6 +96,7 @@ import vn.hust.socialnetwork.ui.menuprofile.MenuProfileActivity;
 import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
 import vn.hust.socialnetwork.ui.relation.RelationActivity;
+import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.userdetail.UserDetailActivity;
 import vn.hust.socialnetwork.utils.AppSharedPreferences;
 import vn.hust.socialnetwork.utils.ContextExtension;
@@ -1270,7 +1273,16 @@ public class UserProfileFragment extends Fragment {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open fragment edit post
-
+                    EditPostFragment editPostFragment = new EditPostFragment(post, new OnEditPostListener() {
+                        @Override
+                        public void onConfirmClick(Post updatedPost) {
+                            if (updatedPost != null) {
+                                posts.set(position, updatedPost);
+                                postAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    });
+                    editPostFragment.show(getParentFragmentManager(), editPostFragment.getTag());
                 }
             });
             lDeletePost.setOnClickListener(new View.OnClickListener() {
@@ -1302,7 +1314,10 @@ public class UserProfileFragment extends Fragment {
                 public void onClick(View v) {
                     bottomSheetDialog.dismiss();
                     // open activity report post
-                    Toast.makeText(getContext(), R.string.report_post_success, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getActivity(), ReportActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("url", "post/" + post.getId());
+                    startActivity(intent);
                 }
             });
         }
