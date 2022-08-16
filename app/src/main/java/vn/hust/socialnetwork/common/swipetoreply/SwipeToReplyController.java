@@ -19,6 +19,9 @@ import vn.hust.socialnetwork.R;
 
 public class SwipeToReplyController extends ItemTouchHelper.Callback {
 
+    private static final int MESSAGE_LEFT_TYPE = 1;
+    private static final int MESSAGE_RIGHT_TYPE = 2;
+
     private Context mContext;
     private OnSwipeToReplyListener mOnSwipeToReplyListener;
 
@@ -64,7 +67,11 @@ public class SwipeToReplyController extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         mView = viewHolder.itemView;
-        return ItemTouchHelper.Callback.makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.RIGHT);
+        if(viewHolder.getItemViewType() == MESSAGE_LEFT_TYPE) {
+            return ItemTouchHelper.Callback.makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.RIGHT);
+        } else {
+            return ItemTouchHelper.Callback.makeMovementFlags(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.LEFT);
+        }
     }
 
     @Override
@@ -91,13 +98,21 @@ public class SwipeToReplyController extends ItemTouchHelper.Callback {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             setTouchListener(recyclerView, viewHolder);
         }
-        if (mView.getTranslationX() < convertToDp(130) || dX < mDx) {
+        int messageType = viewHolder.getItemViewType();
+        // MESSAGE_LEFT_TYPE
+        if (messageType == MESSAGE_LEFT_TYPE && (mView.getTranslationX() < convertToDp(130) || dX < mDx)) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            mDx = dX;
+            mStartTracking = true;
+        }
+        // MESSAGE_RIGHT_TYPE
+        if (messageType == MESSAGE_RIGHT_TYPE && (mView.getTranslationX() > convertToDp(-130) || dX > mDx)) {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             mDx = dX;
             mStartTracking = true;
         }
         mCurrentViewHolder = viewHolder;
-        drawReplyButton(c);
+        drawReplyButton(c, messageType);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -126,12 +141,12 @@ public class SwipeToReplyController extends ItemTouchHelper.Callback {
     }
 
 
-    private void drawReplyButton(Canvas canvas) {
+    private void drawReplyButton(Canvas canvas, int messageType) {
         if (mCurrentViewHolder == null) {
             return;
         }
 
-        float translationX = mView.getTranslationX();
+        float translationX = Math.abs(mView.getTranslationX());
         long newTime = System.currentTimeMillis();
         long dt = Math.min(17, newTime - mLastReplyButtonAnimationTime);
         mLastReplyButtonAnimationTime = newTime;
@@ -174,7 +189,7 @@ public class SwipeToReplyController extends ItemTouchHelper.Callback {
         mReplyIconBackground.setAlpha(alpha);
         mReplyIcon.setAlpha(alpha);
         if (mStartTracking) {
-            if (!mIsVibrating && mView.getTranslationX() >= convertToDp(100)) {
+            if (!mIsVibrating && translationX >= convertToDp(100)) {
                 mView.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP, HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
             }
             mIsVibrating = true;
@@ -182,30 +197,50 @@ public class SwipeToReplyController extends ItemTouchHelper.Callback {
 
         int x;
         float y;
-        if (mView.getTranslationX() > convertToDp(130)) {
+        if (translationX > convertToDp(130)) {
             x = convertToDp(130) / 2;
         } else {
-            x = (int) mView.getTranslationX() / 2;
+            x = (int) translationX / 2;
         }
 
         y = mView.getTop() + ((float) mView.getMeasuredHeight() / 2);
         mReplyIconBackground.setColorFilter(mBackgroundColor, PorterDuff.Mode.MULTIPLY);
 
-        mReplyIconBackground.setBounds(new Rect(
-                (int) (x - convertToDp(mReplyBackgroundOffset) * scale),
-                (int) (y - convertToDp(mReplyBackgroundOffset) * scale),
-                (int) (x + convertToDp(mReplyBackgroundOffset) * scale),
-                (int) (y + convertToDp(mReplyBackgroundOffset) * scale)
-        ));
-        mReplyIconBackground.draw(canvas);
+        // draw icon reply
+        if (messageType == MESSAGE_LEFT_TYPE) {
+            mReplyIconBackground.setBounds(new Rect(
+                    (int) (x - convertToDp(mReplyBackgroundOffset) * scale),
+                    (int) (y - convertToDp(mReplyBackgroundOffset) * scale),
+                    (int) (x + convertToDp(mReplyBackgroundOffset) * scale),
+                    (int) (y + convertToDp(mReplyBackgroundOffset) * scale)
+            ));
+            mReplyIconBackground.draw(canvas);
 
-        mReplyIcon.setBounds(new Rect(
-                (int) (x - convertToDp(mReplyIconXOffset) * scale),
-                (int) (y - convertToDp(mReplyIconYOffset) * scale),
-                (int) (x + convertToDp(mReplyIconXOffset) * scale),
-                (int) (y + convertToDp(mReplyIconYOffset) * scale)
-        ));
-        mReplyIcon.draw(canvas);
+            mReplyIcon.setBounds(new Rect(
+                    (int) (x - convertToDp(mReplyIconXOffset) * scale),
+                    (int) (y - convertToDp(mReplyIconYOffset) * scale),
+                    (int) (x + convertToDp(mReplyIconXOffset) * scale),
+                    (int) (y + convertToDp(mReplyIconYOffset) * scale)
+            ));
+            mReplyIcon.draw(canvas);
+        } else if (messageType == MESSAGE_RIGHT_TYPE){
+            int maxScreenWidth = mView.getMeasuredWidth();
+            mReplyIconBackground.setBounds(new Rect(
+                    (int) (maxScreenWidth - (x + convertToDp(mReplyBackgroundOffset) * scale)),
+                    (int) (y - convertToDp(mReplyBackgroundOffset) * scale),
+                    (int) (maxScreenWidth - (x - convertToDp(mReplyBackgroundOffset) * scale)),
+                    (int) (y + convertToDp(mReplyBackgroundOffset) * scale)
+            ));
+            mReplyIconBackground.draw(canvas);
+
+            mReplyIcon.setBounds(new Rect(
+                    (int) (maxScreenWidth - (x + convertToDp(mReplyIconXOffset) * scale)),
+                    (int) (y - convertToDp(mReplyIconYOffset) * scale),
+                    (int) (maxScreenWidth - (x - convertToDp(mReplyIconXOffset) * scale)),
+                    (int) (y + convertToDp(mReplyIconYOffset) * scale)
+            ));
+            mReplyIcon.draw(canvas);
+        }
 
         mReplyIconBackground.setAlpha(255);
         mReplyIcon.setAlpha(255);

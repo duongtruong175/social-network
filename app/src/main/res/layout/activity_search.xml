@@ -51,7 +51,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- history search (update later) -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/l_history_search"
         android:layout_width="match_parent"
@@ -70,6 +69,22 @@
             android:textColor="@color/color_text_primary"
             android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/v_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_divider_line"
+            app:layout_constraintTop_toBottomOf="@+id/tv_history_search_label"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_search_history"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

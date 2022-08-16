@@ -50,7 +50,7 @@ import vn.hust.socialnetwork.models.group.Group;
 import vn.hust.socialnetwork.models.media.Media;
 import vn.hust.socialnetwork.models.post.Post;
 import vn.hust.socialnetwork.models.post.ReactUser;
-import vn.hust.socialnetwork.models.search.SearchResult;
+import vn.hust.socialnetwork.models.search.History;
 import vn.hust.socialnetwork.models.user.User;
 import vn.hust.socialnetwork.network.ApiClient;
 import vn.hust.socialnetwork.network.PostService;
@@ -61,7 +61,9 @@ import vn.hust.socialnetwork.ui.postcreator.PostCreatorActivity;
 import vn.hust.socialnetwork.ui.postdetail.PostDetailActivity;
 import vn.hust.socialnetwork.ui.report.ReportActivity;
 import vn.hust.socialnetwork.ui.search.adapters.GroupAdapter;
+import vn.hust.socialnetwork.ui.search.adapters.HistoryAdapter;
 import vn.hust.socialnetwork.ui.search.adapters.OnGroupListener;
+import vn.hust.socialnetwork.ui.search.adapters.OnHistoryListener;
 import vn.hust.socialnetwork.ui.search.adapters.OnPostListener;
 import vn.hust.socialnetwork.ui.search.adapters.OnUserListener;
 import vn.hust.socialnetwork.ui.search.adapters.PostAdapter;
@@ -85,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
     private ConstraintLayout lHistorySearch, lResultSearch, lLoading;
     private LinearLayoutCompat lSearchEmpty;
     private LinearProgressIndicator pbLoading;
-    private RecyclerView rvUser, rvGroup, rvPost;
+    private RecyclerView rvHistory, rvUser, rvGroup, rvPost;
     private TabLayout tbSearch;
 
     private String keyword;
@@ -95,6 +97,8 @@ public class SearchActivity extends AppCompatActivity {
     private GroupAdapter groupAdapter;
     private List<Post> posts;
     private PostAdapter postAdapter;
+    private List<History> histories;
+    private HistoryAdapter historyAdapter;
 
     private int limitUser, limitGroup, limitPost;
     private int pageUser, pageGroup, pagePost;
@@ -119,6 +123,7 @@ public class SearchActivity extends AppCompatActivity {
         pbLoading = findViewById(R.id.pb_loading);
         tbSearch = findViewById(R.id.tb_search);
         lSearchEmpty = findViewById(R.id.l_search_empty);
+        rvHistory = findViewById(R.id.rv_history);
         rvUser = findViewById(R.id.rv_user);
         rvGroup = findViewById(R.id.rv_group);
         rvPost = findViewById(R.id.rv_post);
@@ -143,6 +148,23 @@ public class SearchActivity extends AppCompatActivity {
         initSearchTabs();
 
         // init recycle view
+        histories = new ArrayList<>();
+        historyAdapter = new HistoryAdapter(SearchActivity.this, histories, new OnHistoryListener() {
+            @Override
+            public void onDeleteItemClick(int position) {
+                deleteHistory(position);
+            }
+
+            @Override
+            public void onItemClick(int position) {
+                clickHistory(position);
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
+        rvHistory.setLayoutManager(linearLayoutManager);
+        rvHistory.setHasFixedSize(true);
+        rvHistory.setAdapter(historyAdapter);
+
         users = new ArrayList<>();
         userAdapter = new UserAdapter(SearchActivity.this, users, new OnUserListener() {
             @Override
@@ -153,8 +175,9 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchActivity.this);
-        rvUser.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(SearchActivity.this);
+        rvUser.setLayoutManager(linearLayoutManager2);
+        rvUser.setHasFixedSize(true);
         rvUser.setAdapter(userAdapter);
         rvUser.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -179,8 +202,9 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(SearchActivity.this);
-        rvGroup.setLayoutManager(linearLayoutManager2);
+        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(SearchActivity.this);
+        rvGroup.setLayoutManager(linearLayoutManager3);
+        rvGroup.setHasFixedSize(true);
         rvGroup.setAdapter(groupAdapter);
         rvGroup.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -301,8 +325,9 @@ public class SearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(SearchActivity.this);
-        rvPost.setLayoutManager(linearLayoutManager3);
+        LinearLayoutManager linearLayoutManager4 = new LinearLayoutManager(SearchActivity.this);
+        rvPost.setLayoutManager(linearLayoutManager4);
+        rvPost.setHasFixedSize(true);
         rvPost.setAdapter(postAdapter);
         rvPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -342,6 +367,7 @@ public class SearchActivity extends AppCompatActivity {
                             postAdapter.releaseAllPlayers();
                             searchPostByKeyword();
                         }
+                        addHistory(keyword);
                     }
                 }
                 return false;
@@ -354,12 +380,91 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        // get data
+        getHistories();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        postAdapter.pauseAllPlayers();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postAdapter.continueCurrentPlayingVideo();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         postAdapter.releaseAllPlayers();
+    }
+
+    private void getHistories() {
+        Call<BaseResponse<List<History>>> call = searchService.getHistories();
+        call.enqueue(new Callback<BaseResponse<List<History>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<History>>> call, Response<BaseResponse<List<History>>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<List<History>> res = response.body();
+                    histories.clear();
+                    histories.addAll(res.getData());
+                    historyAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<History>>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void clickHistory(int position) {
+        svToolbarSearch.setQuery(histories.get(position).getQuery(), true);
+    }
+
+    private void addHistory(String query) {
+        Call<BaseResponse<History>> call = searchService.addHistory(query);
+        call.enqueue(new Callback<BaseResponse<History>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<History>> call, Response<BaseResponse<History>> response) {
+                if (response.isSuccessful()) {
+                    BaseResponse<History> res = response.body();
+                    History history = res.getData();
+                    if (history != null && history.getCount() == 1) {
+                        histories.add(0, res.getData());
+                        historyAdapter.notifyItemInserted(0);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<History>> call, Throwable t) {
+                call.cancel();
+            }
+        });
+    }
+
+    private void deleteHistory(int position) {
+        histories.remove(position);
+        historyAdapter.notifyItemRemoved(position);
+        History history = histories.get(position);
+        Call<BaseResponse<String>> call = searchService.deleteHistory(history.getId());
+        call.enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+                call.cancel();
+            }
+        });
     }
 
     private void initSearchTabs() {
