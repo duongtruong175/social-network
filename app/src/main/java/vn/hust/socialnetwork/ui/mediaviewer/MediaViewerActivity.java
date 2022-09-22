@@ -132,9 +132,7 @@ public class MediaViewerActivity extends AppCompatActivity {
                         .subscribe(granted -> {
                             if (granted) {
                                 if (checkValidValueString(media_url)) {
-                                    String domain = "304a34d3fb5607";
-                                    String urlDownload = media_url.replace("http://192.168.43.2:8000", "https://" + domain + ".lhrtunnel.link");
-                                    new MediaDownloader(MediaViewerActivity.this).download(urlDownload);
+                                    new MediaDownloader(MediaViewerActivity.this).download(media_url);
                                 }
                             } else {
                                 Toast.makeText(MediaViewerActivity.this, R.string.permission_request_denied, Toast.LENGTH_SHORT).show();
